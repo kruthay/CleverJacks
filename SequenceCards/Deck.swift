@@ -6,3 +6,15 @@
 //
 
 import Foundation
+
+struct Deck : Identifiable {
+    var cards: [Card] = []
+    var id = UUID()
+    init() {
+        for suit in Suit.allCases {
+            for rank in Rank.allCases {
+                cards.append(Card(rank: rank, suit: suit))
+            }
+        }
+    }
+}

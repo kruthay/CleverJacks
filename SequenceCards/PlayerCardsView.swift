@@ -8,11 +8,36 @@
 import SwiftUI
 
 struct PlayerCardsView: View {
+    var game: SequenceGame
+    let impactSoft = UIImpactFeedbackGenerator(style: .soft)
+    var size: CGSize
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
+            HStack{
+                    ForEach(game.localParticipant?.cardsOnHand ?? [Card(rank: .ace, suit: .clubs), Card(rank: .ace, suit: .hearts), Card(rank: .ace, suit: .spades)]){ card in
+                        CardView(card: card, size: size )
+                            .offset(y: game.inSelectionCard == card ? -20 : 0 )
+                            .onTapGesture {
+                                impactSoft.impactOccurred()
+                                if game.myTurn{
+                                    withAnimation {
+                                        game.inSelectionCard = game.inSelectionCard != card ? card : nil
+                                    }
+                                    
+                                }
+                            }
+                            
+                    }
+            }
+            
+
+        }
 }
 
-#Preview {
-    PlayerCardsView()
+//#Preview {
+//    PlayerCardsView()
+//}
+struct PlayerCardsPreviews: PreviewProvider {
+    static var previews: some View {
+        PlayerCardsView(game: SequenceGame(), size: CGSize(width: 30, height: 50))
+    }
 }

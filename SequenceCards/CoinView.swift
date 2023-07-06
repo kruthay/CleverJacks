@@ -8,11 +8,17 @@
 import SwiftUI
 
 struct CoinView: View {
+    @Environment(\.colorScheme) var colorScheme
+    var coin : Coin = .special
+    var width : CGFloat
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Circle()
+            .fill(coin.color)
+            .strokeBorder(colorScheme == .dark ? Color.white : Color.black, lineWidth: 3.5)
+            .frame(width: width)
     }
 }
 
 #Preview {
-    CoinView()
+    CoinView(width: 17)
 }
