@@ -8,26 +8,48 @@
 import SwiftUI
 
 struct PlayerCardsView: View {
-    var game: SequenceGame
+    @ObservedObject var game: SequenceGame
     let impactSoft = UIImpactFeedbackGenerator(style: .soft)
     var size: CGSize
+    var horizontalView : Bool = false
+    var defaultCards = [Card(rank: .ace, suit: .clubs), Card(rank: .jack, suit: .hearts), Card(rank: .jack, suit: .spades)]
     var body: some View {
-            HStack{
-                    ForEach(game.localParticipant?.cardsOnHand ?? [Card(rank: .ace, suit: .clubs), Card(rank: .ace, suit: .hearts), Card(rank: .ace, suit: .spades)]){ card in
+        if horizontalView {
+            VStack{
+                    ForEach(game.localParticipant?.cardsOnHand ?? defaultCards){ card in
                         CardView(card: card, size: size )
-                            .offset(y: game.inSelectionCard == card ? -20 : 0 )
+                            .offset(x: game.inSelectionCard == card ? -20 : 0 )
                             .onTapGesture {
-                                impactSoft.impactOccurred()
-                                if game.myTurn{
+
+                                if game.myTurn {
                                     withAnimation {
                                         game.inSelectionCard = game.inSelectionCard != card ? card : nil
                                     }
-                                    
+                                    impactSoft.impactOccurred()
                                 }
                             }
                             
                     }
             }
+        }
+        else {
+            HStack{
+                ForEach(game.localParticipant?.cardsOnHand ?? defaultCards){ card in
+                    CardView(card: card, size: size )
+                        .offset(y: game.inSelectionCard == card ? -20 : 0 )
+                        .onTapGesture {
+                            
+                            if game.myTurn {
+                                withAnimation {
+                                    game.inSelectionCard = game.inSelectionCard != card ? card : nil
+                                }
+                                impactSoft.impactOccurred()
+                            }
+                        }
+                    
+                }
+            }
+        }
             
 
         }

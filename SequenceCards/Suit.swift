@@ -24,6 +24,6 @@ enum Suit: Int, CaseIterable, Codable {
             return "♦️"
         }
     }
-
+    
 }
 

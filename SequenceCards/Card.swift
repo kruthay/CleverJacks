@@ -13,11 +13,11 @@ struct Card : Identifiable, Equatable, Hashable, CustomStringConvertible, Codabl
     let suit: Suit?
     
     var id = UUID()
-
+    
     var coin: Coin? = nil
     
     var belongsToASequence = false
-
+    
     var description: String {
         return ("\(rank?.symbol ?? "No Rank") : \(suit?.symbol ?? "No Suit")")
     }

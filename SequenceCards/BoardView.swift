@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BoardView: View {
-    var game: SequenceGame
+    @ObservedObject var game: SequenceGame
     var size : CGSize
     let impactHeavy = UIImpactFeedbackGenerator(style: .heavy)
     var body: some View {
@@ -17,10 +17,10 @@ struct BoardView: View {
                 GridRow {
                     ForEach(boardRow) { card in
                         BoardCardView(game: game, card: card, size: size)
-                                    .opacity(card.belongsToASequence ? 0.4 : 1)
-                                    
+                            .opacity(card.belongsToASequence ? 0.4 : 1)
+                        
                     }
-
+                    
                 }
             }
         }
@@ -28,6 +28,16 @@ struct BoardView: View {
     
 }
 
-#Preview {
+
+
+//#Preview {
+//    BoardView(game: SequenceGame(), size: CGSize(width: 30, height: 50))
+//}
+
+struct BoardViewPreviews: PreviewProvider {
+    static var previews: some View {
         BoardView(game: SequenceGame(), size: CGSize(width: 30, height: 50))
+    }
 }
+
+

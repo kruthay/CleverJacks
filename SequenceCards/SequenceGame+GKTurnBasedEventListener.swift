@@ -10,15 +10,12 @@ import Foundation
 @preconcurrency import GameKit
 import SwiftUI
 
-extension SequenceGame {
-//    extension SequenceGame: GKTurnBasedEventListener {
+extension SequenceGame : GKTurnBasedEventListener{
+    //    extension SequenceGame: GKTurnBasedEventListener {
     
     /// Creates a match and presents a matchmaker view controller.
     func player(_ player: GKPlayer, didRequestMatchWithOtherPlayers playersToInvite: [GKPlayer]) {
-        print("\(localParticipant?.player.displayName ?? "NoLocalName"), \(opponent?.player.displayName ?? "NoOpponentName") player(_ player: GKPlayer, didRequestMatchWithOtherPlayers playersToInvite: [GKPlayer]) before StartMatch is it my turn \(myTurn)")
         startMatch(playersToInvite)
-        print("\(localParticipant?.player.displayName ?? "NoLocalName"), \(opponent?.player.displayName ?? "NoOpponentName") player(_ player: GKPlayer, didRequestMatchWithOtherPlayers playersToInvite: [GKPlayer]) after StartMatch is it my turn \(myTurn)")
-        
     }
     
     /// Handles multiple turn-based events during a match.
@@ -28,8 +25,7 @@ extension SequenceGame {
         // 2. GameKit passes the turn to the local player.
         // 3. The local player opens an existing or completed match.
         // 4. Another player forfeits the match.
-        print("\(localParticipant?.player.displayName ?? "NoLocalName"), \(opponent?.player.displayName ?? "NoOpponentName") player(_ player: GKPlayer, receivedTurnEventFor match: GKTurnBasedMatch, didBecomeActive: Bool) beginning")
-       
+        
         switch match.status {
         case .open:
             Task {
@@ -40,7 +36,7 @@ extension SequenceGame {
                     let nextParticipants = match.participants.filter {
                         $0.status != .done
                     }
-
+                    
                     // End the match if active participants drop below the minimum.
                     if nextParticipants.count < minPlayers {
                         // Set the match outcomes for the active participants.
@@ -58,20 +54,16 @@ extension SequenceGame {
                         // If the local player isn't playing another match or is playing this match,
                         // display and update the game view.
                         
-                        print("\(localParticipant?.player.displayName ?? "NoLocalName"), \(opponent?.player.displayName ?? "NoOpponentName") player(_ player: GKPlayer, receivedTurnEventFor match: GKTurnBasedMatch, didBecomeActive: Bool) playing is it my turn \(myTurn)")
-                       
                         // Display the game view for this match.
                         playingGame = true
                         
                         // **** use this to update the view
-                                                
+                        
+                        
                         // Update the interface depending on whether it's the local player's turn.
                         myTurn = GKLocalPlayer.local == match.currentParticipant?.player ? true : false
+
                         
-                        print("\(localParticipant?.player.displayName ?? "NoLocalName"), \(opponent?.player.displayName ?? "NoOpponentName") player(_ player: GKPlayer, receivedTurnEventFor match: GKTurnBasedMatch, didBecomeActive: Bool) playing is it my turn \(myTurn)")
-                        print(match.currentParticipant?.player?.displayName ?? "NIL" )
-                        
-        
                         // Remove the local player from the participants to find the opponent.
                         let participants = match.participants.filter {
                             self.localParticipant?.player.displayName != $0.player?.displayName
@@ -97,46 +89,43 @@ extension SequenceGame {
                                 opponent = Participant(player: (participant?.player)!,
                                                        avatar: Image(uiImage: image!))
                                 
-                                print("\(localParticipant?.player.displayName ?? "NoLocalName"), \(opponent?.player.displayName ?? "NoOpponentName") player(_ player: GKPlayer, receivedTurnEventFor match: GKTurnBasedMatch, didBecomeActive: Bool) playing IN THE OPPONENT IF LOOP is it my turn \(myTurn)")
-                                
                             }
                             
                             // Restore the current game data from the match object.
                             decodeGameData(matchData: match.matchData!)
-                            print(cardCurrentlyPlayed ?? "Nil")
                             
                             if localParticipant?.coin == nil && localParticipant?.cardsOnHand == [] {
                                 localParticipant?.coin = board?.uniqueCoin() ?? .special
-                                print("Coin Assigned to the invitee")
                                 localParticipant?.cardsOnHand = board?.dealCards(noOfCardsToDeal: self.noOfCardsToDeal) ?? []
                             }
-
                             
+                            if nextParticipants.filter({ $0.matchOutcome == .won }).count > 0 {
+                                youLost = true
+                                try await match.participantQuitInTurn(with: GKTurnBasedMatch.Outcome.lost, nextParticipants: nextParticipants, turnTimeout: GKTurnTimeoutDefault, match: (encodeGameData() ?? match.matchData)!)
+                            }
+                        
                             
-                            print("This happend after")
-                            print("\(localParticipant?.player.displayName ?? "NoLocalName"), \(opponent?.player.displayName ?? "NoOpponentName") player(_ player: GKPlayer, receivedTurnEventFor match: GKTurnBasedMatch, didBecomeActive: Bool) playing IN THE IF LOOP is it my turn \(myTurn)")
-                                                        
                         }
                         
                         // Display the match message.
                         matchMessage = match.message
-        
+                        
                         // Retain the match ID so action methods can load the current match object later.
                         currentMatchID = match.matchID
                     }
-                                                            
+                    
                 } catch {
                     // Handle the error.
                     print("Error: \(error.localizedDescription).")
                 }
             }
-        
+            
         case .ended:
             print("Match ended.")
-
+            
         case .matching:
             print("Still finding players.")
-
+            
         default:
             print("Status unknown.")
         }
@@ -158,13 +147,13 @@ extension SequenceGame {
     func player(_ player: GKPlayer, matchEnded match: GKTurnBasedMatch) {
         // Notify the local participant when the match ends.
         youLost = true
-//        GKNotificationBanner.show(withTitle: "Match Ended Title",
-//                                  message: "This is a GKNotificationBanner message.", completionHandler: nil)
-//
-//        // Check whether the local player is playing the match that ends before returning to the content view.
-//        if currentMatchID == match.matchID {
-//            resetGame()
-//        }
+        //        GKNotificationBanner.show(withTitle: "Match Ended Title",
+        //                                  message: "This is a GKNotificationBanner message.", completionHandler: nil)
+        //
+        //        // Check whether the local player is playing the match that ends before returning to the content view.
+        //        if currentMatchID == match.matchID {
+        //            resetGame()
+        //        }
     }
     
     // MARK: GKTurnBasedEventListener Exchange Methods
@@ -214,7 +203,7 @@ extension SequenceGame {
         // GameKit sends this message to both the current participant and the sender of the exchange request.
         saveExchanges(for: match)
     }
-
+    
     /// Exchanges the items and removes completed exchanges from the match object.
     /// - Tag:saveExchanges
     func saveExchanges(for match: GKTurnBasedMatch) {
@@ -224,23 +213,10 @@ extension SequenceGame {
         // Save all the completed exchanges.
         if let completedExchanges = match.completedExchanges {
             
-            for exchange in completedExchanges where exchange.message == "This is my exchange item request."{
-                // For all exchange item requests, transfer an item from the recipient to the sender.
-                if exchange.sender.player == localParticipant?.player {
-                    // Transfer an item from the opponent to the local player.
-                    opponent?.items -= 1
-                    localParticipant?.items += 1
-                } else {
-                    // Transfer an item from the local player to the opponent.
-                    localParticipant?.items -= 1
-                    opponent?.items += 1
-                }
-                // For text message exchange requests, do nothing.
-            }
- 
+            
             // Resolve the game data to pass to all participants.
             let gameData = (encodeGameData() ?? match.matchData)!
-
+            
             // Save and forward the game data with the latest items.
             Task {
                 try await match.saveMergedMatch(gameData, withResolvedExchanges: completedExchanges)

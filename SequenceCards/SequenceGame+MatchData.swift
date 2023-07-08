@@ -25,7 +25,6 @@ struct Participant: Identifiable {
     var id = UUID()
     var player: GKPlayer
     var avatar = Image(systemName: "person")
-    var items = 50
     var cardsOnHand : [Card] = []
     var coin : Coin? = nil
     var noOfSequences = 0
@@ -33,8 +32,6 @@ struct Participant: Identifiable {
 
 // Codable game data for sending to players.
 struct GameData: Codable {
-    var count: Int
-    var items: [String: Int]
     var board: Board?
     var cardCurrentlyPlayed : Card?
     var coins: [String: Coin]
@@ -52,29 +49,26 @@ extension SequenceGame {
     /// - Returns: A representation of game data that contains only the game scores.
     func encodeGameData() -> Data? {
         // Create a dictionary of items for each player.
-        var items = [String: Int]()
         var coins = [String: Coin]()
         var cardsOnHands = [String : [Card]]()
         var noOfSequences = [String : Int]()
         // Add the local player's items.
         if let localPlayerName = localParticipant?.player.displayName {
-            items[localPlayerName] = localParticipant?.items
-            coins[localPlayerName] = localParticipant?.coin
             cardsOnHands[localPlayerName] = localParticipant?.cardsOnHand
             noOfSequences[localPlayerName] = localParticipant?.noOfSequences
+            coins[localPlayerName] = localParticipant?.coin
         }
         
         // Add the opponent's items.
         if let opponentPlayerName = opponent?.player.displayName {
-            items[opponentPlayerName] = opponent?.items
-            coins[opponentPlayerName] = opponent?.coin
             cardsOnHands[opponentPlayerName] = opponent?.cardsOnHand
             noOfSequences[opponentPlayerName] = opponent?.noOfSequences
+            coins[opponentPlayerName] = opponent?.coin
         }
         
         
         
-        let gameData = GameData(count: count, items: items, board: board , cardCurrentlyPlayed: cardCurrentlyPlayed, coins: coins, cardsOnHands: cardsOnHands, noOfSequences: noOfSequences)
+        let gameData = GameData(board: board , cardCurrentlyPlayed: cardCurrentlyPlayed, coins: coins, cardsOnHands: cardsOnHands, noOfSequences: noOfSequences)
         return encode(gameData: gameData)
     }
     
@@ -100,25 +94,18 @@ extension SequenceGame {
     func decodeGameData(matchData: Data) {
         let gameData = try? PropertyListDecoder().decode(GameData.self, from: matchData)
         guard let gameData = gameData else { return }
-
-        // Set the match count.
-        count = gameData.count
         
+        // Set the match count.
         
         cardCurrentlyPlayed = gameData.cardCurrentlyPlayed
         // update the current board,
         board = gameData.board
-        
-        
 
-        
         //  we don't need items for now.
-
+        
         // Set the local player's items.
         if let localPlayerName = localParticipant?.player.displayName {
-            if let items = gameData.items[localPlayerName] {
-                localParticipant?.items = items
-            }
+            
             if let coin = gameData.coins[localPlayerName] {
                 localParticipant?.coin = coin
             }
@@ -129,12 +116,10 @@ extension SequenceGame {
                 localParticipant?.noOfSequences = noOfSequences
             }
         }
-
+        
         // Set the opponent's items.
         if let opponentPlayerName = opponent?.player.displayName {
-            if let items = gameData.items[opponentPlayerName] {
-                opponent?.items = items
-            }
+            
             if let coin = gameData.coins[opponentPlayerName] {
                 opponent?.coin = coin
             }

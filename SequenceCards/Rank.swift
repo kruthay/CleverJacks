@@ -7,10 +7,10 @@
 
 import Foundation
 
-enum Rank : CaseIterable, Codable {
-    case two , three, four, five, six, seven, eight, nine, ten
-    case jack , queen, king
-    case ace
+enum Rank :  Int, CaseIterable, Codable {
+    case two = 2 , three, four, five, six, seven, eight, nine, ten
+    case jack = 11, queen, king
+    case ace = 14
     var symbol: String {
         switch self {
         case .two:

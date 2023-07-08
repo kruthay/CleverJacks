@@ -6,14 +6,14 @@
 //
 
 import SwiftUI
-    
+
 struct CardView: View {
     let card: Card
     let size: CGSize
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 4)
-                .strokeBorder(style: StrokeStyle(lineWidth: 1.5))
+                .strokeBorder(style: StrokeStyle(lineWidth: size.width/20))
             if let rank = card.rank, let suit = card.suit {
                 VStack{
                     HStack {
@@ -21,7 +21,22 @@ struct CardView: View {
                             .font(.system(size:size.height/3.5))
                         Spacer()
                     }
-                    Spacer()
+                    
+                    if rank == .jack {
+                        if suit == .clubs || suit == .spades {
+                            Text(Image(systemName:"eyebrow"))
+                                .font(.system(size:size.height/5.5))
+                                
+                                
+                        }
+                        else {
+                            Text(Image(systemName: "eyes"))
+                                .font(.system(size:size.height/5.5))
+                        }
+                    }
+                    else {
+                        Spacer()
+                    }
                     HStack {
                         Spacer()
                         Text(suit.symbol)
@@ -36,7 +51,7 @@ struct CardView: View {
         }
         .aspectRatio(0.65, contentMode: .fit)
         .frame(width: size.width, height: size.height, alignment: .center)
-
+        
         .opacity(isItAnEmpty(card: card) ? 0 : 1 )
     }
     
@@ -45,12 +60,13 @@ struct CardView: View {
     }
 }
 
-#Preview {
-                                CardView(card: Card(rank: .jack, suit: .clubs), size:CGSize(width: 30, height: 50))
-}
+//#Preview {
+//    CardView(card: Card(rank: .jack, suit: .hearts), size:CGSize(width: 30, height: 50))
+//}
 
-//    struct CardViewPreviews: PreviewProvider {
-//        static var previews: some View {
-//            CardView(card: Card(rank: .jack, suit: .clubs))
-//        }
-//    }
+    struct CardViewPreviews: PreviewProvider {
+        static var previews: some View {
+            CardView(card: Card(rank: .jack, suit: .hearts), size:CGSize(width: 30, height: 50))
+        }
+    }
+
