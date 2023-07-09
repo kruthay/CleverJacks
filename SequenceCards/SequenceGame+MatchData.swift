@@ -13,12 +13,12 @@ import SwiftUI
 // MARK: Game Data Objects
 
 // A message that one player sends to another.
-struct Message: Identifiable {
-    var id = UUID()
-    var content: String
-    var playerName: String
-    var isLocalPlayer: Bool = false
-}
+//struct Message: Identifiable {
+//    var id = UUID()
+//    var content: String
+//    var playerName: String
+//    var isLocalPlayer: Bool = false
+//}
 
 // A participant object with their items.
 struct Participant: Identifiable {
@@ -28,15 +28,20 @@ struct Participant: Identifiable {
     var cardsOnHand : [Card] = []
     var coin : Coin? = nil
     var noOfSequences = 0
+    var turns = 0
 }
 
 // Codable game data for sending to players.
-struct GameData: Codable {
+struct GameData: Codable, CustomStringConvertible {
     var board: Board?
     var cardCurrentlyPlayed : Card?
     var coins: [String: Coin]
     var cardsOnHands : [String : [Card]]
     var noOfSequences: [String: Int]
+    var totalTurns : [String: Int]
+    var description: String {
+        return "Coins : \(coins) Board : \(String(describing: board)) totalTurns \(totalTurns)"
+    }
     // board ( may be cardstack inside the board )
 }
 
@@ -52,23 +57,59 @@ extension SequenceGame {
         var coins = [String: Coin]()
         var cardsOnHands = [String : [Card]]()
         var noOfSequences = [String : Int]()
+        var totalTurns = [String: Int]()
         // Add the local player's items.
         if let localPlayerName = localParticipant?.player.displayName {
-            cardsOnHands[localPlayerName] = localParticipant?.cardsOnHand
-            noOfSequences[localPlayerName] = localParticipant?.noOfSequences
-            coins[localPlayerName] = localParticipant?.coin
+            if let cardsOnHand = localParticipant?.cardsOnHand {
+                cardsOnHands[localPlayerName] = cardsOnHand
+            }
+            if let noOfSequence = localParticipant?.noOfSequences {
+                noOfSequences[localPlayerName] = noOfSequence
+            }
+            if let coin = localParticipant?.coin {
+                coins[localPlayerName] = coin
+            }
+            if let turns = localParticipant?.turns {
+                totalTurns[localPlayerName] = turns
+            }
         }
         
         // Add the opponent's items.
+        
+        // Saving for persistance purposes, some values are not decoded
         if let opponentPlayerName = opponent?.player.displayName {
-            cardsOnHands[opponentPlayerName] = opponent?.cardsOnHand
-            noOfSequences[opponentPlayerName] = opponent?.noOfSequences
-            coins[opponentPlayerName] = opponent?.coin
+            if let cardsOnHand = opponent?.cardsOnHand {
+                cardsOnHands[opponentPlayerName] = cardsOnHand
+            }
+            if let coin = opponent?.coin {
+                coins[opponentPlayerName] = coin
+            }
+            if let noOfSequence = opponent?.noOfSequences {
+                noOfSequences[opponentPlayerName] = noOfSequence
+            }
+            if let turns = opponent?.turns {
+                totalTurns[opponentPlayerName] = turns
+            }
+        }
+        
+        if let opponent2PlayerName = opponent2?.player.displayName {
+            
+            if let cardsOnHand = opponent2?.cardsOnHand {
+                cardsOnHands[opponent2PlayerName] = cardsOnHand
+            }
+            if let coin = opponent2?.coin {
+                coins[opponent2PlayerName] = coin
+            }
+            if let noOfSequence = opponent2?.noOfSequences {
+                noOfSequences[opponent2PlayerName] = noOfSequence
+            }
+            if let turns = opponent2?.turns {
+                totalTurns[opponent2PlayerName] = turns
+            }
         }
         
         
-        
-        let gameData = GameData(board: board , cardCurrentlyPlayed: cardCurrentlyPlayed, coins: coins, cardsOnHands: cardsOnHands, noOfSequences: noOfSequences)
+        let gameData = GameData(board: board , cardCurrentlyPlayed: cardCurrentlyPlayed, coins: coins, cardsOnHands: cardsOnHands, noOfSequences: noOfSequences, totalTurns: totalTurns)
         return encode(gameData: gameData)
     }
     
@@ -88,6 +129,14 @@ extension SequenceGame {
         }
     }
     
+    func decode(matchData: Data) -> GameData? {
+        let gameData = try? PropertyListDecoder().decode(GameData.self, from: matchData)
+        if let gameData = gameData {
+            return gameData
+        }
+        return nil
+    }
+    
     /// Decodes a data representation of game data and updates the scores.
     ///
     /// - Parameter matchData: A data representation of the game data.
@@ -100,6 +149,7 @@ extension SequenceGame {
         cardCurrentlyPlayed = gameData.cardCurrentlyPlayed
         // update the current board,
         board = gameData.board
+        
 
         //  we don't need items for now.
         
@@ -115,6 +165,10 @@ extension SequenceGame {
             if let noOfSequences = gameData.noOfSequences[localPlayerName]{
                 localParticipant?.noOfSequences = noOfSequences
             }
+            if let turns = gameData.totalTurns[localPlayerName]{
+                localParticipant?.turns = turns
+            }
+            
         }
         
         // Set the opponent's items.
@@ -128,6 +182,26 @@ extension SequenceGame {
             }
             if let noOfSequences = gameData.noOfSequences[opponentPlayerName]{
                 opponent?.noOfSequences = noOfSequences
+            }
+            if let turns = gameData.totalTurns[opponentPlayerName]{
+                opponent?.turns = turns
+            }
+        }
+        
+        
+        if let opponent2PlayerName = opponent2?.player.displayName {
+            
+            if let coin = gameData.coins[opponent2PlayerName] {
+                opponent2?.coin = coin
+            }
+            if let cardsOnHand = gameData.cardsOnHands[opponent2PlayerName]{
+                opponent2?.cardsOnHand = cardsOnHand
+            }
+            if let noOfSequences = gameData.noOfSequences[opponent2PlayerName]{
+                opponent2?.noOfSequences = noOfSequences
+            }
+            if let turns = gameData.totalTurns[opponent2PlayerName]{
+                opponent2?.turns = turns
             }
         }
     }

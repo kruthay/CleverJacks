@@ -33,13 +33,16 @@ import SwiftUI
     // The persistent game data.
     @Published var localParticipant: Participant? = nil
     @Published var opponent: Participant? = nil
+    @Published var opponent2: Participant? = nil
+    
     @Published var count = 0
     @Published var noOfCardsToDeal = 6
     // The messages between players.
-    var messages: [Message] = []
+//    var messages: [Message] = []
     @Published var matchMessage: String? = nil
     
     @Published var board : Board? = nil
+    @Published var classicView: Bool = true
     
     @Published var cardCurrentlyPlayed : Card? = nil
     
@@ -54,6 +57,10 @@ import SwiftUI
         opponent?.player.displayName ?? "Opponent"
     }
     
+    var opponent2Name : String {
+        opponent2?.player.displayName ?? "Opponent2"
+    }
+    
     /// The local player's avatar image.
     var myAvatar: Image {
         localParticipant?.avatar ?? Image(systemName: "person.crop.circle")
@@ -62,6 +69,10 @@ import SwiftUI
     /// The opponent's avatar image.
     var opponentAvatar: Image {
         opponent?.avatar ?? Image(systemName: "person.crop.circle")
+    }
+    
+    var opponent2Avatar: Image {
+        opponent2?.avatar ?? Image(systemName: "person.crop.circle")
     }
     
 
@@ -75,6 +86,12 @@ import SwiftUI
         set { opponent?.noOfSequences = newValue }
     }
     
+    var opponent2NoOfSequences : Int {
+        get { opponent2?.noOfSequences ?? 0 }
+        set { opponent2?.noOfSequences = newValue }
+    }
+    
+    
     var myCards : [Card] {
         get { localParticipant?.cardsOnHand ?? [] }
         set { localParticipant?.cardsOnHand = newValue }
@@ -85,9 +102,30 @@ import SwiftUI
         set { localParticipant?.coin = newValue }
     }
     var opponentCoin : Coin? {
-        get { opponent?.coin ?? .special }
+        get { opponent?.coin }
         set { opponent?.coin = newValue }
     }
+    
+    var opponent2Coin : Coin? {
+        get { opponent2?.coin }
+        set { opponent2?.coin = newValue }
+    }
+    
+    var myTurns : Int {
+        get { localParticipant?.turns ?? 0 }
+        set { localParticipant?.turns = newValue }
+    }
+    
+    var opponentTurns : Int {
+        get { opponent?.turns ?? 0 }
+        set { opponent?.turns = newValue }
+    }
+    
+    var opponent2Turns : Int {
+        get { opponent2?.turns ?? 0 }
+        set { opponent2?.turns = newValue }
+    }
+    
         
     /// The root view controller of the window.
     var rootViewController: UIViewController? {
@@ -99,10 +137,12 @@ import SwiftUI
     func selectACard(_ card: Card) -> Int { // Refactor
         print("Local Player \(localParticipant?.player.displayName ?? "SomeName")")
         print("Opponent Player \(opponent?.player.displayName ?? "SomeOtherName")")
-        
+//        print("Opponent2 Player \(opponent2?.player.displayName ?? "SomeOtherOtherName")")
+//        
         print("localParticipant' coin \(localParticipant?.coin ?? .special) ")
         print("Opponents' coin \(opponent?.coin ?? .special) ")
-        if card.belongsToASequence || card.coin == .special {
+//        print("Opponents2' coin \(opponent2?.coin ?? .special) ")
+        if card.belongsToASequence || card.coin == .special || localParticipant?.coin == .special {
             print("Something is Wrong, Coin shouldn't be Special")
             return 0
             // throws an error saying card is already a part of sequence can't change it
@@ -114,21 +154,8 @@ import SwiftUI
             // throws an alert saying select a card
         }
         
-        if card.coin == nil {
-            if myTurn {
-                board?.boardCards[index.0][index.1].coin = localParticipant?.coin
-                
-            }// redo
-            else {
-                board?.boardCards[index.0][index.1].coin = opponent?.coin
-            }
-        }
-        
-        else if card.coin == opponent?.coin {
-            board?.boardCards[index.0][index.1].coin = nil
-            
-        }
-        else {
+        if !myCards.contains(selectingCard) {
+            print("Something is Wrong")
             return 0
         }
         
@@ -138,11 +165,46 @@ import SwiftUI
                 localParticipant?.cardsOnHand.append(card)
             }
         }
-        cardCurrentlyPlayed = selectingCard
-        localParticipant?.noOfSequences += board?.getNumberOfSequences(index: index) ?? 0
-        if localParticipant?.noOfSequences == 2 {
-            youWon = true
+        else {
+            return 0
         }
+        
+        if card.coin == nil {
+            if myTurn {
+                board?.boardCards[index.0][index.1].coin = localParticipant?.coin
+            }// redo
+            else {
+                if localParticipant?.coin == .special {
+                    print("Local Participant coin cannot be special")
+                }
+                print("Error")
+            }
+        }
+        
+        else if card.coin == opponent?.coin || card.coin == opponent2?.coin {
+            if myTurn {
+                board?.boardCards[index.0][index.1].coin = nil
+            }
+            else {
+                print("Error")
+            }
+            
+        }
+        else {
+            return 0
+        }
+        
+        
+        cardCurrentlyPlayed = selectingCard
+        if let numberOfSequences = board?.getNumberOfSequences(index: index) {
+            localParticipant?.noOfSequences +=  numberOfSequences
+        }
+        if let requiredNoOfSequences = board?.requiredNoOfSequences {
+            if localParticipant?.noOfSequences == requiredNoOfSequences {
+                youWon = true
+            }
+        }
+        
         Task {
             await takeTurn()
         }
@@ -207,7 +269,10 @@ import SwiftUI
         playingGame = false
         myTurn = false
         currentMatchID = nil
+        inSelectionCard = nil
+        cardCurrentlyPlayed = nil
         opponent = nil
+        opponent2 = nil
         count = 0
         board = nil
         cardCurrentlyPlayed = nil
@@ -215,8 +280,15 @@ import SwiftUI
         youLost = false
         myCoin = nil
         opponentCoin = nil
+        opponent2Coin = nil
         myCards = []
         myNoOfSequences = 0
+        opponentNoOfSequences = 0
+        opponent2NoOfSequences = 0
+        myTurns = 0
+        opponentTurns = 0
+        opponent2Turns = 0
+        minPlayers = 2
     }
     
     /// Authenticates the local player and registers for turn-based events.
@@ -271,21 +343,28 @@ import SwiftUI
         // Initialize the match data.
         count = 0
         print("StartMatch is Called.")
-        board = Board()
+        board = Board(classicView: classicView, numberOfPlayers: minPlayers)
         
         // Create a match request.
-        // may not require a seed if we send in the entire board.
         // add all the necessary functions somewhere here
         let request = GKMatchRequest()
         request.minPlayers = minPlayers
-        request.maxPlayers = maxPlayers
+        request.maxPlayers = minPlayers
+        
+        /// MAJOR CHECK UP CHANGED MINPLAYERS
+        ///
+        ///
+        ///
         if playersToInvite != nil {
             request.recipients = playersToInvite
         }
         
+//        print("No Of Players \(minPlayers)")
         // Present the interface where the player selects opponents and starts the game.
         let viewController = GKTurnBasedMatchmakerViewController(matchRequest: request)
+        
         viewController.turnBasedMatchmakerDelegate = self
+        
         rootViewController?.present(viewController, animated: true) { }
     }
     
@@ -325,6 +404,8 @@ import SwiftUI
                 $0.status != .done
             }
             
+            print("Active Participants \(activeParticipants.count)")
+            
             // End the match if the active participants drop below the minimum. Only the current
             // participant can end a match, so check for this condition in this method when it
             // becomes the local player's turn.
@@ -345,6 +426,8 @@ import SwiftUI
                 // Update the game data.
                 count += 1
                 
+                myTurns += 1
+                
                 // *** UPDATE THE BOARD ****
                 // Create the game data to store in Game Center.
                 let gameData = (encodeGameData() ?? match.matchData)!
@@ -360,19 +443,37 @@ import SwiftUI
 
                 }
                 
-                for participant in activeParticipants {
-                    print("Name \(String(describing: participant.player?.displayName))")
-                    print("Outcome \(participant.matchOutcome)")
-                    print("Status \(participant.status)")
-                }
+//                for participant in activeParticipants {
+//                    print("ActiveName \(String(describing: participant.player?.displayName))")
+//                    print("ActiveOutcome \(participant.matchOutcome)")
+//                    print("ActiveStatus \(participant.status)")
+//                }
                 
                 
                 
-                // Remove the current participant from the match participants.
-                let nextParticipants = activeParticipants.filter {
+                // Remove the current participant from the matech participants.
+                var nextParticipants = activeParticipants.filter {
                     $0 != match.currentParticipant
                 }
                 
+                nextParticipants.sort() {
+                    
+                    if $0.status.rawValue < $1.status.rawValue {
+                        return true
+                    }
+                    else if $0.lastTurnDate ?? Date(timeIntervalSinceNow: TimeInterval()) <  $1.lastTurnDate ?? Date(timeIntervalSince1970: TimeInterval()) {
+                        return true
+                    }
+                    return false
+                }
+                
+//                for nextParticipant in nextParticipants {
+//                    print("NextName \(String(describing: nextParticipant.player?.displayName))")
+//                    print("NextOutcome \(nextParticipant.matchOutcome)")
+//                    print("NextStatus \(nextParticipant.status)")
+//                }
+                
+
 
                 
                 
@@ -470,37 +571,37 @@ import SwiftUI
     ///
     /// - Parameter content: The message to send to the other player.
     /// - Tag:sendMessage
-    func sendMessage(content: String) async {
-        // Check whether there's an ongoing match.
-        guard currentMatchID != nil else { return }
-        
-        // Create a message instance to display in the message view.
-        let message = Message(content: content, playerName: GKLocalPlayer.local.displayName,
-                              isLocalPlayer: true)
-        messages.append(message)
-        
-        do {
-            // Create the exchange data.
-            guard let data = content.data(using: .utf8) else { return }
-            
-            // Load the most recent match object from the match ID.
-            let match = try await GKTurnBasedMatch.load(withID: currentMatchID!)
-            
-            // Remove the local player (the sender) from the recipients;
-            // otherwise, GameKit doesn't send the exchange request.
-            let participants = match.participants.filter {
-                localParticipant?.player.displayName != $0.player?.displayName
-            }
-            
-            // Send the exchange request with the message.
-            try await match.sendExchange(to: participants, data: data,
-                                         localizableMessageKey: "This is my text message.",
-                                         arguments: [], timeout: GKTurnTimeoutDefault)
-        } catch {
-            print("Error: \(error.localizedDescription).")
-            return
-        }
-    }
+//    func sendMessage(content: String) async {
+//        // Check whether there's an ongoing match.
+//        guard currentMatchID != nil else { return }
+//        
+//        // Create a message instance to display in the message view.
+//        let message = Message(content: content, playerName: GKLocalPlayer.local.displayName,
+//                              isLocalPlayer: true)
+//        messages.append(message)
+//        
+//        do {
+//            // Create the exchange data.
+//            guard let data = content.data(using: .utf8) else { return }
+//            
+//            // Load the most recent match object from the match ID.
+//            let match = try await GKTurnBasedMatch.load(withID: currentMatchID!)
+//            
+//            // Remove the local player (the sender) from the recipients;
+//            // otherwise, GameKit doesn't send the exchange request.
+//            let participants = match.participants.filter {
+//                localParticipant?.player.displayName != $0.player?.displayName
+//            }
+//            
+//            // Send the exchange request with the message.
+//            try await match.sendExchange(to: participants, data: data,
+//                                         localizableMessageKey: "This is my text message.",
+//                                         arguments: [], timeout: GKTurnTimeoutDefault)
+//        } catch {
+//            print("Error: \(error.localizedDescription).")
+//            return
+//        }
+//    }
     
     /// Exchange an item.
     func exchangeItem() async {

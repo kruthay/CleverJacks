@@ -13,7 +13,7 @@ struct BoardView: View {
     let impactHeavy = UIImpactFeedbackGenerator(style: .heavy)
     var body: some View {
         Grid{
-            ForEach(game.board?.boardCards ?? Board().boardCards, id: \.self){ boardRow in
+            ForEach(game.board?.boardCards ?? Board(classicView: true, numberOfPlayers: 2).boardCards, id: \.self){ boardRow in
                 GridRow {
                     ForEach(boardRow) { card in
                         BoardCardView(game: game, card: card, size: size)

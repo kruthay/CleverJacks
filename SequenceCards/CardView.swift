@@ -30,8 +30,12 @@ struct CardView: View {
                                 
                         }
                         else {
-                            Text(Image(systemName: "eyes"))
-                                .font(.system(size:size.height/5.5))
+                            HStack{
+                                Text(Image(systemName:"eyebrow"))
+                                Text(Image(systemName:"eyebrow"))
+                                
+                            }
+                            .font(.system(size:size.height/7))
                         }
                     }
                     else {

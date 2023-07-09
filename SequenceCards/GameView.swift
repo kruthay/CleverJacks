@@ -8,20 +8,9 @@
 import SwiftUI
 
 struct GameView: View {
-    @Environment(\.presentationMode) var presentationMode
+    
     @ObservedObject var game: SequenceGame
-    @State private var showMessages: Bool = false
-    
-    //    @GestureState private var magnifyBy = 1.0
-    //
-    //    var magnification: some Gesture {
-    //        MagnifyGesture()
-    //            .updating($magnifyBy) { value, gestureState, transaction in
-    //                gestureState = value.magnification
-    //            }
-    //    }
 
-    
     var body: some View {
         VStack {
             HStack {
@@ -55,15 +44,17 @@ struct GameView: View {
                         .frame(width: 25.0, height: 25)
                         .clipShape(Circle())
                         .wiggling(toWiggle: game.myTurn)
-                    Text(game.myName == "" ? "SomeName" : game.myName)
-                        .lineLimit(2)
-                        .font(.caption)
+                    if game.board?.numberOfPlayers == 2 {
+                        Text(game.myName == "" ? "SomeName" : game.myName)
+                            .lineLimit(2)
+                            .font(.caption)
+                    }
                     Text(String(game.myNoOfSequences))
                 }
                 .padding(4.5)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)
-                        .stroke(.blue, lineWidth: 2)
+                        .stroke(game.myCoin?.color ?? .blue, lineWidth: 2)
                 )
                 .opacity(game.myTurn ? 1 : 0.5)
                 Spacer()
@@ -72,21 +63,37 @@ struct GameView: View {
                         .resizable()
                         .frame(width: 25, height: 25)
                         .clipShape(Circle())
-                        .wiggling(toWiggle: !game.myTurn)
-                    
-                    Text(game.opponentName)
-                        .lineLimit(2)
-                        .font(.caption)
+                    if game.board?.numberOfPlayers == 2 {
+                        Text(game.opponentName)
+                            .lineLimit(2)
+                            .font(.caption)
+                    }
                     Text(String(game.opponentNoOfSequences))
                 }
                 .padding(4.5)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)
-                        .stroke(.blue, lineWidth: 2)
+                        .stroke(game.opponentCoin?.color ?? .green, lineWidth: 2)
                 )
                 .opacity(game.myTurn ? 0.5 : 1)
                 Spacer()
-                
+                if game.board?.numberOfPlayers ?? 0 > 2 {
+                    HStack {
+                        game.opponent2Avatar
+                            .resizable()
+                            .frame(width: 25, height: 25)
+                            .clipShape(Circle())
+                        Text(String(game.opponent2NoOfSequences))
+                    }
+                    .padding(4.5)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(game.opponent2Coin?.color ?? .red, lineWidth: 2)
+                    )
+                    .opacity(game.myTurn ? 0.5 : 1)
+                    Spacer()
+                    
+                }
             }
             Divider()
             GeometryReader {
@@ -103,11 +110,11 @@ struct GameView: View {
                                 CardView(card: Card(), size:CGSize(width: proxy.size.height/20, height: proxy.size.width/30))
                             }
                         }
-                        .zIndex(3)
-                        .opacity(0.6)
+                        .opacity(game.inSelectionCard != nil ? 1 : 0.6)
                         
 
                         PlayerCardsView(game: game, size : CGSize(width: proxy.size.height/12.5, height: proxy.size.width/20), horizontalView: true)
+                            .disabled(game.youWon)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
@@ -132,6 +139,11 @@ struct GameView: View {
             }
         }
         .padding()
+//        .onAppear {
+//            Task {
+//             await game.refresh()
+//            }
+//        }
         .alert("Game Over", isPresented: $game.youWon, actions: {
             Button("OK", role: .cancel) {
                 game.resetGame()
@@ -153,17 +165,6 @@ struct GameView: View {
     
 }
 
-
-struct MessageButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        HStack {
-            Image(systemName: configuration.isPressed ? "bubble.left.fill" : "bubble.left")
-                .imageScale(.medium)
-            Text("Text Chat")
-        }
-        .foregroundColor(Color.blue)
-    }
-}
 
 struct GameViewPreviews: PreviewProvider {
     static var previews: some View {

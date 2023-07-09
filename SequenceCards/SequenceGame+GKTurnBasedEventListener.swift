@@ -29,6 +29,7 @@ extension SequenceGame : GKTurnBasedEventListener{
         switch match.status {
         case .open:
             Task {
+                
                 do {
                     // If the match is open, first check whether game play should continue.
                     
@@ -40,6 +41,8 @@ extension SequenceGame : GKTurnBasedEventListener{
                     // End the match if active participants drop below the minimum.
                     if nextParticipants.count < minPlayers {
                         // Set the match outcomes for the active participants.
+                        
+                        print("Okay this is the reason we lost \(minPlayers)")
                         for participant in nextParticipants {
                             participant.matchOutcome = .won
                         }
@@ -59,10 +62,10 @@ extension SequenceGame : GKTurnBasedEventListener{
                         
                         // **** use this to update the view
                         
-                        
+                        print(decode(matchData: match.matchData!) ?? "default Nil value")
                         // Update the interface depending on whether it's the local player's turn.
                         myTurn = GKLocalPlayer.local == match.currentParticipant?.player ? true : false
-
+                        
                         
                         // Remove the local player from the participants to find the opponent.
                         let participants = match.participants.filter {
@@ -72,40 +75,80 @@ extension SequenceGame : GKTurnBasedEventListener{
                         // If the player starts the match, the opponent hasn't accepted the invitation and has no player object.
                         let participant = participants.first
                         
-                        // If participant is nil, then it's first time
+                     //  When the Local player is the invitee, participants would be empty and it's time to initialise the local player's coin. 
+                        
                         if participant == nil || participant?.status == .matching || participant?.player == nil  {
+                            
                             if localParticipant?.coin == nil {
-                                localParticipant?.coin = board?.uniqueCoin() ?? .special
+                                if let coin =  board?.uniqueCoin()  {
+                                    localParticipant?.coin = coin
+                                    print("Happened before Decode, local Participant \(coin)")
+                                }
                             }
                             if localParticipant?.cardsOnHand == [] {
-                                localParticipant?.cardsOnHand = board?.dealCards(noOfCardsToDeal: self.noOfCardsToDeal) ?? []
+                                if let cards = board?.dealCards(noOfCardsToDeal: self.noOfCardsToDeal) {
+                                    localParticipant?.cardsOnHand =  cards
+                                }
                             }
                         }
-                        if (participant != nil) && (participant?.status != .matching) && (participant?.player != nil) {
-                            if opponent == nil {
-                                
-                                // Load the opponent's avatar and create the opponent object.
-                                let image = try await participant?.player?.loadPhoto(for: GKPlayer.PhotoSize.small)
-                                opponent = Participant(player: (participant?.player)!,
-                                                       avatar: Image(uiImage: image!))
-                                
-                            }
-                            
-                            // Restore the current game data from the match object.
-                            decodeGameData(matchData: match.matchData!)
-                            
-                            if localParticipant?.coin == nil && localParticipant?.cardsOnHand == [] {
-                                localParticipant?.coin = board?.uniqueCoin() ?? .special
-                                localParticipant?.cardsOnHand = board?.dealCards(noOfCardsToDeal: self.noOfCardsToDeal) ?? []
-                            }
-                            
-                            if nextParticipants.filter({ $0.matchOutcome == .won }).count > 0 {
-                                youLost = true
-                                try await match.participantQuitInTurn(with: GKTurnBasedMatch.Outcome.lost, nextParticipants: nextParticipants, turnTimeout: GKTurnTimeoutDefault, match: (encodeGameData() ?? match.matchData)!)
-                            }
                         
+                        else {
+                            for participant in participants {
+                                
+                                // If participant is nil, then it's first time
+                                if participant.status == .matching {
+                                    print("Participant is still in Matching")
+                                }
+                                
+                                if (participant.status != .matching) && (participant.player != nil) {
+                                    
+                                    if opponent == nil {
+                                        
+                                        // Load the opponent's avatar and create the opponent object.
+                                        let image = try await participant.player?.loadPhoto(for: GKPlayer.PhotoSize.small)
+                                        opponent = Participant(player: (participant.player)!,
+                                                               avatar: Image(uiImage: image!))
+                                        
+                                    }
+                                    else if opponent2 == nil && board?.numberOfPlayers ?? 0 > 2 {
+                                        let image = try await participant.player?.loadPhoto(for: GKPlayer.PhotoSize.small)
+                                        opponent2 = Participant(player: (participant.player)!,
+                                                                avatar: Image(uiImage: image!))
+                                    }
+                                }
+                            }
+                        }
+                        
+                        // Restore the current game data from the match object.
+                        // What happens if decoded earlier.. i.e, as soon as possible..
+                        //                            decodeGameData(matchData: match.matchData!)
+                        decodeGameData(matchData: match.matchData!)
+                        
+                        
+                        // When Local Player is invited.
+                        if localParticipant?.coin == nil && localParticipant?.cardsOnHand == [] {
+                            //                            localParticipant?.coin = board?.uniqueCoin() ?? .special
+                            //                            localParticipant?.cardsOnHand = board?.dealCards(noOfCardsToDeal: self.noOfCardsToDeal) ?? []
+                            
+                            if let coin =  board?.uniqueCoin()  {
+                                localParticipant?.coin = coin
+                                print("Happend after decode\(coin)")
+                            }
+                            
+                            
+                            if let cards = board?.dealCards(noOfCardsToDeal: self.noOfCardsToDeal) {
+                                localParticipant?.cardsOnHand =  cards
+                            }
                             
                         }
+                        
+                        if nextParticipants.filter({ $0.matchOutcome == .won }).count > 0 {
+                            youLost = true
+                            try await match.participantQuitInTurn(with: GKTurnBasedMatch.Outcome.lost, nextParticipants: nextParticipants, turnTimeout: GKTurnTimeoutDefault, match: (encodeGameData() ?? match.matchData)!)
+                        }
+                        
+                        
+                        
                         
                         // Display the match message.
                         matchMessage = match.message
@@ -113,6 +156,7 @@ extension SequenceGame : GKTurnBasedEventListener{
                         // Retain the match ID so action methods can load the current match object later.
                         currentMatchID = match.matchID
                     }
+                    
                     
                 } catch {
                     // Handle the error.
@@ -164,9 +208,9 @@ extension SequenceGame : GKTurnBasedEventListener{
         if exchange.data != nil {
             if exchange.message != "This is my exchange item request." {
                 // Unpack the exchange data and display the message in the chat view.
-                let content = String(decoding: exchange.data!, as: UTF8.self)
-                let message = Message(content: content, playerName: exchange.sender.player?.displayName ?? "unknown", isLocalPlayer: false)
-                messages.append(message)
+                //                let content = String(decoding: exchange.data!, as: UTF8.self)
+                //                let message = Message(content: content, playerName: exchange.sender.player?.displayName ?? "unknown", isLocalPlayer: false)
+                //                messages.append(message)
             }
             
             // Reply to the exchange request.

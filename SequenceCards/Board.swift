@@ -9,12 +9,29 @@ import Foundation
 
 import GameplayKit
 
-struct Board : Codable {
+struct Board : Codable, CustomStringConvertible {
+    var description: String {
+        return "allCoins: \(allCoins), countOfCardStack : \(cardStack.count)"
+    }
+    
     var boardCards =  Array(repeating: Array(repeating: Card(), count: 10), count: 10)
     var cardStack : [Card] = []
     var allCoins : [Coin] = Coin.allCases.filter { $0.self != .special}
-    init(classicView : Bool = true) {
+    let numberOfPlayers: Int
+    let requiredNoOfSequences: Int
+    
+    
+    init(classicView : Bool = true, numberOfPlayers : Int) {
+        self.numberOfPlayers = numberOfPlayers
         cardStack = [Deck(), Deck()].map { $0.cards }.reduce([], +).shuffled()
+        
+        if numberOfPlayers % 3 == 0 {
+            requiredNoOfSequences = 1
+        }
+        else {
+            requiredNoOfSequences = 2
+        }
+
         if classicView {
             boardCards[0] = [Card(coin: .special)] + getCardsFromRankToRankSequentially(from: .six, to: .ace, of: .diamonds) + [Card(coin: .special)]
             boardCards[1] =
@@ -92,7 +109,9 @@ struct Board : Codable {
     mutating func uniqueCoin() -> Coin {
         if allCoins.count == 0 {
             print("SomeOne Accessed Count of Coins When 0")
-            return .red
+            allCoins = Coin.allCases.filter { $0.self != .special}
+            
+            return allCoins.removeFirst()
         }
         return allCoins.removeFirst()
     }
