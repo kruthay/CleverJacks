@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct BoardCardView: View {
-    @Environment(\.colorScheme) var colorScheme
     @State private var phase = 0.0
     @ObservedObject var game: SequenceGame
     var card: Card
@@ -16,8 +15,7 @@ struct BoardCardView: View {
     let impactHeavy = UIImpactFeedbackGenerator(style: .heavy)
     var body: some View {
         CardView(card: card, size : size)
-            .blur(radius: colorScheme != .dark || game.inSelectionCard == nil || game.canChooseThisCard(card) ? 0 : 1.2)
-            .brightness(colorScheme == .dark || game.inSelectionCard == nil || game.canChooseThisCard(card) ? 0 : 0.5)
+            .opacity ( game.inSelectionCard == nil || game.canChooseThisCard(card) ? 1 : 0.5)
             .scaleEffect(game.canChooseThisCard(card) ? 1.15 : 1)
             .wiggling(toWiggle: game.canChooseThisCard(card))
             .onTapGesture {

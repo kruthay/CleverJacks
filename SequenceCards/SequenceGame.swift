@@ -11,6 +11,8 @@ import Foundation
 import SwiftUI
 
 
+
+
 /// - Tag:SequenceGame
 @MainActor class SequenceGame: NSObject, GKMatchDelegate, GKLocalPlayerListener, ObservableObject {
     // The game interface state.
@@ -22,8 +24,6 @@ import SwiftUI
     // Outcomes of the game for notifing players.
     @Published var youWon = false
     @Published var youLost = false
-    
-
     
     // The match information.
     @Published var currentMatchID: String? = nil
