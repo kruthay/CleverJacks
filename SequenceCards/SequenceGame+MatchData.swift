@@ -12,6 +12,12 @@ import SwiftUI
 
 // MARK: Game Data Objects
 
+struct Message: Identifiable {
+    var id = UUID()
+    var content: String
+    var playerName: String
+    var isLocalPlayer: Bool = false
+}
 
 // A participant object with their items.
 struct Participant: Identifiable {

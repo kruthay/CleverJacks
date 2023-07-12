@@ -88,7 +88,7 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                             ///   Based on the number of Players, let's say 6 and it's a twoVtwo game, so 3 teams, and hence 3 colors, or if it's threeVthree game, two teams and hence 2 colors, we have to participants and decide how we are going to connect them..
                             ///   It could be completely random, even if we select 3 players, the other 3 players might get automatched.. And as it's turn based, the next participant will always be.. the next person in line..
                             ///   This means they can't automatch with team selection, they always have to select team members. Team members must be alternative or we can add flag them some how to belong to a specific team.
-                            
+                            print(gameData)
                             for participant in participants {
                                 // If participant is nil, then it's first time
                                 print("Participants Count \(participants.count)")
@@ -211,9 +211,9 @@ extension CleverJacksGame : GKTurnBasedEventListener{
         if exchange.data != nil {
             if exchange.message != "This is my exchange item request." {
                 // Unpack the exchange data and display the message in the chat view.
-                //                let content = String(decoding: exchange.data!, as: UTF8.self)
-                //                let message = Message(content: content, playerName: exchange.sender.player?.displayName ?? "unknown", isLocalPlayer: false)
-                //                messages.append(message)
+                let content = String(decoding: exchange.data!, as: UTF8.self)
+                let message = Message(content: content, playerName: exchange.sender.player?.displayName ?? "unknown", isLocalPlayer: false)
+                messages.append(message)
             }
             
             // Reply to the exchange request.
@@ -260,10 +260,23 @@ extension CleverJacksGame : GKTurnBasedEventListener{
         // Save all the completed exchanges.
         if let completedExchanges = match.completedExchanges {
             
-            
+            for exchange in completedExchanges where exchange.message == "This is my exchange item request."{
+                // For all exchange item requests, transfer an item from the recipient to the sender.
+//                if exchange.sender.player == localParticipant?.player {
+//                    // Transfer an item from the opponent to the local player.
+//                    opponent?.items -= 1
+//                    localParticipant?.items += 1
+//                } else {
+//                    // Transfer an item from the local player to the opponent.
+//                    localParticipant?.items -= 1
+//                    opponent?.items += 1
+//                }
+                // For text message exchange requests, do nothing.
+            }
+ 
             // Resolve the game data to pass to all participants.
             let gameData = (encodeGameData() ?? match.matchData)!
-            
+
             // Save and forward the game data with the latest items.
             Task {
                 try await match.saveMergedMatch(gameData, withResolvedExchanges: completedExchanges)

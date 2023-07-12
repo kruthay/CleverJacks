@@ -21,7 +21,6 @@ struct PlayerCardsView: View {
                             .hoverEffect(.lift)
                             .offset(x: game.inSelectionCard == card ? -20 : 0 )
                             .onTapGesture {
-
                                 if game.myTurn {
                                     withAnimation {
                                         game.inSelectionCard = game.inSelectionCard != card ? card : nil

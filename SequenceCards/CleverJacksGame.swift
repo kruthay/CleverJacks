@@ -10,9 +10,6 @@ import Foundation
 @preconcurrency import GameKit
 import SwiftUI
 
-
-
-
 /// - Tag:CleverJacksGame
 @MainActor class CleverJacksGame: NSObject, GKMatchDelegate, GKLocalPlayerListener, ObservableObject {
     // The game interface state.
@@ -45,6 +42,7 @@ import SwiftUI
     @Published var noOfCardsToDeal = 6
     // The messages between players.
 //    var messages: [Message] = []
+    @Published var messages: [Message] = []
     @Published var matchMessage: String? = nil
     
     @Published var board : Board? = nil
@@ -336,7 +334,6 @@ import SwiftUI
                     // Create a Participant object to store the local player data.
                     self.localParticipant = Participant(player: GKLocalPlayer.local,
                                                         avatar: Image(uiImage: image))
-                    
                 }
                 if let error {
                     // Handle an error if it occurs.
@@ -371,9 +368,6 @@ import SwiftUI
         request.maxPlayers = minPlayers
         
         /// MAJOR CHECK UP CHANGED MINPLAYERS
-        ///
-        ///
-        ///
         if playersToInvite != nil {
             request.recipients = playersToInvite
         }
@@ -459,15 +453,7 @@ import SwiftUI
                     }
 
                 }
-                
-//                for participant in activeParticipants {
-//                    print("ActiveName \(String(describing: participant.player?.displayName))")
-//                    print("ActiveOutcome \(participant.matchOutcome)")
-//                    print("ActiveStatus \(participant.status)")
-//                }
-                
-                
-                
+      
                 // Remove the current participant from the matech participants.
                 var nextParticipants = activeParticipants.filter {
                     $0 != match.currentParticipant
@@ -483,16 +469,6 @@ import SwiftUI
                     }
                     return false
                 }
-                
-//                for nextParticipant in nextParticipants {
-//                    print("NextName \(String(describing: nextParticipant.player?.displayName))")
-//                    print("NextOutcome \(nextParticipant.matchOutcome)")
-//                    print("NextStatus \(nextParticipant.status)")
-//                }
-                
-
-
-                
                 
                 // Set the match message.
                 match.setLocalizableMessageWithKey( myTurn ? "Your Turn" : "Opponents Turn", arguments: nil)
@@ -570,10 +546,12 @@ import SwiftUI
             let participants = match.participants.filter {
                 $0 == match.currentParticipant
             }
-            
-            // Send a reminder to the current participant.
-            try await match.sendReminder(to: participants, localizableMessageKey: "This is a sendReminder message.",
-                                         arguments: [])
+            if match.currentParticipant?.player != localParticipant?.player {
+                
+                // Send a reminder to the current participant.
+                try await match.sendReminder(to: participants, localizableMessageKey: "This is a sendReminder message.",
+                                             arguments: [])
+            }
         } catch {
             print("Error: \(error.localizedDescription).")
         }
@@ -588,37 +566,37 @@ import SwiftUI
     ///
     /// - Parameter content: The message to send to the other player.
     /// - Tag:sendMessage
-//    func sendMessage(content: String) async {
-//        // Check whether there's an ongoing match.
-//        guard currentMatchID != nil else { return }
-//        
-//        // Create a message instance to display in the message view.
-//        let message = Message(content: content, playerName: GKLocalPlayer.local.displayName,
-//                              isLocalPlayer: true)
-//        messages.append(message)
-//        
-//        do {
-//            // Create the exchange data.
-//            guard let data = content.data(using: .utf8) else { return }
-//            
-//            // Load the most recent match object from the match ID.
-//            let match = try await GKTurnBasedMatch.load(withID: currentMatchID!)
-//            
-//            // Remove the local player (the sender) from the recipients;
-//            // otherwise, GameKit doesn't send the exchange request.
-//            let participants = match.participants.filter {
-//                localParticipant?.player.displayName != $0.player?.displayName
-//            }
-//            
-//            // Send the exchange request with the message.
-//            try await match.sendExchange(to: participants, data: data,
-//                                         localizableMessageKey: "This is my text message.",
-//                                         arguments: [], timeout: GKTurnTimeoutDefault)
-//        } catch {
-//            print("Error: \(error.localizedDescription).")
-//            return
-//        }
-//    }
+    func sendMessage(content: String) async {
+        // Check whether there's an ongoing match.
+        guard currentMatchID != nil else { return }
+        
+        // Create a message instance to display in the message view.
+        let message = Message(content: content, playerName: GKLocalPlayer.local.displayName,
+                              isLocalPlayer: true)
+        messages.append(message)
+        
+        do {
+            // Create the exchange data.
+            guard let data = content.data(using: .utf8) else { return }
+            
+            // Load the most recent match object from the match ID.
+            let match = try await GKTurnBasedMatch.load(withID: currentMatchID!)
+            
+            // Remove the local player (the sender) from the recipients;
+            // otherwise, GameKit doesn't send the exchange request.
+            let participants = match.participants.filter {
+                localParticipant?.player.displayName != $0.player?.displayName
+            }
+            
+            // Send the exchange request with the message.
+            try await match.sendExchange(to: participants, data: data,
+                                         localizableMessageKey: "This is my text message.",
+                                         arguments: [], timeout: GKTurnTimeoutDefault)
+        } catch {
+            print("Error: \(error.localizedDescription).")
+            return
+        }
+    }
     
     /// Exchange an item.
     func exchangeItem() async {
