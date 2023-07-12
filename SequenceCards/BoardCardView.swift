@@ -1,6 +1,6 @@
 //
 //  BoardCardView.swift
-//  SequenceCards
+//  CleverJacks
 //
 //  Created by Kruthay Kumar Reddy Donapati on 7/3/23.
 //
@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BoardCardView: View {
     @State private var phase = 0.0
-    @ObservedObject var game: SequenceGame
+    @ObservedObject var game: CleverJacksGame
     var card: Card
     var size: CGSize
     let impactHeavy = UIImpactFeedbackGenerator(style: .heavy)
@@ -29,17 +29,15 @@ struct BoardCardView: View {
                     
                 }
             }
-        
-        
     }
 }
 
 //#Preview {
-//    BoardCardView(game:SequenceGame(), card: Card(rank: .ace, suit: .clubs), size: CGSize(width: 30, height: 50))
+//    BoardCardView(game:CleverJacksGame(), card: Card(rank: .ace, suit: .clubs), size: CGSize(width: 30, height: 50))
 //}
 
 struct BoardCardViewPreviews: PreviewProvider {
     static var previews: some View {
-        BoardCardView(game:SequenceGame(), card: Card(rank: .ace, suit: .clubs), size: CGSize(width: 30, height: 50))
+        BoardCardView(game:CleverJacksGame(), card: Card(rank: .ace, suit: .clubs), size: CGSize(width: 30, height: 50))
     }
 }

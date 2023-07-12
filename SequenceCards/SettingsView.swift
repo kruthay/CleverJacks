@@ -1,6 +1,6 @@
 //
 //  SettingsView.swift
-//  SequenceCards
+//  CleverJacks
 //
 //  Created by Kruthay Kumar Reddy Donapati on 7/9/23.
 //
@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @ObservedObject var game: SequenceGame
+    @ObservedObject var game: CleverJacksGame
     @State var classicView: Bool = true
     @State var noOfPlayers: Int = 2
     let impactHeavy = UIImpactFeedbackGenerator(style: .heavy)
@@ -63,11 +63,11 @@ struct SettingsView: View {
 }
 
 //#Preview {
-//    SettingsView(game: SequenceGame())
+//    SettingsView(game: CleverJacksGame())
 //}
 
 struct SettingsViewPreviews: PreviewProvider {
     static var previews: some View {
-        SettingsView(game: SequenceGame())
+        SettingsView(game: CleverJacksGame())
     }
 }

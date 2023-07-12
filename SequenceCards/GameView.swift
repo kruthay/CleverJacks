@@ -1,6 +1,6 @@
 //
 //  GameView.swift
-//  SequenceCards
+//  CleverJacks
 //
 //  Created by Kruthay Kumar Reddy Donapati on 7/3/23.
 //
@@ -8,31 +8,41 @@
 import SwiftUI
 
 struct GameView: View {
-    
-    @ObservedObject var game: SequenceGame
-
+    @Environment(\.scenePhase) var scenePhase
+    @ObservedObject var game: CleverJacksGame
     var body: some View {
         VStack {
             HStack {
                 Button("Back") {
-                    game.quitGame()
+                    withAnimation {
+                        game.quitGame()
+                    }
                 }
+                .hoverEffect(.lift)
                 Spacer()
+                    
                 Button {
+                    game.isLoading = true
                     Task {
                         await game.refresh()
                     }
-
                 } label: {
                     Text(Image(systemName: "arrow.clockwise"))
                 }
+                
+                if game.isLoading {
+                    ProgressView()
+                }
+                
                 Spacer()
+                    
                 
                 Button("Forfeit") {
                     Task {
                         await game.forfeitMatch()
                     }
                 }
+                .hoverEffect(.lift)
             }
             .padding(.horizontal)
             Divider()
@@ -63,6 +73,7 @@ struct GameView: View {
                         .resizable()
                         .frame(width: 25, height: 25)
                         .clipShape(Circle())
+                        .wiggling(toWiggle: game.whichPlayersTurn == game.opponent?.player )
                     if game.board?.numberOfPlayers == 2 {
                         Text(game.opponentName)
                             .lineLimit(2)
@@ -83,6 +94,7 @@ struct GameView: View {
                             .resizable()
                             .frame(width: 25, height: 25)
                             .clipShape(Circle())
+                            .wiggling(toWiggle: game.whichPlayersTurn == game.opponent?.player )
                         Text(String(game.opponent2NoOfSequences))
                     }
                     .padding(4.5)
@@ -114,7 +126,6 @@ struct GameView: View {
                         
 
                         PlayerCardsView(game: game, size : CGSize(width: proxy.size.height/12.5, height: proxy.size.width/20), horizontalView: true)
-                            .disabled(game.youWon)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
@@ -130,7 +141,7 @@ struct GameView: View {
                                 CardView(card: Card(coin:.special), size:CGSize(width: proxy.size.width/16, height: proxy.size.height/20))
                             }
                         }
-                        .opacity(0.5)
+                        .opacity(game.inSelectionCard != nil ? 1 : 0.6)
                         Spacer()
                         PlayerCardsView(game: game, size : CGSize(width: proxy.size.width/12.5, height: proxy.size.height/14))
                     }
@@ -139,24 +150,28 @@ struct GameView: View {
             }
         }
         .padding()
-//        .onAppear {
-//            Task {
-//             await game.refresh()
-//            }
-//        }
+        .onChange(of: scenePhase) { newPhase in
+            if newPhase == .active {
+                game.isLoading = true
+                Task {
+                    await game.refresh()
+                }
+            }
+        }
+
         .alert("Game Over", isPresented: $game.youWon, actions: {
             Button("OK", role: .cancel) {
                 game.resetGame()
             }
         }, message: {
-            Text("You win.")
+            Text("Hurray! You win.")
         })
         .alert("Game Over", isPresented: $game.youLost, actions: {
             Button("OK", role: .cancel) {
                 game.resetGame()
             }
         }, message: {
-            Text("You lose.")
+            Text("Oh No! You lose.")
         })
         
         
@@ -168,6 +183,6 @@ struct GameView: View {
 
 struct GameViewPreviews: PreviewProvider {
     static var previews: some View {
-        GameView(game: SequenceGame())
+        GameView(game: CleverJacksGame())
     }
 }

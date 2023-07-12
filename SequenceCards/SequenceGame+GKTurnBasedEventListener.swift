@@ -1,6 +1,6 @@
 //
-//  SequenceGame+GKTurnBasedEventListener.swift
-//  SequenceCards
+//  CleverJacksGame+GKTurnBasedEventListener.swift
+//  CleverJacks
 //
 //  Created by Kruthay Kumar Reddy Donapati on 7/3/23.
 //
@@ -10,13 +10,14 @@ import Foundation
 @preconcurrency import GameKit
 import SwiftUI
 
-extension SequenceGame : GKTurnBasedEventListener{
-    //    extension SequenceGame: GKTurnBasedEventListener {
+extension CleverJacksGame : GKTurnBasedEventListener{
     
     /// Creates a match and presents a matchmaker view controller.
     func player(_ player: GKPlayer, didRequestMatchWithOtherPlayers playersToInvite: [GKPlayer]) {
         startMatch(playersToInvite)
     }
+    
+    
     
     /// Handles multiple turn-based events during a match.
     func player(_ player: GKPlayer, receivedTurnEventFor match: GKTurnBasedMatch, didBecomeActive: Bool) {
@@ -39,10 +40,10 @@ extension SequenceGame : GKTurnBasedEventListener{
                     }
                     
                     // End the match if active participants drop below the minimum.
-                    if nextParticipants.count < minPlayers {
+                    if nextParticipants.count < decode(matchData: match.matchData!)?.board?.numberOfPlayers ?? minPlayers {
                         // Set the match outcomes for the active participants.
                         
-                        print("Okay this is the reason we lost \(minPlayers)")
+                        print("Okay this is the reason we won \(minPlayers)")
                         for participant in nextParticipants {
                             participant.matchOutcome = .won
                         }
@@ -62,10 +63,14 @@ extension SequenceGame : GKTurnBasedEventListener{
                         
                         // **** use this to update the view
                         
-                        print(decode(matchData: match.matchData!) ?? "default Nil value")
+                        print(decode(matchData: match.matchData!) ?? "Default Nil value")
+                                                
                         // Update the interface depending on whether it's the local player's turn.
                         myTurn = GKLocalPlayer.local == match.currentParticipant?.player ? true : false
                         
+                        if let whichPlayersTurn = match.currentParticipant?.player {
+                            self.whichPlayersTurn = whichPlayersTurn
+                        }
                         
                         // Remove the local player from the participants to find the opponent.
                         let participants = match.participants.filter {
@@ -73,69 +78,60 @@ extension SequenceGame : GKTurnBasedEventListener{
                         }
                         
                         // If the player starts the match, the opponent hasn't accepted the invitation and has no player object.
-                        let participant = participants.first
                         
-                     //  When the Local player is the invitee, participants would be empty and it's time to initialise the local player's coin. 
                         
-                        if participant == nil || participant?.status == .matching || participant?.player == nil  {
+                     //  When the Local player is the invitee, participants would be empty and it's time to initialise the local player's coin.
+                        
+                        
+                        if let gameData = decode(matchData: match.matchData!) {
+                            /// Use this information and update respective code, if it's not decodable, that means it's the first players turn, else it's not. When it's the first players first turn, update
+                            ///   Based on the number of Players, let's say 6 and it's a twoVtwo game, so 3 teams, and hence 3 colors, or if it's threeVthree game, two teams and hence 2 colors, we have to participants and decide how we are going to connect them..
+                            ///   It could be completely random, even if we select 3 players, the other 3 players might get automatched.. And as it's turn based, the next participant will always be.. the next person in line..
+                            ///   This means they can't automatch with team selection, they always have to select team members. Team members must be alternative or we can add flag them some how to belong to a specific team.
                             
-                            if localParticipant?.coin == nil {
-                                if let coin =  board?.uniqueCoin()  {
-                                    localParticipant?.coin = coin
-                                    print("Happened before Decode, local Participant \(coin)")
-                                }
-                            }
-                            if localParticipant?.cardsOnHand == [] {
-                                if let cards = board?.dealCards(noOfCardsToDeal: self.noOfCardsToDeal) {
-                                    localParticipant?.cardsOnHand =  cards
-                                }
-                            }
-                        }
-                        
-                        else {
                             for participant in participants {
-                                
                                 // If participant is nil, then it's first time
-                                if participant.status == .matching {
+                                print("Participants Count \(participants.count)")
+                                print(participant.status)
+                                print("Whose turn it is now \(String(describing: match.currentParticipant?.player?.displayName))")
+                                
+                                if (participant.status != .matching) {
+                                    if let player = participant.player {
+                                        if opponent == nil {
+                                            // Load the opponent's avatar and create the opponent object.
+                                            let image = try await player.loadPhoto(for: GKPlayer.PhotoSize.small)
+                                            opponent = Participant(player: player,
+                                                                   avatar: Image(uiImage: image))
+                                            
+                                        }
+                                        else if opponent2 == nil && gameData.board?.numberOfPlayers ?? 0 > 2 {
+                                            let image = try await player.loadPhoto(for: GKPlayer.PhotoSize.small)
+                                            opponent2 =  Participant(player: player,
+                                                                     avatar: Image(uiImage: image))
+                                        }
+                                    }
+                                }
+                                else {
                                     print("Participant is still in Matching")
                                 }
-                                
-                                if (participant.status != .matching) && (participant.player != nil) {
-                                    
-                                    if opponent == nil {
-                                        
-                                        // Load the opponent's avatar and create the opponent object.
-                                        let image = try await participant.player?.loadPhoto(for: GKPlayer.PhotoSize.small)
-                                        opponent = Participant(player: (participant.player)!,
-                                                               avatar: Image(uiImage: image!))
-                                        
-                                    }
-                                    else if opponent2 == nil && board?.numberOfPlayers ?? 0 > 2 {
-                                        let image = try await participant.player?.loadPhoto(for: GKPlayer.PhotoSize.small)
-                                        opponent2 = Participant(player: (participant.player)!,
-                                                                avatar: Image(uiImage: image!))
-                                    }
-                                }
                             }
+                            
                         }
+
+    
                         
                         // Restore the current game data from the match object.
-                        // What happens if decoded earlier.. i.e, as soon as possible..
-                        //                            decodeGameData(matchData: match.matchData!)
+                        // oppoents are created before this step so that decoded information is added to their profile.
                         decodeGameData(matchData: match.matchData!)
                         
                         
                         // When Local Player is invited.
                         if localParticipant?.coin == nil && localParticipant?.cardsOnHand == [] {
-                            //                            localParticipant?.coin = board?.uniqueCoin() ?? .special
-                            //                            localParticipant?.cardsOnHand = board?.dealCards(noOfCardsToDeal: self.noOfCardsToDeal) ?? []
                             
                             if let coin =  board?.uniqueCoin()  {
                                 localParticipant?.coin = coin
                                 print("Happend after decode\(coin)")
                             }
-                            
-                            
                             if let cards = board?.dealCards(noOfCardsToDeal: self.noOfCardsToDeal) {
                                 localParticipant?.cardsOnHand =  cards
                             }
@@ -146,9 +142,6 @@ extension SequenceGame : GKTurnBasedEventListener{
                             youLost = true
                             try await match.participantQuitInTurn(with: GKTurnBasedMatch.Outcome.lost, nextParticipants: nextParticipants, turnTimeout: GKTurnTimeoutDefault, match: (encodeGameData() ?? match.matchData)!)
                         }
-                        
-                        
-                        
                         
                         // Display the match message.
                         matchMessage = match.message
@@ -165,9 +158,19 @@ extension SequenceGame : GKTurnBasedEventListener{
             }
             
         case .ended:
+            /// To Do
+            ///  Decode and provide only BoardView, Players, and recentlyPlayedCard
+            ///
+            playingGame = false
+            playingGame = true
+            decodeGameData(matchData: match.matchData!)
             print("Match ended.")
             
         case .matching:
+            
+            playingGame = false
+            playingGame = true
+            decodeGameData(matchData: match.matchData!)
             print("Still finding players.")
             
         default:

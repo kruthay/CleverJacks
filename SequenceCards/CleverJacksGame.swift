@@ -1,6 +1,6 @@
 //
-//  SequenceGame.swift
-//  SequenceCards
+//  CleverJacksGame.swift
+//  CleverJacks
 //
 //  Created by Kruthay Kumar Reddy Donapati on 7/3/23.
 //
@@ -13,13 +13,16 @@ import SwiftUI
 
 
 
-/// - Tag:SequenceGame
-@MainActor class SequenceGame: NSObject, GKMatchDelegate, GKLocalPlayerListener, ObservableObject {
+/// - Tag:CleverJacksGame
+@MainActor class CleverJacksGame: NSObject, GKMatchDelegate, GKLocalPlayerListener, ObservableObject {
     // The game interface state.
     @Published var matchAvailable = false
     @Published var playingGame = false
-    @Published var myTurn = false
+    
     @Published var inSelectionCard : Card? = nil
+    
+    
+    @Published var isLoading = false
     
     // Outcomes of the game for notifing players.
     @Published var youWon = false
@@ -35,7 +38,10 @@ import SwiftUI
     @Published var opponent: Participant? = nil
     @Published var opponent2: Participant? = nil
     
-    @Published var count = 0
+    @Published var myTurn = false
+    @Published var whichPlayersTurn: GKPlayer? = nil
+    // Check if enum of local, player2, player3 solves this?
+    
     @Published var noOfCardsToDeal = 6
     // The messages between players.
 //    var messages: [Message] = []
@@ -47,11 +53,16 @@ import SwiftUI
     @Published var cardCurrentlyPlayed : Card? = nil
     
     
+    var numberOfPlayers : Int {
+        board?.numberOfPlayers ?? minPlayers
+    }
+        
+    
     /// The local player's name.
     var myName: String {
         GKLocalPlayer.local.displayName
     }
-    
+        
     /// The opponent's name.
     var opponentName: String {
         opponent?.player.displayName ?? "Opponent"
@@ -126,6 +137,8 @@ import SwiftUI
         set { opponent2?.turns = newValue }
     }
     
+    var currentPlayerName = ""
+    
         
     /// The root view controller of the window.
     var rootViewController: UIViewController? {
@@ -155,7 +168,7 @@ import SwiftUI
         }
         
         if !myCards.contains(selectingCard) {
-            print("Something is Wrong")
+            print("Something is Wrong Please Select Again")
             return 0
         }
         
@@ -212,19 +225,32 @@ import SwiftUI
     }
     
     func refresh() async {
-        guard currentMatchID != nil && myTurn == false else { return }
+        print("Is Refreshing")
+        guard currentMatchID != nil else {
+            print("No Refresh")
+            playingGame = false
+            isLoading.toggle()
+            return
+        }
         do {
+            print("Trying to Refresh")
             let match = try await GKTurnBasedMatch.load(withID: currentMatchID!)
             if myTurn == false {
+                if let whichPlayersTurn = match.currentParticipant?.player {
+                    self.whichPlayersTurn = whichPlayersTurn
+                }
                 myTurn = GKLocalPlayer.local == match.currentParticipant?.player ? true : false
-                decodeGameData(matchData: match.matchData!)
             }
+            decodeGameData(matchData: match.matchData!)
+            isLoading.toggle()
         }
         catch {
             print("Took a lot of time for loading")
             print("Error: \(error.localizedDescription).")
         }
+        print("Refreshed")
     }
+    
     func canChooseThisCard(_ card: Card) -> Bool {
         guard let selectingCard = inSelectionCard else {
             return false
@@ -249,45 +275,38 @@ import SwiftUI
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     /// Resets the game interface to the content view.
     func resetGame() {
         // Reset the game data.
         playingGame = false
+        youWon = false
+        youLost = false
+
+
         myTurn = false
+        
+        // Should Encapsulate Each players information. 
+        myCoin = nil
+        myCards = []
+        myNoOfSequences = 0
+        myTurns = 0
+
+        opponent = nil
+        opponentCoin = nil
+        opponentNoOfSequences = 0
+        opponentTurns = 0
+
+        opponent2 = nil
+        opponent2Coin = nil
+        opponent2NoOfSequences = 0
+        opponent2Turns = 0
+
+        
         currentMatchID = nil
         inSelectionCard = nil
         cardCurrentlyPlayed = nil
-        opponent = nil
-        opponent2 = nil
-        count = 0
+
         board = nil
-        cardCurrentlyPlayed = nil
-        youWon = false
-        youLost = false
-        myCoin = nil
-        opponentCoin = nil
-        opponent2Coin = nil
-        myCards = []
-        myNoOfSequences = 0
-        opponentNoOfSequences = 0
-        opponent2NoOfSequences = 0
-        myTurns = 0
-        opponentTurns = 0
-        opponent2Turns = 0
         minPlayers = 2
     }
     
@@ -341,7 +360,7 @@ import SwiftUI
     ///- Tag:startMatch
     func startMatch(_ playersToInvite: [GKPlayer]? = nil) {
         // Initialize the match data.
-        count = 0
+
         print("StartMatch is Called.")
         board = Board(classicView: classicView, numberOfPlayers: minPlayers)
         
@@ -424,15 +443,13 @@ import SwiftUI
                 // Otherwise, take the turn and pass to the next participants.
                 
                 // Update the game data.
-                count += 1
-                
                 myTurns += 1
                 
                 // *** UPDATE THE BOARD ****
                 // Create the game data to store in Game Center.
                 let gameData = (encodeGameData() ?? match.matchData)!
                 
-                if youWon == true {
+                if localParticipant?.noOfSequences == board?.requiredNoOfSequences {
                     match.currentParticipant?.matchOutcome = .won
                     let nextParticipants = activeParticipants.filter {
                         $0 != match.currentParticipant

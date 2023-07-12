@@ -1,6 +1,6 @@
 //
 //  CardView.swift
-//  SequenceCards
+//  CleverJacks
 //
 //  Created by Kruthay Kumar Reddy Donapati on 7/3/23.
 //
@@ -26,14 +26,11 @@ struct CardView: View {
                         if suit == .clubs || suit == .spades {
                             Text(Image(systemName:"eyebrow"))
                                 .font(.system(size:size.height/5.5))
-                                
-                                
                         }
                         else {
                             HStack{
                                 Text(Image(systemName:"eyebrow"))
-                                Text(Image(systemName:"eyebrow"))
-                                
+                                Text(Image(systemName:"eyebrow")) 
                             }
                             .font(.system(size:size.height/7))
                         }
@@ -55,6 +52,7 @@ struct CardView: View {
         }
         .aspectRatio(0.65, contentMode: .fit)
         .frame(width: size.width, height: size.height, alignment: .center)
+        
         
         .opacity(isItAnEmpty(card: card) ? 0 : 1 )
     }

@@ -1,6 +1,6 @@
 //
 //  SequenceCardsApp.swift
-//  SequenceCards
+//  CleverJacks
 //
 //  Created by Kruthay Kumar Reddy Donapati on 7/3/23.
 //

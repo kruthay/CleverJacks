@@ -1,6 +1,6 @@
 //
 //  BoardView.swift
-//  SequenceCards
+//  CleverJacks
 //
 //  Created by Kruthay Kumar Reddy Donapati on 7/3/23.
 //
@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BoardView: View {
-    @ObservedObject var game: SequenceGame
+    @ObservedObject var game: CleverJacksGame
     var size : CGSize
     let impactHeavy = UIImpactFeedbackGenerator(style: .heavy)
     var body: some View {
@@ -31,12 +31,12 @@ struct BoardView: View {
 
 
 //#Preview {
-//    BoardView(game: SequenceGame(), size: CGSize(width: 30, height: 50))
+//    BoardView(game: CleverJacksGame(), size: CGSize(width: 30, height: 50))
 //}
 
 struct BoardViewPreviews: PreviewProvider {
     static var previews: some View {
-        BoardView(game: SequenceGame(), size: CGSize(width: 30, height: 50))
+        BoardView(game: CleverJacksGame(), size: CGSize(width: 30, height: 50))
     }
 }
 

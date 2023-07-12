@@ -1,6 +1,6 @@
 //
 //  PlayerCardsView.swift
-//  SequenceCards
+//  CleverJacks
 //
 //  Created by Kruthay Kumar Reddy Donapati on 7/3/23.
 //
@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PlayerCardsView: View {
-    @ObservedObject var game: SequenceGame
+    @ObservedObject var game: CleverJacksGame
     let impactSoft = UIImpactFeedbackGenerator(style: .soft)
     var size: CGSize
     var horizontalView : Bool = false
@@ -18,6 +18,7 @@ struct PlayerCardsView: View {
             VStack{
                     ForEach(game.localParticipant?.cardsOnHand ?? defaultCards){ card in
                         CardView(card: card, size: size )
+                            .hoverEffect(.lift)
                             .offset(x: game.inSelectionCard == card ? -20 : 0 )
                             .onTapGesture {
 
@@ -36,6 +37,7 @@ struct PlayerCardsView: View {
             HStack{
                 ForEach(game.localParticipant?.cardsOnHand ?? defaultCards){ card in
                     CardView(card: card, size: size )
+                        .hoverEffect(.lift)
                         .offset(y: game.inSelectionCard == card ? -20 : 0 )
                         .onTapGesture {
                             
@@ -60,6 +62,6 @@ struct PlayerCardsView: View {
 //}
 struct PlayerCardsPreviews: PreviewProvider {
     static var previews: some View {
-        PlayerCardsView(game: SequenceGame(), size: CGSize(width: 30, height: 50))
+        PlayerCardsView(game: CleverJacksGame(), size: CGSize(width: 30, height: 50))
     }
 }

@@ -1,6 +1,6 @@
 //
 //  PlayerView.swift
-//  SequenceCards
+//  CleverJacks
 //
 //  Created by Kruthay Kumar Reddy Donapati on 7/9/23.
 //
@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PlayerView: View {
-    @ObservedObject var game: SequenceGame
+    @ObservedObject var game: CleverJacksGame
     var body: some View {
         HStack {
             game.myAvatar
@@ -34,6 +34,6 @@ struct PlayerView: View {
 
 struct PlayerViewPreviews : PreviewProvider {
     static var previews: some View {
-        PlayerView(game: SequenceGame())
+        PlayerView(game: CleverJacksGame())
     }
 }

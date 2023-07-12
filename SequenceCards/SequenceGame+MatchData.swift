@@ -1,6 +1,6 @@
 //
-//  SequenceGame+MatchData.swift
-//  SequenceCards
+//  CleverJacksGame+MatchData.swift
+//  CleverJacks
 //
 //  Created by Kruthay Kumar Reddy Donapati on 7/3/23.
 //
@@ -12,13 +12,6 @@ import SwiftUI
 
 // MARK: Game Data Objects
 
-// A message that one player sends to another.
-//struct Message: Identifiable {
-//    var id = UUID()
-//    var content: String
-//    var playerName: String
-//    var isLocalPlayer: Bool = false
-//}
 
 // A participant object with their items.
 struct Participant: Identifiable {
@@ -30,6 +23,7 @@ struct Participant: Identifiable {
     var noOfSequences = 0
     var turns = 0
 }
+
 
 // Codable game data for sending to players.
 struct GameData: Codable, CustomStringConvertible {
@@ -45,7 +39,7 @@ struct GameData: Codable, CustomStringConvertible {
     // board ( may be cardstack inside the board )
 }
 
-extension SequenceGame {
+extension CleverJacksGame {
     
     // MARK: Codable Game Data
     

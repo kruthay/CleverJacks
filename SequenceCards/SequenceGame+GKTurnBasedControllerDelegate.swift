@@ -1,6 +1,6 @@
 //
-//  SequenceGame+GKTurnBasedControllerDelegate.swift
-//  SequenceCards
+//  CleverJacksGame+GKTurnBasedControllerDelegate.swift
+//  CleverJacks
 //
 //  Created by Kruthay Kumar Reddy Donapati on 7/3/23.
 //
@@ -10,7 +10,7 @@ import Foundation
 import GameKit
 import SwiftUI
 
-extension SequenceGame: GKTurnBasedMatchmakerViewControllerDelegate {
+extension CleverJacksGame: GKTurnBasedMatchmakerViewControllerDelegate {
     
     /// Dismisses the view controller when either player cancels matchmaking.
     func turnBasedMatchmakerViewControllerWasCancelled(_ viewController: GKTurnBasedMatchmakerViewController) {
