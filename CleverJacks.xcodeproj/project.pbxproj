@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		879EF3F32A5FAB19000D9088 /* ResponseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879EF3F22A5FAB19000D9088 /* ResponseView.swift */; };
 		87A950BD2A5DDCB700D954DD /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A950BC2A5DDCB700D954DD /* HomeView.swift */; };
 		87B6C0132A5E38F9002C7CBA /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B6C0122A5E38F9002C7CBA /* MessageView.swift */; };
 		87B6C0152A5E3922002C7CBA /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B6C0142A5E3922002C7CBA /* ChatView.swift */; };
+		87B6C0172A5E6928002C7CBA /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B6C0162A5E6928002C7CBA /* TutorialView.swift */; };
 		87B7A95E2A5B2C9F00DD927B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B7A95D2A5B2C9F00DD927B /* SettingsView.swift */; };
 		87BE05992A5B33C20095FDC9 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BE05982A5B33C20095FDC9 /* PlayerView.swift */; };
 		87D1570C2A5352EA00898EC7 /* SequenceCardsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D1570B2A5352EA00898EC7 /* SequenceCardsApp.swift */; };
@@ -58,9 +60,11 @@
 
 /* Begin PBXFileReference section */
 		873634B82A591B0A00D24B64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		879EF3F22A5FAB19000D9088 /* ResponseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseView.swift; sourceTree = "<group>"; };
 		87A950BC2A5DDCB700D954DD /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		87B6C0122A5E38F9002C7CBA /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		87B6C0142A5E3922002C7CBA /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
+		87B6C0162A5E6928002C7CBA /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
 		87B7A95D2A5B2C9F00DD927B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		87BE05982A5B33C20095FDC9 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		87D157082A5352EA00898EC7 /* CleverJacks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleverJacks.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -147,9 +151,11 @@
 				87D1570B2A5352EA00898EC7 /* SequenceCardsApp.swift */,
 				87D1570D2A5352EA00898EC7 /* ContentView.swift */,
 				87A950BC2A5DDCB700D954DD /* HomeView.swift */,
+				87B6C0162A5E6928002C7CBA /* TutorialView.swift */,
 				87B7A95D2A5B2C9F00DD927B /* SettingsView.swift */,
 				87EB481D2A5B51AA00248801 /* LongTapContextMenu.swift */,
 				87D1574A2A5356D900898EC7 /* GameView.swift */,
+				879EF3F22A5FAB19000D9088 /* ResponseView.swift */,
 				87BE05982A5B33C20095FDC9 /* PlayerView.swift */,
 				87D157562A53742500898EC7 /* BoardView.swift */,
 				87D157542A53736F00898EC7 /* BoardCardView.swift */,
@@ -344,11 +350,13 @@
 				87D157362A5353D100898EC7 /* Suit.swift in Sources */,
 				87B6C0132A5E38F9002C7CBA /* MessageView.swift in Sources */,
 				87D157462A53555200898EC7 /* SequenceGame+GKTurnBasedEventListener.swift in Sources */,
+				87B6C0172A5E6928002C7CBA /* TutorialView.swift in Sources */,
 				87D157552A53736F00898EC7 /* BoardCardView.swift in Sources */,
 				87D1574D2A53599000898EC7 /* CoinView.swift in Sources */,
 				87D1570C2A5352EA00898EC7 /* SequenceCardsApp.swift in Sources */,
 				87B6C0152A5E3922002C7CBA /* ChatView.swift in Sources */,
 				87EB481E2A5B51AA00248801 /* LongTapContextMenu.swift in Sources */,
+				879EF3F32A5FAB19000D9088 /* ResponseView.swift in Sources */,
 				87D157402A53546500898EC7 /* Board.swift in Sources */,
 				87D157572A53742500898EC7 /* BoardView.swift in Sources */,
 				87D157512A535A9900898EC7 /* WiggleModifier.swift in Sources */,
@@ -535,7 +543,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.01;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kruthaydonapati.SequenceCards;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -573,7 +581,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.01;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kruthaydonapati.SequenceCards;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

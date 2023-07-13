@@ -10,10 +10,14 @@ import SwiftUI
 struct CardView: View {
     let card: Card
     let size: CGSize
+    @Environment(\.colorScheme) var colorScheme
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 4)
                 .strokeBorder(style: StrokeStyle(lineWidth: size.width/20))
+                .background(colorScheme == .dark ? .black : .white)
+                
+            
             if let rank = card.rank, let suit = card.suit {
                 VStack{
                     HStack {

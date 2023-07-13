@@ -53,6 +53,8 @@ struct Board : Codable, CustomStringConvertible {
         return boardCards.joined().filter { $0.coin != nil }.count
     }
     
+    
+    
     mutating func dealCards(noOfCardsToDeal: Int) -> [Card]{
         var cards : [Card] = []
         for _ in 0...noOfCardsToDeal {

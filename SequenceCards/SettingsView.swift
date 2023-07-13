@@ -50,6 +50,7 @@ struct SettingsView: View {
             .buttonStyle(.bordered)
             .disabled(!game.matchAvailable)
             Spacer()
+            Text(UIApplication.appVersion ?? "")
         }
         .onChange(of: noOfPlayers) { noOfPlayers in
                 game.minPlayers = noOfPlayers

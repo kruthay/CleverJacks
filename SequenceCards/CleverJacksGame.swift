@@ -145,7 +145,11 @@ import SwiftUI
     }
     
     
+    
     func selectACard(_ card: Card) -> Int { // Refactor
+        
+        
+        
         print("Local Player \(localParticipant?.player.displayName ?? "SomeName")")
         print("Opponent Player \(opponent?.player.displayName ?? "SomeOtherName")")
 //        print("Opponent2 Player \(opponent2?.player.displayName ?? "SomeOtherOtherName")")
@@ -209,11 +213,6 @@ import SwiftUI
         cardCurrentlyPlayed = selectingCard
         if let numberOfSequences = board?.getNumberOfSequences(index: index) {
             localParticipant?.noOfSequences +=  numberOfSequences
-        }
-        if let requiredNoOfSequences = board?.requiredNoOfSequences {
-            if localParticipant?.noOfSequences == requiredNoOfSequences {
-                youWon = true
-            }
         }
         
         Task {
@@ -305,7 +304,6 @@ import SwiftUI
         cardCurrentlyPlayed = nil
 
         board = nil
-        minPlayers = 2
     }
     
     /// Authenticates the local player and registers for turn-based events.
@@ -359,6 +357,7 @@ import SwiftUI
         // Initialize the match data.
 
         print("StartMatch is Called.")
+        resetGame()
         board = Board(classicView: classicView, numberOfPlayers: minPlayers)
         
         // Create a match request.
@@ -439,21 +438,14 @@ import SwiftUI
                 // Update the game data.
                 myTurns += 1
                 
+                // Can't use here because the cards has to be selected for you to take turn and turn can be taken only after selection
+                // Can't put it in selection, have to put it before selection.
+                                
                 // *** UPDATE THE BOARD ****
                 // Create the game data to store in Game Center.
                 let gameData = (encodeGameData() ?? match.matchData)!
                 
-                if localParticipant?.noOfSequences == board?.requiredNoOfSequences {
-                    match.currentParticipant?.matchOutcome = .won
-                    let nextParticipants = activeParticipants.filter {
-                        $0 != match.currentParticipant
-                    }
-                    for participant in nextParticipants {
-                        participant.matchOutcome = .lost
-                    }
 
-                }
-      
                 // Remove the current participant from the matech participants.
                 var nextParticipants = activeParticipants.filter {
                     $0 != match.currentParticipant
@@ -468,6 +460,18 @@ import SwiftUI
                         return true
                     }
                     return false
+                }
+                
+                
+                if let requiredNoOfSequences = board?.requiredNoOfSequences {
+                    if localParticipant?.noOfSequences == requiredNoOfSequences {
+                        match.currentParticipant?.matchOutcome = .won
+                        for participant in nextParticipants {
+                            participant.matchOutcome = .lost
+                        }
+                        try await match.endMatchInTurn(withMatch: gameData)
+                        youWon = true
+                    }
                 }
                 
                 // Set the match message.
@@ -549,7 +553,7 @@ import SwiftUI
             if match.currentParticipant?.player != localParticipant?.player {
                 
                 // Send a reminder to the current participant.
-                try await match.sendReminder(to: participants, localizableMessageKey: "This is a sendReminder message.",
+                try await match.sendReminder(to: participants, localizableMessageKey: "\(myName) reminded you",
                                              arguments: [])
             }
         } catch {
@@ -621,5 +625,11 @@ import SwiftUI
             print("Error: \(error.localizedDescription).")
             return
         }
+    }
+}
+
+extension UIApplication {
+    static var appVersion: String? {
+        return Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
     }
 }

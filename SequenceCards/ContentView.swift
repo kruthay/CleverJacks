@@ -12,8 +12,11 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             if game.playingGame {
-                GameView(game:game)
-                    .transition(.scale)
+                ZStack {
+                    GameView(game:game)
+                        .transition(.scale)
+                    
+                }
             }
             else {
                 HomeView(game: game)

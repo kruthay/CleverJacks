@@ -10,10 +10,9 @@ import AVFoundation
 
 
 struct GameView: View {
-    @Environment(\.presentationMode) var presentationMode
     @Environment(\.scenePhase) var scenePhase
     @ObservedObject var game: CleverJacksGame
-    @State private var showMessages: Bool = false
+    let timer = Timer.publish(every: 6, on: .current, in: .common).autoconnect()
     var body: some View {
         VStack {
             HStack {
@@ -32,12 +31,28 @@ struct GameView: View {
                 } label: {
                     Text(Image(systemName: "arrow.clockwise"))
                 }
+                .onReceive(timer) { _ in
+                    game.isLoading = true
+                    if scenePhase == .active {
+                        Task {
+                            await game.refresh()
+                        }
+                    }
+                }
+                .onChange(of: scenePhase) { newPhase in
+                    if newPhase == .active {
+                        game.isLoading = true
+                        Task {
+                            await game.refresh()
+                        }
+                    }
+                }
                 
                 if game.isLoading {
                     ProgressView()
                 }
                 Spacer()
-                Button("Forfeit") {
+                Button("Forfeit", role: .destructive) {
                     Task {
                         await game.forfeitMatch()
                     }
@@ -86,7 +101,7 @@ struct GameView: View {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(game.opponentCoin?.color ?? .green, lineWidth: 2)
                 )
-                .opacity(game.myTurn ? 0.5 : 1)
+                .opacity(game.whichPlayersTurn == game.opponent?.player ? 1 : 0.5)
                 Spacer()
                 if game.board?.numberOfPlayers ?? 0 > 2 {
                     HStack {
@@ -94,7 +109,7 @@ struct GameView: View {
                             .resizable()
                             .frame(width: 25, height: 25)
                             .clipShape(Circle())
-                            .wiggling(toWiggle: game.whichPlayersTurn == game.opponent?.player )
+                            .wiggling(toWiggle: game.whichPlayersTurn == game.opponent2?.player )
                         Text(String(game.opponent2NoOfSequences))
                     }
                     .padding(4.5)
@@ -102,9 +117,8 @@ struct GameView: View {
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(game.opponent2Coin?.color ?? .red, lineWidth: 2)
                     )
-                    .opacity(game.myTurn ? 0.5 : 1)
+                    .opacity(game.whichPlayersTurn == game.opponent2?.player ? 1 : 0.5)
                     Spacer()
-                    
                 }
             }
             Divider()
@@ -112,18 +126,16 @@ struct GameView: View {
                 proxy in
                 if proxy.size.width > proxy.size.height {
                     HStack {
+                        Spacer()
                         BoardView(game: game, size : CGSize(width: proxy.size.height/12.5, height: proxy.size.width/20))
-                        
-                        HStack{
-                            if let card = game.cardCurrentlyPlayed {
-                                CardView(card: card, size:CGSize(width: proxy.size.height/20, height: proxy.size.width/30) )
-                            }
-                            else {
-                                CardView(card: Card(), size:CGSize(width: proxy.size.height/20, height: proxy.size.width/30))
-                            }
+                        Spacer()
+                        VStack{
+                            ResponseView(game:game, proxy:proxy)
+                                .opacity(game.inSelectionCard != nil ? 1 : 0.6)
                         }
-                        .opacity(game.inSelectionCard != nil ? 1 : 0.6)
+                        Spacer()
                         PlayerCardsView(game: game, size : CGSize(width: proxy.size.height/12.5, height: proxy.size.width/20), horizontalView: true)
+                        Spacer()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
@@ -132,59 +144,9 @@ struct GameView: View {
                         BoardView(game: game, size : CGSize(width: proxy.size.width/12.5, height: proxy.size.height/14))
                         Spacer()
                         HStack {
-                            Button("Message") {
-                                withAnimation(.easeInOut(duration: 1)) {
-                                    showMessages = true
-                                }
-                            }
-                            .buttonStyle(MessageButtonStyle())
-                            .onTapGesture {
-                                presentationMode.wrappedValue.dismiss()
-                            }
-                            Spacer()
-                            HStack {
-                                if game.myTurn {
-                                    if let matchMessage = game.matchMessage {
-                                        HStack {
-                                            Text(matchMessage)
-                                        }
-                                        .onAppear {
-                                            Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { timer in
-                                                withAnimation(.easeInOut(duration: 5)) {
-                                                    game.matchMessage = nil
-                                                }
-                                            }
-                                            AudioServicesPlaySystemSound(1106)
-                                        }
-                                    }
-                                }
-                                
-                                // Send text messages as exchange items.
-                                
-                            }
-                            if let card = game.cardCurrentlyPlayed {
-                                CardView(card: card, size:CGSize(width: proxy.size.width/16, height: proxy.size.height/20) )
-                            }
-                            else {
-                                CardView(card: Card(coin:.special), size:CGSize(width: proxy.size.width/16, height: proxy.size.height/20))
-                            }
-                            
-                            // Send a reminder to take their turn.
-                            Spacer()
-                            Button {
-                                Task {
-                                    await game.sendReminder()
-                                }
-                                AudioServicesPlaySystemSound(1105)
-                            }  label: {
-                                Label(
-                                    title: { },
-                                    icon: { Image(systemName: "bell.and.waves.left.and.right")  }
-                                )
-                            }
-                            .disabled(game.myTurn)
+                            ResponseView(game: game, proxy: proxy)
+                                .opacity(game.inSelectionCard != nil ? 1 : 0.6)
                         }
-                        .opacity(game.inSelectionCard != nil ? 1 : 0.6)
                         Spacer()
                         PlayerCardsView(game: game, size : CGSize(width: proxy.size.width/12.5, height: proxy.size.height/14))
                     }
@@ -193,17 +155,8 @@ struct GameView: View {
             }
         }
         .padding()
-        .onChange(of: scenePhase) { newPhase in
-            if newPhase == .active {
-                game.isLoading = true
-                Task {
-                    await game.refresh()
-                }
-            }
-        }
-        .sheet(isPresented: $showMessages) {
-            ChatView(game: game)
-        }
+        
+        
         .alert("Game Over", isPresented: $game.youWon, actions: {
             Button("OK", role: .cancel) {
                 game.resetGame()
