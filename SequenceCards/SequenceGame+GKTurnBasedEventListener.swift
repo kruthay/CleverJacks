@@ -144,7 +144,6 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                                 
                                 if let coin =  board?.uniqueCoin()  {
                                     localParticipant?.coin = coin
-                                    print("Happend after decode\(coin)")
                                 }
                                 
                                 if let cards = board?.dealCards(noOfCardsToDeal: self.noOfCardsToDeal) {
@@ -158,15 +157,6 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                             }
                         }
 
-                        
-//                        if nextParticipants.filter({ $0.matchOutcome == .won }).count > 0 {
-//                            
-//                            //try await match.participantQuitInTurn(with: GKTurnBasedMatch.Outcome.lost, nextParticipants: nextParticipants, turnTimeout: GKTurnTimeoutDefault, match: (encodeGameData() ?? match.matchData)!)
-//                            match.currentParticipant?.matchOutcome = .lost
-//                            try await match.endMatchInTurn(withMatch: match.matchData!)
-//                            youLost = true
-//                        }
-                        
                         
 
                         currentMatchID = match.matchID
