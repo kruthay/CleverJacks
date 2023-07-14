@@ -14,7 +14,7 @@ struct CardView: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 4)
-                .strokeBorder(style: StrokeStyle(lineWidth: size.width/20))
+                .strokeBorder(style: StrokeStyle(lineWidth: size.width/25))
                 .background(colorScheme == .dark ? .black : .white)
                 
             
