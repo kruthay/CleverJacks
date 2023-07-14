@@ -86,3 +86,12 @@ struct ResponseViewPreviews: PreviewProvider {
         }
     }
 }
+
+struct MessageButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        HStack {
+            Image(systemName: configuration.isPressed ? "bubble.left.fill" : "bubble.left")
+        }
+        .foregroundColor(Color.blue)
+    }
+}

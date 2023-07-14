@@ -51,6 +51,7 @@ struct ChatView: View {
             .frame(minHeight: 50)
             .padding()
         }
+        .padding()
     }
 }
 

@@ -572,7 +572,11 @@ import SwiftUI
     /// - Tag:sendMessage
     func sendMessage(content: String) async {
         // Check whether there's an ongoing match.
-        guard currentMatchID != nil else { return }
+        guard currentMatchID != nil else {
+            
+            print("returning from sendMessage as CurrentMatchId is nil")
+            return
+        }
         
         // Create a message instance to display in the message view.
         let message = Message(content: content, playerName: GKLocalPlayer.local.displayName,

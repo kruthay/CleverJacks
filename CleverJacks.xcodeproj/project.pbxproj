@@ -38,6 +38,10 @@
 		87D157532A535AB300898EC7 /* PlayerCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D157522A535AB200898EC7 /* PlayerCardsView.swift */; };
 		87D157552A53736F00898EC7 /* BoardCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D157542A53736F00898EC7 /* BoardCardView.swift */; };
 		87D157572A53742500898EC7 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D157562A53742500898EC7 /* BoardView.swift */; };
+		87EAF8DA2A60C04100A9E63C /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EAF8D92A60C04100A9E63C /* ConfettiView.swift */; };
+		87EAF8DC2A60C0B700A9E63C /* RoundedCross.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EAF8DB2A60C0B700A9E63C /* RoundedCross.swift */; };
+		87EAF8DE2A60C0CE00A9E63C /* SlimRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EAF8DD2A60C0CE00A9E63C /* SlimRectangle.swift */; };
+		87EAF8E02A60C0F300A9E63C /* Triangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EAF8DF2A60C0F300A9E63C /* Triangle.swift */; };
 		87EB481E2A5B51AA00248801 /* LongTapContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EB481D2A5B51AA00248801 /* LongTapContextMenu.swift */; };
 /* End PBXBuildFile section */
 
@@ -95,6 +99,10 @@
 		87D157522A535AB200898EC7 /* PlayerCardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerCardsView.swift; sourceTree = "<group>"; };
 		87D157542A53736F00898EC7 /* BoardCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardCardView.swift; sourceTree = "<group>"; };
 		87D157562A53742500898EC7 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		87EAF8D92A60C04100A9E63C /* ConfettiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
+		87EAF8DB2A60C0B700A9E63C /* RoundedCross.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCross.swift; sourceTree = "<group>"; };
+		87EAF8DD2A60C0CE00A9E63C /* SlimRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlimRectangle.swift; sourceTree = "<group>"; };
+		87EAF8DF2A60C0F300A9E63C /* Triangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Triangle.swift; sourceTree = "<group>"; };
 		87EB481D2A5B51AA00248801 /* LongTapContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongTapContextMenu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -149,32 +157,10 @@
 				873634B82A591B0A00D24B64 /* Info.plist */,
 				87D157492A5355F200898EC7 /* SequenceCards.entitlements */,
 				87D1570B2A5352EA00898EC7 /* SequenceCardsApp.swift */,
-				87D1570D2A5352EA00898EC7 /* ContentView.swift */,
-				87A950BC2A5DDCB700D954DD /* HomeView.swift */,
-				87B6C0162A5E6928002C7CBA /* TutorialView.swift */,
-				87B7A95D2A5B2C9F00DD927B /* SettingsView.swift */,
-				87EB481D2A5B51AA00248801 /* LongTapContextMenu.swift */,
-				87D1574A2A5356D900898EC7 /* GameView.swift */,
-				879EF3F22A5FAB19000D9088 /* ResponseView.swift */,
-				87BE05982A5B33C20095FDC9 /* PlayerView.swift */,
-				87D157562A53742500898EC7 /* BoardView.swift */,
-				87D157542A53736F00898EC7 /* BoardCardView.swift */,
-				87D157522A535AB200898EC7 /* PlayerCardsView.swift */,
-				87B6C0122A5E38F9002C7CBA /* MessageView.swift */,
-				87B6C0142A5E3922002C7CBA /* ChatView.swift */,
-				87D1574E2A5359DD00898EC7 /* CardView.swift */,
-				87D1574C2A53599000898EC7 /* CoinView.swift */,
-				87D157502A535A9900898EC7 /* WiggleModifier.swift */,
-				87D157352A5353D100898EC7 /* Suit.swift */,
-				87D157372A5353E900898EC7 /* Rank.swift */,
-				87D157392A5353F800898EC7 /* Deck.swift */,
-				87D1573B2A53541400898EC7 /* Card.swift */,
-				87D1573D2A53542600898EC7 /* Coin.swift */,
-				87D1573F2A53546500898EC7 /* Board.swift */,
-				87D157412A53548F00898EC7 /* CleverJacksGame.swift */,
-				87D157432A53552300898EC7 /* SequenceGame+GKTurnBasedControllerDelegate.swift */,
-				87D157452A53555200898EC7 /* SequenceGame+GKTurnBasedEventListener.swift */,
-				87D157472A5355A500898EC7 /* SequenceGame+MatchData.swift */,
+				87EAF8E42A60C19B00A9E63C /* Views */,
+				87EAF8E62A60C22200A9E63C /* Model */,
+				87EAF8E72A60C23000A9E63C /* ViewModel */,
+				87EAF8E82A60C23F00A9E63C /* GGame Center */,
 				87D1570F2A5352EB00898EC7 /* Assets.xcassets */,
 				87D157112A5352EB00898EC7 /* Preview Content */,
 			);
@@ -204,6 +190,96 @@
 				87D157282A5352EB00898EC7 /* SequenceCardsUITestsLaunchTests.swift */,
 			);
 			path = SequenceCardsUITests;
+			sourceTree = "<group>";
+		};
+		87EAF8E12A60C10B00A9E63C /* UtilityViews */ = {
+			isa = PBXGroup;
+			children = (
+				87EB481D2A5B51AA00248801 /* LongTapContextMenu.swift */,
+				87EAF8DD2A60C0CE00A9E63C /* SlimRectangle.swift */,
+				87EAF8D92A60C04100A9E63C /* ConfettiView.swift */,
+				87EAF8DF2A60C0F300A9E63C /* Triangle.swift */,
+				87EAF8DB2A60C0B700A9E63C /* RoundedCross.swift */,
+				87D157502A535A9900898EC7 /* WiggleModifier.swift */,
+			);
+			path = UtilityViews;
+			sourceTree = "<group>";
+		};
+		87EAF8E22A60C14000A9E63C /* GameRelatedViews */ = {
+			isa = PBXGroup;
+			children = (
+				87D1574A2A5356D900898EC7 /* GameView.swift */,
+				87B7A95D2A5B2C9F00DD927B /* SettingsView.swift */,
+				87D157542A53736F00898EC7 /* BoardCardView.swift */,
+				87D157562A53742500898EC7 /* BoardView.swift */,
+				87D1574E2A5359DD00898EC7 /* CardView.swift */,
+				87D1574C2A53599000898EC7 /* CoinView.swift */,
+				87D157522A535AB200898EC7 /* PlayerCardsView.swift */,
+			);
+			path = GameRelatedViews;
+			sourceTree = "<group>";
+		};
+		87EAF8E32A60C18600A9E63C /* TutorialRelatedViews */ = {
+			isa = PBXGroup;
+			children = (
+				87B6C0162A5E6928002C7CBA /* TutorialView.swift */,
+			);
+			path = TutorialRelatedViews;
+			sourceTree = "<group>";
+		};
+		87EAF8E42A60C19B00A9E63C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				87EAF8E52A60C1F500A9E63C /* CommunicationViews */,
+				87D1570D2A5352EA00898EC7 /* ContentView.swift */,
+				87A950BC2A5DDCB700D954DD /* HomeView.swift */,
+				87EAF8E22A60C14000A9E63C /* GameRelatedViews */,
+				87EAF8E12A60C10B00A9E63C /* UtilityViews */,
+				87EAF8E32A60C18600A9E63C /* TutorialRelatedViews */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		87EAF8E52A60C1F500A9E63C /* CommunicationViews */ = {
+			isa = PBXGroup;
+			children = (
+				87BE05982A5B33C20095FDC9 /* PlayerView.swift */,
+				879EF3F22A5FAB19000D9088 /* ResponseView.swift */,
+				87B6C0122A5E38F9002C7CBA /* MessageView.swift */,
+				87B6C0142A5E3922002C7CBA /* ChatView.swift */,
+			);
+			path = CommunicationViews;
+			sourceTree = "<group>";
+		};
+		87EAF8E62A60C22200A9E63C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				87D157352A5353D100898EC7 /* Suit.swift */,
+				87D157372A5353E900898EC7 /* Rank.swift */,
+				87D157392A5353F800898EC7 /* Deck.swift */,
+				87D1573B2A53541400898EC7 /* Card.swift */,
+				87D1573D2A53542600898EC7 /* Coin.swift */,
+				87D1573F2A53546500898EC7 /* Board.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		87EAF8E72A60C23000A9E63C /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				87D157412A53548F00898EC7 /* CleverJacksGame.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		87EAF8E82A60C23F00A9E63C /* GGame Center */ = {
+			isa = PBXGroup;
+			children = (
+				87D157432A53552300898EC7 /* SequenceGame+GKTurnBasedControllerDelegate.swift */,
+				87D157452A53555200898EC7 /* SequenceGame+GKTurnBasedEventListener.swift */,
+				87D157472A5355A500898EC7 /* SequenceGame+MatchData.swift */,
+			);
+			path = "GGame Center";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -336,6 +412,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				87EAF8DA2A60C04100A9E63C /* ConfettiView.swift in Sources */,
 				87D1570E2A5352EA00898EC7 /* ContentView.swift in Sources */,
 				87D1573C2A53541400898EC7 /* Card.swift in Sources */,
 				87D157382A5353E900898EC7 /* Rank.swift in Sources */,
@@ -349,6 +426,7 @@
 				87D157422A53548F00898EC7 /* CleverJacksGame.swift in Sources */,
 				87D157362A5353D100898EC7 /* Suit.swift in Sources */,
 				87B6C0132A5E38F9002C7CBA /* MessageView.swift in Sources */,
+				87EAF8E02A60C0F300A9E63C /* Triangle.swift in Sources */,
 				87D157462A53555200898EC7 /* SequenceGame+GKTurnBasedEventListener.swift in Sources */,
 				87B6C0172A5E6928002C7CBA /* TutorialView.swift in Sources */,
 				87D157552A53736F00898EC7 /* BoardCardView.swift in Sources */,
@@ -359,6 +437,8 @@
 				879EF3F32A5FAB19000D9088 /* ResponseView.swift in Sources */,
 				87D157402A53546500898EC7 /* Board.swift in Sources */,
 				87D157572A53742500898EC7 /* BoardView.swift in Sources */,
+				87EAF8DC2A60C0B700A9E63C /* RoundedCross.swift in Sources */,
+				87EAF8DE2A60C0CE00A9E63C /* SlimRectangle.swift in Sources */,
 				87D157512A535A9900898EC7 /* WiggleModifier.swift in Sources */,
 				87D1574B2A5356D900898EC7 /* GameView.swift in Sources */,
 				87A950BD2A5DDCB700D954DD /* HomeView.swift in Sources */,
@@ -543,7 +623,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1;
+				MARKETING_VERSION = 1.01;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kruthaydonapati.SequenceCards;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -581,7 +661,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1;
+				MARKETING_VERSION = 1.01;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kruthaydonapati.SequenceCards;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
