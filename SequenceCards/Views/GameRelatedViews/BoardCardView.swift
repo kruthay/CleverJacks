@@ -21,20 +21,15 @@ struct BoardCardView: View {
             .onTapGesture {
                 if game.canChooseThisCard(card) && game.myTurn {
                     withAnimation{
-                        if game.selectACard(card) != 0{
+                        if game.selectACard(card) != nil {
                             game.inSelectionCard = nil
                         }
                         impactHeavy.impactOccurred()
                     }
-                    
                 }
             }
     }
 }
-
-//#Preview {
-//    BoardCardView(game:CleverJacksGame(), card: Card(rank: .ace, suit: .clubs), size: CGSize(width: 30, height: 50))
-//}
 
 struct BoardCardViewPreviews: PreviewProvider {
     static var previews: some View {

@@ -24,10 +24,13 @@ struct Participant: Identifiable {
     var id = UUID()
     var player: GKPlayer
     var avatar = Image(systemName: "person")
-    var cardsOnHand : [Card] = []
-    var coin : Coin? = nil
-    var noOfSequences = 0
-    var turns = 0
+    var data = PlayerGameData()
+    struct PlayerGameData : Codable {
+        var cardsOnHand : [Card] = []
+        var coin : Coin? = nil
+        var noOfSequences = 0
+        var turns = 0
+    }
 }
 
 
@@ -35,12 +38,9 @@ struct Participant: Identifiable {
 struct GameData: Codable, CustomStringConvertible {
     var board: Board?
     var cardCurrentlyPlayed : Card?
-    var coins: [String: Coin]
-    var cardsOnHands : [String : [Card]]
-    var noOfSequences: [String: Int]
-    var totalTurns : [String: Int]
+    var allPlayersData : [String: Participant.PlayerGameData]
     var description: String {
-        return "Coins : \(coins) Board : \(String(describing: board)) totalTurns \(totalTurns)"
+        return "PlayerData : \(allPlayersData) Board : \(String(describing: board))"
     }
     // board ( may be cardstack inside the board )
 }
@@ -53,24 +53,12 @@ extension CleverJacksGame {
     ///
     /// - Returns: A representation of game data that contains only the game scores.
     func encodeGameData() -> Data? {
-        // Create a dictionary of items for each player.
-        var coins = [String: Coin]()
-        var cardsOnHands = [String : [Card]]()
-        var noOfSequences = [String : Int]()
-        var totalTurns = [String: Int]()
+        // Create a dictionary of data for each player.
+        var allPlayersData = [String: Participant.PlayerGameData]()
         // Add the local player's items.
         if let localPlayerName = localParticipant?.player.displayName {
-            if let cardsOnHand = localParticipant?.cardsOnHand {
-                cardsOnHands[localPlayerName] = cardsOnHand
-            }
-            if let noOfSequence = localParticipant?.noOfSequences {
-                noOfSequences[localPlayerName] = noOfSequence
-            }
-            if let coin = localParticipant?.coin {
-                coins[localPlayerName] = coin
-            }
-            if let turns = localParticipant?.turns {
-                totalTurns[localPlayerName] = turns
+            if let playerGameData = localParticipant?.data {
+                allPlayersData[localPlayerName] = playerGameData
             }
         }
         
@@ -78,38 +66,21 @@ extension CleverJacksGame {
         
         // Saving for persistance purposes, some values are not decoded
         if let opponentPlayerName = opponent?.player.displayName {
-            if let cardsOnHand = opponent?.cardsOnHand {
-                cardsOnHands[opponentPlayerName] = cardsOnHand
-            }
-            if let coin = opponent?.coin {
-                coins[opponentPlayerName] = coin
-            }
-            if let noOfSequence = opponent?.noOfSequences {
-                noOfSequences[opponentPlayerName] = noOfSequence
-            }
-            if let turns = opponent?.turns {
-                totalTurns[opponentPlayerName] = turns
+            if let playerGameData = opponent?.data {
+                allPlayersData[opponentPlayerName] = playerGameData
             }
         }
         
         if let opponent2PlayerName = opponent2?.player.displayName {
             
-            if let cardsOnHand = opponent2?.cardsOnHand {
-                cardsOnHands[opponent2PlayerName] = cardsOnHand
-            }
-            if let coin = opponent2?.coin {
-                coins[opponent2PlayerName] = coin
-            }
-            if let noOfSequence = opponent2?.noOfSequences {
-                noOfSequences[opponent2PlayerName] = noOfSequence
-            }
-            if let turns = opponent2?.turns {
-                totalTurns[opponent2PlayerName] = turns
+            if let playerGameData = opponent2?.data {
+                allPlayersData[opponent2PlayerName] = playerGameData
             }
         }
         
         
-        let gameData = GameData(board: board , cardCurrentlyPlayed: cardCurrentlyPlayed, coins: coins, cardsOnHands: cardsOnHands, noOfSequences: noOfSequences, totalTurns: totalTurns)
+        let gameData = GameData(board: board , cardCurrentlyPlayed: cardCurrentlyPlayed, allPlayersData: allPlayersData)
+        
         return encode(gameData: gameData)
     }
     
@@ -152,57 +123,31 @@ extension CleverJacksGame {
         
 
         //  we don't need items for now.
-        
-        // Set the local player's items.
         if let localPlayerName = localParticipant?.player.displayName {
             
-            if let coin = gameData.coins[localPlayerName] {
-                localParticipant?.coin = coin
+            if let playerGameData = gameData.allPlayersData[localPlayerName] {
+                localParticipant?.data = playerGameData
             }
-            if let cardsOnHand = gameData.cardsOnHands[localPlayerName]{
-                localParticipant?.cardsOnHand = cardsOnHand
-            }
-            if let noOfSequences = gameData.noOfSequences[localPlayerName]{
-                localParticipant?.noOfSequences = noOfSequences
-            }
-            if let turns = gameData.totalTurns[localPlayerName]{
-                localParticipant?.turns = turns
-            }
-            
         }
         
-        // Set the opponent's items.
+        // Add the opponent's items.
+        
+        // Saving for persistance purposes, some values are not decoded
         if let opponentPlayerName = opponent?.player.displayName {
-            
-            if let coin = gameData.coins[opponentPlayerName] {
-                opponent?.coin = coin
-            }
-            if let cardsOnHand = gameData.cardsOnHands[opponentPlayerName]{
-                opponent?.cardsOnHand = cardsOnHand
-            }
-            if let noOfSequences = gameData.noOfSequences[opponentPlayerName]{
-                opponent?.noOfSequences = noOfSequences
-            }
-            if let turns = gameData.totalTurns[opponentPlayerName]{
-                opponent?.turns = turns
+            if let playerGameData = gameData.allPlayersData[opponentPlayerName] {
+                opponent?.data = playerGameData
             }
         }
-        
         
         if let opponent2PlayerName = opponent2?.player.displayName {
             
-            if let coin = gameData.coins[opponent2PlayerName] {
-                opponent2?.coin = coin
-            }
-            if let cardsOnHand = gameData.cardsOnHands[opponent2PlayerName]{
-                opponent2?.cardsOnHand = cardsOnHand
-            }
-            if let noOfSequences = gameData.noOfSequences[opponent2PlayerName]{
-                opponent2?.noOfSequences = noOfSequences
-            }
-            if let turns = gameData.totalTurns[opponent2PlayerName]{
-                opponent2?.turns = turns
+            if let playerGameData = gameData.allPlayersData[opponent2PlayerName] {
+                opponent2?.data = playerGameData
             }
         }
+        
+        
+        // Set the opponent's items.
+
     }
 }

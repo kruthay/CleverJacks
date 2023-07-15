@@ -26,17 +26,18 @@ struct CardView: View {
                         Spacer()
                     }
                     
-                    if rank == .jack {
-                        if suit == .clubs || suit == .spades {
-                            Text(Image(systemName:"eyebrow"))
-                                .font(.system(size:size.height/5.5))
+                    if let faceImage = rank.faceImage {
+                        if card.isItATwoEyedJack {
+                            HStack {
+                                faceImage
+                                    .font(.system(size:size.height/5.5))
+                                faceImage
+                                    .font(.system(size:size.height/5.5))
+                            }
                         }
                         else {
-                            HStack{
-                                Text(Image(systemName:"eyebrow"))
-                                Text(Image(systemName:"eyebrow")) 
-                            }
-                            .font(.system(size:size.height/7))
+                            faceImage
+                                .font(.system(size:size.height/5.5))
                         }
                     }
                     else {
@@ -50,7 +51,7 @@ struct CardView: View {
                 }
                 
             }
-            CoinView(coin: card.coin ?? .red, width: size.height/3.5)
+            CoinView(coin: card.coin ?? .special, width: size.height/3.5)
                 .opacity( card.coin != nil ? 1 : 0 )
             
         }
@@ -66,13 +67,10 @@ struct CardView: View {
     }
 }
 
-//#Preview {
-//    CardView(card: Card(rank: .jack, suit: .hearts), size:CGSize(width: 30, height: 50))
-//}
 
     struct CardViewPreviews: PreviewProvider {
         static var previews: some View {
-            CardView(card: Card(rank: .jack, suit: .hearts), size:CGSize(width: 30, height: 50))
+            CardView(card: Card(rank: .jack, suit: .diamonds), size:CGSize(width: 30, height: 50))
         }
     }
 

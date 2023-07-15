@@ -50,11 +50,13 @@ import SwiftUI
     
     @Published var cardCurrentlyPlayed : Card? = nil
     
-    
     var numberOfPlayers : Int {
         board?.numberOfPlayers ?? minPlayers
     }
-        
+    
+    var boardCards: [[Card]] {
+        board?.boardCards ?? Board(classicView: true, numberOfPlayers: 2).boardCards
+    }
     
     /// The local player's name.
     var myName: String {
@@ -84,58 +86,49 @@ import SwiftUI
         opponent2?.avatar ?? Image(systemName: "person.crop.circle")
     }
     
+    var sequencesChanged: Int = 0
+    
 
     var myNoOfSequences : Int {
-        get { localParticipant?.noOfSequences ?? 0 }
-        set { localParticipant?.noOfSequences = newValue}
+        get {localParticipant?.data.noOfSequences ?? 0}
+        set {localParticipant?.data.noOfSequences = newValue}
     }
     
     var opponentNoOfSequences : Int {
-        get { opponent?.noOfSequences ?? 0 }
-        set { opponent?.noOfSequences = newValue }
+        opponent?.data.noOfSequences ?? 0
     }
     
     var opponent2NoOfSequences : Int {
-        get { opponent2?.noOfSequences ?? 0 }
-        set { opponent2?.noOfSequences = newValue }
+        opponent2?.data.noOfSequences ?? 0
     }
     
     
     var myCards : [Card] {
-        get { localParticipant?.cardsOnHand ?? [] }
-        set { localParticipant?.cardsOnHand = newValue }
+        localParticipant?.data.cardsOnHand ?? []
     }
     
     var myCoin : Coin? {
-        get { localParticipant?.coin }
-        set { localParticipant?.coin = newValue }
+        localParticipant?.data.coin ?? .blue
     }
     var opponentCoin : Coin? {
-        get { opponent?.coin }
-        set { opponent?.coin = newValue }
+        opponent?.data.coin ?? .green
     }
     
     var opponent2Coin : Coin? {
-        get { opponent2?.coin }
-        set { opponent2?.coin = newValue }
+        opponent2?.data.coin ?? .red
     }
     
     var myTurns : Int {
-        get { localParticipant?.turns ?? 0 }
-        set { localParticipant?.turns = newValue }
+        localParticipant?.data.turns ?? 0
     }
     
     var opponentTurns : Int {
-        get { opponent?.turns ?? 0 }
-        set { opponent?.turns = newValue }
+        opponent?.data.turns ?? 0
     }
     
     var opponent2Turns : Int {
-        get { opponent2?.turns ?? 0 }
-        set { opponent2?.turns = newValue }
+        opponent2?.data.turns ?? 0
     }
-    
-    var currentPlayerName = ""
     
         
     /// The root view controller of the window.
@@ -144,59 +137,72 @@ import SwiftUI
         return windowScene?.windows.first?.rootViewController
     }
     
+    func isItAValidSelectionCard(_ card: Card) -> Bool {
+        if card.belongsToASequence {
+            return false
+        }
+        else if card.coin == .special {
+            return false
+        }
+        return  true
+    }
     
     
-    func selectACard(_ card: Card) -> Int { // Refactor
+    
+    func selectACard(_ card: Card) -> Card? {
         
         
         
-        print("Local Player \(localParticipant?.player.displayName ?? "SomeName")")
-        print("Opponent Player \(opponent?.player.displayName ?? "SomeOtherName")")
-//        print("Opponent2 Player \(opponent2?.player.displayName ?? "SomeOtherOtherName")")
-//        
-        print("localParticipant' coin \(localParticipant?.coin ?? .special) ")
-        print("Opponents' coin \(opponent?.coin ?? .special) ")
-//        print("Opponents2' coin \(opponent2?.coin ?? .special) ")
-        if card.belongsToASequence || card.coin == .special || localParticipant?.coin == .special {
-            print("Something is Wrong, Coin shouldn't be Special")
-            return 0
+        print("In selectACard")
+        print("cardStack's count \(String(describing: board?.cardStack.count))")
+
+        if !isItAValidSelectionCard(card) {
+            matchMessage = "Invalid Card"
+            return nil
             // throws an error saying card is already a part of sequence can't change it
         }
         
-        guard let selectingCard = inSelectionCard, let index = board?.boardCards.indicesOf(x: card)  else {
+        guard let selectingCard = inSelectionCard, let index = board?.boardCards.indicesOf(x: card), let cardsOnHand = localParticipant?.data.cardsOnHand  else {
             print("Something is Wrong, Card should be in the range and selectingcard shouldn't be nill")
-            return 0
+            return nil
             // throws an alert saying select a card
         }
-        
-        if !myCards.contains(selectingCard) {
-            print("Something is Wrong Please Select Again")
-            return 0
+
+        if !cardsOnHand.contains(selectingCard) {
+            matchMessage = "Try Again"
+            return nil
         }
         
-        if let indexTobeRemoved = (localParticipant?.cardsOnHand.firstIndex(of: selectingCard)) {
-            localParticipant?.cardsOnHand.remove(at: indexTobeRemoved)
+        if let indexTobeRemoved = localParticipant?.data.cardsOnHand.firstIndex(of: selectingCard) {
+            localParticipant?.data.cardsOnHand.remove(at: indexTobeRemoved)
             if let card = board?.cardStack.popLast() {
-                localParticipant?.cardsOnHand.append(card)
+                print("Last Card from the stack the SelectACard\(card)")
+                localParticipant?.data.cardsOnHand.append(card)
+            }
+            else {
+                print("Something is Wrong")
+                matchMessage = "Match Tied"
+                return nil
             }
         }
         else {
-            return 0
+            matchMessage = "Try Again"
+            return nil
         }
         
         if card.coin == nil {
             if myTurn {
-                board?.boardCards[index.0][index.1].coin = localParticipant?.coin
+                board?.boardCards[index.0][index.1].coin = localParticipant?.data.coin
             }// redo
             else {
-                if localParticipant?.coin == .special {
+                if localParticipant?.data.coin == .special {
                     print("Local Participant coin cannot be special")
                 }
                 print("Error")
             }
         }
         
-        else if card.coin == opponent?.coin || card.coin == opponent2?.coin {
+        else if card.coin == opponent?.data.coin || card.coin == opponent2?.data.coin {
             if myTurn {
                 board?.boardCards[index.0][index.1].coin = nil
             }
@@ -206,31 +212,28 @@ import SwiftUI
             
         }
         else {
-            return 0
+            return nil
         }
-        
-        
         cardCurrentlyPlayed = selectingCard
         if let numberOfSequences = board?.getNumberOfSequences(index: index) {
-            localParticipant?.noOfSequences +=  numberOfSequences
+            localParticipant?.data.noOfSequences +=  numberOfSequences
+            sequencesChanged += numberOfSequences
         }
         
         Task {
             await takeTurn()
         }
-        return 1
+        print("Out SelectACard")
+        return selectingCard
     }
     
     func refresh() async {
-        print("Is Refreshing")
         guard currentMatchID != nil else {
-            print("No Refresh")
             playingGame = false
             isLoading.toggle()
             return
         }
         do {
-            print("Trying to Refresh")
             let match = try await GKTurnBasedMatch.load(withID: currentMatchID!)
             if myTurn == false {
                 if let whichPlayersTurn = match.currentParticipant?.player {
@@ -242,10 +245,8 @@ import SwiftUI
             isLoading.toggle()
         }
         catch {
-            print("Took a lot of time for loading")
             print("Error: \(error.localizedDescription).")
         }
-        print("Refreshed")
     }
     
     func canChooseThisCard(_ card: Card) -> Bool {
@@ -256,16 +257,11 @@ import SwiftUI
             return false
         }
         
-        if selectingCard.isASpecialCard   {
-            if card.coin == nil && (selectingCard.suit == .diamonds || selectingCard.suit == .hearts){
+        if selectingCard.isItATwoEyedJack && card.coin == nil   {
                 return true
-            }
-            else if card.coin != nil && card.coin != .special && card.coin != localParticipant?.coin && (selectingCard.suit == .clubs || selectingCard.suit == .spades) {
+        }
+        else if selectingCard.isItAOneEyedJack && card.coin != nil && card.coin != .special && card.coin != localParticipant?.data.coin {
                 return true
-            }
-            else {
-                return false
-            }
         }
         return selectingCard.rank == card.rank && selectingCard.suit == card.suit && card.coin == nil
     }
@@ -275,35 +271,19 @@ import SwiftUI
     /// Resets the game interface to the content view.
     func resetGame() {
         // Reset the game data.
+        
         playingGame = false
         youWon = false
         youLost = false
-
-
         myTurn = false
-        
-        // Should Encapsulate Each players information. 
-        myCoin = nil
-        myCards = []
-        myNoOfSequences = 0
-        myTurns = 0
-
+        localParticipant?.data = Participant.PlayerGameData()
         opponent = nil
-        opponentCoin = nil
-        opponentNoOfSequences = 0
-        opponentTurns = 0
-
         opponent2 = nil
-        opponent2Coin = nil
-        opponent2NoOfSequences = 0
-        opponent2Turns = 0
-
-        
         currentMatchID = nil
         inSelectionCard = nil
         cardCurrentlyPlayed = nil
-
         board = nil
+        sequencesChanged = 0
     }
     
     /// Authenticates the local player and registers for turn-based events.
@@ -436,7 +416,7 @@ import SwiftUI
                 // Otherwise, take the turn and pass to the next participants.
                 
                 // Update the game data.
-                myTurns += 1
+                localParticipant?.data.turns += 1
                 
                 // Can't use here because the cards has to be selected for you to take turn and turn can be taken only after selection
                 // Can't put it in selection, have to put it before selection.
@@ -464,7 +444,7 @@ import SwiftUI
                 
                 
                 if let requiredNoOfSequences = board?.requiredNoOfSequences {
-                    if localParticipant?.noOfSequences == requiredNoOfSequences {
+                    if localParticipant?.data.noOfSequences == requiredNoOfSequences {
                         match.currentParticipant?.matchOutcome = .won
                         for participant in nextParticipants {
                             participant.matchOutcome = .lost
@@ -472,6 +452,13 @@ import SwiftUI
                         try await match.endMatchInTurn(withMatch: gameData)
                         youWon = true
                     }
+                }
+                else if board?.cardStack.count == 0 {
+                    match.currentParticipant?.matchOutcome = .tied
+                    for participant in nextParticipants {
+                        participant.matchOutcome = .tied
+                    }
+                    try await match.endMatchInTurn(withMatch: gameData)
                 }
                 
                 // Set the match message.

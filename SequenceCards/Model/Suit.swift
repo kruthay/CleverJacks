@@ -6,7 +6,6 @@
 //
 
 import Foundation
-
 enum Suit: Int, CaseIterable, Codable {
     case hearts = 1
     case clubs = 2
@@ -24,6 +23,7 @@ enum Suit: Int, CaseIterable, Codable {
             return "♦️"
         }
     }
+    
     
 }
 

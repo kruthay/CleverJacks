@@ -13,7 +13,7 @@ struct BoardView: View {
     let impactHeavy = UIImpactFeedbackGenerator(style: .heavy)
     var body: some View {
         Grid{
-            ForEach(game.board?.boardCards ?? Board(classicView: true, numberOfPlayers: 2).boardCards, id: \.self){ boardRow in
+            ForEach(game.boardCards, id: \.self){ boardRow in
                 GridRow {
                     ForEach(boardRow) { card in
                         BoardCardView(game: game, card: card, size: size)
@@ -28,11 +28,6 @@ struct BoardView: View {
     
 }
 
-
-
-//#Preview {
-//    BoardView(game: CleverJacksGame(), size: CGSize(width: 30, height: 50))
-//}
 
 struct BoardViewPreviews: PreviewProvider {
     static var previews: some View {

@@ -14,7 +14,7 @@ struct Card : Identifiable, Equatable, Hashable, CustomStringConvertible, Codabl
     
     var id = UUID()
     
-    var coin: Coin? = nil
+    var coin: Coin?
     
     var belongsToASequence = false
     
@@ -22,21 +22,14 @@ struct Card : Identifiable, Equatable, Hashable, CustomStringConvertible, Codabl
         return ("\(rank?.symbol ?? "No Rank") : \(suit?.symbol ?? "No Suit")")
     }
     
-    var isASpecialCard : Bool { rank == .jack }
+    var isItAOneEyedJack : Bool { rank == .jack && ( suit == .hearts || suit == .spades ) }
     
-    init(rank: Rank, suit: Suit) {
+    var isItATwoEyedJack : Bool { rank == .jack && ( suit == .diamonds || suit == .clubs ) }
+    
+    
+    init(rank: Rank? = nil, suit: Suit? = nil, coin: Coin? = nil) {
         self.rank = rank
         self.suit = suit
-    }
-    
-    init(){
-        self.rank = nil
-        self.suit = nil
-        self.coin = nil
-    }
-    init(coin : Coin){
-        self.rank = nil
-        self.suit = nil
         self.coin = coin
     }
 }

@@ -12,7 +12,7 @@ import GameKit
 struct ChatView: View {
     @ObservedObject var game: CleverJacksGame
     @State private var typingMessage: String = ""
-    
+    var id = 10
     var body: some View {
         VStack {
             // Show the opponent's name in the heading.
@@ -25,7 +25,6 @@ struct ChatView: View {
                 Text(game.opponentName)
             }
             .padding(10)
-            
             // View sent messages here.
             ScrollView {
                 LazyVStack(alignment: .trailing, spacing: 6) {
@@ -35,10 +34,9 @@ struct ChatView: View {
                 }
                 .padding(10)
             }
-            
             // Enter text messages here.
             HStack {
-                TextField("Message...", text: $typingMessage)
+                TextField("Message...\(id)", text: $typingMessage)
                     .onSubmit {
                         Task {
                             await game.sendMessage(content: typingMessage)
@@ -51,7 +49,6 @@ struct ChatView: View {
             .frame(minHeight: 50)
             .padding()
         }
-        .padding()
     }
 }
 

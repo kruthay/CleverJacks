@@ -9,7 +9,6 @@ import SwiftUI
 
 struct MessageView: View {
     var message: Message
-    
     var body: some View {
         Text(message.content)
             .padding(10)

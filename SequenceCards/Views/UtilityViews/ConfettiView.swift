@@ -72,7 +72,8 @@ public struct ConfettiCannon: View {
     ///   - radius: explosion radius
     ///   - repetitions: number of repetitions of the explosion
     ///   - repetitionInterval: duration between the repetitions
-    public init(counter:Binding<Int>,
+    public init(
+        counter:Binding<Int>,
          num:Int = 20,
          confettis:[ConfettiType] = ConfettiType.allCases,
          colors:[Color] = [.blue, .red, .green, .yellow, .pink, .purple, .orange],
@@ -153,7 +154,7 @@ struct ConfettiContainer: View {
 
     var body: some View{
         ZStack{
-            ForEach(0...confettiConfig.num-1, id:\.self){_ in
+            ForEach(0...confettiConfig.num, id:\.self){_ in
                 ConfettiView(confettiConfig: confettiConfig)
             }
         }

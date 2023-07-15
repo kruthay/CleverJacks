@@ -14,6 +14,7 @@ struct Board : Codable, CustomStringConvertible {
         return "allCoins: \(allCoins), countOfCardStack : \(cardStack.count)"
     }
     
+    var id = UUID()    
     var boardCards =  Array(repeating: Array(repeating: Card(), count: 10), count: 10)
     var cardStack : [Card] = []
     var allCoins : [Coin] = Coin.allCases.filter { $0.self != .special}
@@ -23,8 +24,9 @@ struct Board : Codable, CustomStringConvertible {
     
     init(classicView : Bool = true, numberOfPlayers : Int) {
         self.numberOfPlayers = numberOfPlayers
-        cardStack = [Deck(), Deck()].map { $0.cards }.reduce([], +).shuffled()
-        
+        let decks = [Deck(), Deck()]
+        print("Deck Ids \(decks[0].id) , \(decks[1].id)")
+        cardStack = decks.map { $0.cards }.reduce([], +).shuffled()
         if numberOfPlayers % 3 == 0 {
             requiredNoOfSequences = 1
         }
@@ -56,11 +58,16 @@ struct Board : Codable, CustomStringConvertible {
     
     
     mutating func dealCards(noOfCardsToDeal: Int) -> [Card]{
-        var cards : [Card] = []
+        var dealtCards : [Card] = []
         for _ in 0...noOfCardsToDeal {
-            cards.append(cardStack.removeLast())
+            print("CardStacksCount in deakCards \(cardStack.count)")
+            if let card = cardStack.popLast() {
+                dealtCards.append(card)
+            } else {
+                print("CardStack shouldn't be empty")
+            }
         }
-        return cards
+        return dealtCards
     }
     
     mutating func uniqueCoin() -> Coin {

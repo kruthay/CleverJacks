@@ -13,9 +13,9 @@ struct ResponseView: View {
     @State private var showMessages: Bool = false
     @ObservedObject var game: CleverJacksGame
     var proxy : GeometryProxy
-    let timer = Timer.publish(every: 6, on: .current, in: .common).autoconnect()
+    @State var isItAVStack = false
     var body: some View {
-        
+        AdaptiveStack(isItAVStack: isItAVStack) {
             Spacer()
             Button("Message") {
                 withAnimation(.easeInOut(duration: 1)) {
@@ -27,53 +27,46 @@ struct ResponseView: View {
                 presentationMode.wrappedValue.dismiss()
             }
             Spacer()
-                if game.myTurn {
-                    if let matchMessage = game.matchMessage {
-                        HStack {
-                            Text(matchMessage)
-                        }
-                        .onAppear {
-                            Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { timer in
-                                withAnimation(.easeInOut(duration: 5)) {
-                                    game.matchMessage = nil
-                                }
+            if game.myTurn {
+                if let matchMessage = game.matchMessage {
+                    HStack {
+                        Text(matchMessage)
+                    }
+                    .onAppear {
+                        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { timer in
+                            withAnimation(.easeInOut(duration: 2)) {
+                                game.matchMessage = nil
                             }
-                            AudioServicesPlaySystemSound(1106)
                         }
+                        AudioServicesPlaySystemSound(1106)
                     }
                 }
-                Spacer()
-                
-                // Send text messages as exchange items.
-                
+            }
+            Spacer()
+            // Send text messages as exchange items.
             if let card = game.cardCurrentlyPlayed {
                 CardView(card: card, size:CGSize(width: proxy.size.width/16, height: proxy.size.height/20) )
             }
             else {
                 CardView(card: Card(coin:.special), size:CGSize(width: proxy.size.width/16, height: proxy.size.height/20))
             }
-            
             // Send a reminder to take their turn.
             Spacer()
             Spacer()
-            Button {
+            Button("Remainder") {
                 Task {
                     await game.sendReminder()
                 }
                 AudioServicesPlaySystemSound(1105)
-            }  label: {
-                Label(
-                    title: { },
-                    icon: { Image(systemName: "bell.and.waves.left.and.right")  }
-                )
             }
+            .buttonStyle(RemainderButtonStyle())
             .disabled(game.myTurn)
-        Spacer()
-            .sheet(isPresented: $showMessages) {
-                ChatView(game: game)
-            }
-            
-
+            Spacer()            
+        }
+        .sheet(isPresented: $showMessages) {
+            ChatView(game: game)
+        }
+        
     }
 }
 
@@ -95,3 +88,13 @@ struct MessageButtonStyle: ButtonStyle {
         .foregroundColor(Color.blue)
     }
 }
+
+struct RemainderButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        HStack {
+            Image(systemName: configuration.isPressed ? "bell.and.waves.left.and.right.fill" : "bell.and.waves.left.and.right")
+        }
+        .foregroundColor(Color.blue)
+    }
+}
+

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import SwiftUI
 enum Rank :  Int, CaseIterable, Codable {
     case two = 2 , three, four, five, six, seven, eight, nine, ten
     case jack = 11, queen, king
@@ -39,6 +39,19 @@ enum Rank :  Int, CaseIterable, Codable {
             return " K"
         case .ace:
             return " A"
+        }
+    }
+    
+    var faceImage: Text? {
+        switch self{
+        case .king:
+            return Text(Image(systemName:"crown"))
+        case .queen:
+            return Text(Image(systemName:"crown"))
+        case .jack:
+            return Text(Image(systemName:"eyebrow"))
+        default :
+            return nil
         }
     }
     
