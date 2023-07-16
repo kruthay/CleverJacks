@@ -498,14 +498,10 @@ import SwiftUI
                 }
                 
                 nextParticipants.sort() {
-                    
-                    if $0.status.rawValue < $1.status.rawValue {
-                        return true
+                    if let firstTurnDate = $0.lastTurnDate, let secondTurnDate = $1.lastTurnDate {
+                        return firstTurnDate < secondTurnDate
                     }
-                    else if $0.lastTurnDate ?? Date(timeIntervalSinceNow: TimeInterval()) <  $1.lastTurnDate ?? Date(timeIntervalSince1970: TimeInterval()) {
-                        return true
-                    }
-                    return false
+                    return $0.status.rawValue < $1.status.rawValue 
                 }
                 
                 for participant in nextParticipants {
