@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TopMenuView: View {
     @ObservedObject var game: CleverJacksGame
+    @State private var showForfeitAlert: Bool = false
     var body: some View {
         HStack {
             Button("Back") {
@@ -32,13 +33,23 @@ struct TopMenuView: View {
             }
             Spacer()
             Button("Forfeit", role: .destructive) {
-                Task {
-                    await game.forfeitMatch()
-                }
+                showForfeitAlert = true
             }
             .hoverEffect(.lift)
         }
         .padding(.horizontal)
+        .alert(isPresented:$showForfeitAlert) {
+            Alert(
+                title: Text("Are you sure you want to forfeit this match?"),
+                message: Text("Your opponent will be awarded the win"),
+                primaryButton: .destructive(Text("Forfeit")) {
+                    Task {
+                        await game.forfeitMatch()
+                    }
+                },
+                secondaryButton: .cancel()
+            )
+        }
 
     }
 }

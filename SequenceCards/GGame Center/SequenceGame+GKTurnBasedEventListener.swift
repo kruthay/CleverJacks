@@ -279,6 +279,7 @@ extension CleverJacksGame : GKTurnBasedEventListener{
             }
 
         default:
+            print("Match Status is unknown")
             print("Status unknown.")
         }
         print("Out Player")

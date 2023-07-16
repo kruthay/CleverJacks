@@ -39,6 +39,11 @@ struct GameOverAlert: View {
                 
             }
             .frame(width: size.width, height: size.height/10, alignment: .bottom)
+            .onAppear {
+                Task {
+                   await game.refresh()
+                }
+            }
         }
         
     }

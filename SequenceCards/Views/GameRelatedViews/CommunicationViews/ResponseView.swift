@@ -68,6 +68,7 @@ struct ResponseView: View {
             .disabled(game.myTurn)
             Spacer()            
         }
+        
     }
 }
 

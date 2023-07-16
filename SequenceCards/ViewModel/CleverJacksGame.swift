@@ -405,6 +405,34 @@ import SwiftUI
             
             // Remove all the matches.
             for match in existingMatches {
+                if match.status == .open {
+                    // Forfeit the match while it's the local player's turn.
+                    if match.currentParticipant?.player == localParticipant?.player {
+                        // The game updates the data when turn-based events occur, so this game instance should
+                        // have the current data.
+                        
+                        // Create the game data to store in Game Center.
+                        let gameData = (encodeGameData() ?? match.matchData)!
+                        
+                        // Remove the participants who quit and the current participant.
+                        let nextParticipants = match.participants.filter {
+                            ($0.status != .done) && ($0 != match.currentParticipant)
+                        }
+                        
+                        // Forfeit the match.
+                        try await match.participantQuitInTurn(
+                            with: GKTurnBasedMatch.Outcome.quit,
+                            nextParticipants: nextParticipants,
+                            turnTimeout: GKTurnTimeoutDefault,
+                            match: gameData)
+                    } else {
+                        // Forfeit the match while it's not the local player's turn.
+                        try await match.participantQuitOutOfTurn(with: GKTurnBasedMatch.Outcome.quit)
+                        
+                    }
+                    
+                    
+                }
                 try await match.remove()
             }
         } catch {
@@ -488,6 +516,8 @@ import SwiftUI
                         }
                         try await match.endMatchInTurn(withMatch: gameData)
                         youWon = true
+                        
+                        print("Whats Happening")
                     }
                 }
                 else if board?.cardStack.count == 0 {
@@ -513,6 +543,7 @@ import SwiftUI
         } catch {
             // Handle the error.
             print("Error: \(error.localizedDescription).")
+            print("Is there an error after winning.")
             resetGame()
         }
     }
