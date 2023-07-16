@@ -36,6 +36,7 @@ struct TopMenuView: View {
                 showForfeitAlert = true
             }
             .hoverEffect(.lift)
+            .disabled(game.isGameOver)
         }
         .padding(.horizontal)
         .alert(isPresented:$showForfeitAlert) {

@@ -61,6 +61,7 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                         
                         // Notify the local player when the match ends.
                         youWon = true
+                        isGameOver = true
                     }
                     else if (currentMatchID == nil) || (currentMatchID == match.matchID) {
                         // If the local player isn't playing another match or is playing this match,
@@ -83,7 +84,7 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                         // If the player starts the match, the opponent hasn't accepted the invitation and has no player object.
                         
                         
-                     //  When the Local player is the invitee, participants would be empty and it's time to initialise the local player's coin.
+                        //  When the Local player is the invitee, participants would be empty and it's time to initialise the local player's coin.
                         
                         
                         if let gameData = decode(matchData: match.matchData!) {
@@ -147,6 +148,7 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                             if match.currentParticipant?.matchOutcome == .lost {
                                 print("You lose in this.. ")
                                 youLost = true
+                                isGameOver = true
                             }
                             // Encode the data here
                             
@@ -156,7 +158,7 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                                 print("LastCard that is supposed to be on the cardStack \(lastcard) " )
                             }
                         }
-
+                        
                         currentMatchID = match.matchID
                         // Display the match message.
                         matchMessage = match.message
@@ -176,6 +178,7 @@ extension CleverJacksGame : GKTurnBasedEventListener{
             Task {
                 do {
                     playingGame = true
+                    isGameOver = true
                     youWon = match.currentParticipant?.matchOutcome == .won ? true : false
                     youLost = !youWon
                     print("Playing Game \(playingGame), youWon \(youWon) " )
@@ -189,13 +192,13 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                             if (participant.status != .matching) {
                                 if let player = participant.player {
                                     if opponent == nil && opponent2?.player != player {
-//                                        // Load the opponent's avatar and create the opponent object. Error When Loading
-//                                        let image = try await player.loadPhoto(for: GKPlayer.PhotoSize.small)
+                                        //                                        // Load the opponent's avatar and create the opponent object. Error When Loading
+                                        //                                        let image = try await player.loadPhoto(for: GKPlayer.PhotoSize.small)
                                         opponent = Participant(player: player,
                                                                avatar: Image(systemName: "person.circle"))
                                     }
                                     else if opponent2 == nil && gameData.board?.numberOfPlayers ?? 0 > 2 && opponent?.player != player {
-//                                        let image = try await player.loadPhoto(for: GKPlayer.PhotoSize.small)
+                                        //                                        let image = try await player.loadPhoto(for: GKPlayer.PhotoSize.small)
                                         opponent2 =  Participant(player: player,
                                                                  avatar: Image(systemName: "person.circle"))
                                     }
@@ -226,13 +229,13 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                             if (participant.status != .matching) {
                                 if let player = participant.player {
                                     if opponent == nil && opponent2?.player != player {
-//                                        // Load the opponent's avatar and create the opponent object.
-//                                        let image = try await player.loadPhoto(for: GKPlayer.PhotoSize.small)
+                                        //                                        // Load the opponent's avatar and create the opponent object.
+                                        //                                        let image = try await player.loadPhoto(for: GKPlayer.PhotoSize.small)
                                         opponent = Participant(player: player,
                                                                avatar: Image(systemName: "person.circle"))
                                     }
                                     else if opponent2 == nil && gameData.board?.numberOfPlayers ?? 0 > 2 && opponent?.player != player {
-//                                        let image = try await player.loadPhoto(for: GKPlayer.PhotoSize.small)
+                                        //                                        let image = try await player.loadPhoto(for: GKPlayer.PhotoSize.small)
                                         opponent2 =  Participant(player: player,
                                                                  avatar: Image(systemName: "person.circle"))
                                     }
@@ -247,7 +250,7 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                     print("Match ended.")
                 }
             }
-
+            
         default:
             print("Match Status is unknown")
             print("Status unknown.")
@@ -271,6 +274,7 @@ extension CleverJacksGame : GKTurnBasedEventListener{
     func player(_ player: GKPlayer, matchEnded match: GKTurnBasedMatch) {
         // Notify the local participant when the match ends.
         youLost = true
+        isGameOver = true
         //        GKNotificationBanner.show(withTitle: "Match Ended Title",
         //                                  message: "This is a GKNotificationBanner message.", completionHandler: nil)
         //
@@ -340,21 +344,21 @@ extension CleverJacksGame : GKTurnBasedEventListener{
             
             for exchange in completedExchanges where exchange.message == "This is my exchange item request."{
                 // For all exchange item requests, transfer an item from the recipient to the sender.
-//                if exchange.sender.player == localParticipant?.player {
-//                    // Transfer an item from the opponent to the local player.
-//                    opponent?.items -= 1
-//                    localParticipant?.items += 1
-//                } else {
-//                    // Transfer an item from the local player to the opponent.
-//                    localParticipant?.items -= 1
-//                    opponent?.items += 1
-//                }
+                //                if exchange.sender.player == localParticipant?.player {
+                //                    // Transfer an item from the opponent to the local player.
+                //                    opponent?.items -= 1
+                //                    localParticipant?.items += 1
+                //                } else {
+                //                    // Transfer an item from the local player to the opponent.
+                //                    localParticipant?.items -= 1
+                //                    opponent?.items += 1
+                //                }
                 // For text message exchange requests, do nothing.
             }
- 
+            
             // Resolve the game data to pass to all participants.
             let gameData = (encodeGameData() ?? match.matchData)!
-
+            
             // Save and forward the game data with the latest items.
             Task {
                 try await match.saveMergedMatch(gameData, withResolvedExchanges: completedExchanges)

@@ -25,6 +25,8 @@ import SwiftUI
     @Published var youWon = false
     @Published var youLost = false
     
+    @Published var isGameOver = false
+    
     // The match information.
     @Published var currentMatchID: String? = nil
     @Published var maxPlayers = 2
@@ -41,14 +43,14 @@ import SwiftUI
     
     @Published var noOfCardsToDeal = 6
     // The messages between players.
-//    var messages: [Message] = []
+    //    var messages: [Message] = []
     @Published var messages: [Message] = []
     @Published var unViewedMessages : [Message] = []
     @Published var showMessages: Bool = false
     @Published var matchMessage: String? = nil
     
     var showDiscard : Bool {
-    checkToDiscardtheCard(inSelectionCard)
+        checkToDiscardtheCard(inSelectionCard)
     }
     
     @Published var board : Board? = nil
@@ -68,7 +70,7 @@ import SwiftUI
     var myName: String {
         GKLocalPlayer.local.displayName
     }
-        
+    
     /// The opponent's name.
     var opponentName: String {
         opponent?.player.displayName ?? "Opponent"
@@ -94,7 +96,7 @@ import SwiftUI
     
     var sequencesChanged: Int = 0
     
-
+    
     var myNoOfSequences : Int {
         get {localParticipant?.data.noOfSequences ?? 0}
         set {localParticipant?.data.noOfSequences = newValue}
@@ -136,7 +138,7 @@ import SwiftUI
         opponent2?.data.turns ?? 0
     }
     
-        
+    
     /// The root view controller of the window.
     var rootViewController: UIViewController? {
         let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
@@ -156,24 +158,19 @@ import SwiftUI
     
     
     func selectACard(_ card: Card) -> Card? {
-        
-        
-        
         print("In selectACard")
         print("cardStack's count \(String(describing: board?.cardStack.count))")
-
         if !isItAValidSelectionCard(card) {
             matchMessage = "Invalid Card"
             return nil
             // throws an error saying card is already a part of sequence can't change it
         }
-        
         guard let selectingCard = inSelectionCard, let index = board?.boardCards.indicesOf(x: card), let cardsOnHand = localParticipant?.data.cardsOnHand  else {
             print("Something is Wrong, Card should be in the range and selectingcard shouldn't be nill")
             return nil
             // throws an alert saying select a card
         }
-
+        
         if !cardsOnHand.contains(selectingCard) {
             matchMessage = "Try Again"
             return nil
@@ -241,7 +238,7 @@ import SwiftUI
         }
         do {
             let match = try await GKTurnBasedMatch.load(withID: currentMatchID!)
-            if let aPlayerWhoIsStillMatching = match.participants.firstIndex(where: {$0.status != .active || $0.status != .done}){
+            if match.participants.firstIndex(where: {$0.status != .active || $0.status != .done}) != nil {
                 matchMessage = "Waiting for all players"
             }
             if myTurn == false && localParticipant?.data.coin != nil {
@@ -264,16 +261,15 @@ import SwiftUI
         guard let selectingCard = inSelectionCard else {
             return false
         }
-        
         if card.belongsToASequence {
             return false
         }
         
         if selectingCard.isItATwoEyedJack && card.coin == nil   {
-                return true
+            return true
         }
         else if selectingCard.isItAOneEyedJack && card.coin != nil && card.coin != .special && card.coin != localParticipant?.data.coin {
-                return true
+            return true
         }
         return selectingCard.hasASameFaceAs(card) && card.coin == nil
     }
@@ -320,6 +316,7 @@ import SwiftUI
         playingGame = false
         youWon = false
         youLost = false
+        isGameOver = false
         myTurn = false
         localParticipant?.data = Participant.PlayerGameData()
         opponent = nil
@@ -380,7 +377,7 @@ import SwiftUI
     ///- Tag:startMatch
     func startMatch(_ playersToInvite: [GKPlayer]? = nil) {
         // Initialize the match data.
-
+        
         print("StartMatch is Called.")
         resetGame()
         board = Board(classicView: classicView, numberOfPlayers: minPlayers)
@@ -395,7 +392,7 @@ import SwiftUI
             request.recipients = playersToInvite
         }
         
-//        print("No Of Players \(minPlayers)")
+        //        print("No Of Players \(minPlayers)")
         // Present the interface where the player selects opponents and starts the game.
         let viewController = GKTurnBasedMatchmakerViewController(matchRequest: request)
         
@@ -499,6 +496,7 @@ import SwiftUI
                 
                 // Notify the local player when the match ends.
                 youWon = true
+                isGameOver = true
             } else {
                 // Otherwise, take the turn and pass to the next participants.
                 
@@ -507,12 +505,12 @@ import SwiftUI
                 
                 // Can't use here because the cards has to be selected for you to take turn and turn can be taken only after selection
                 // Can't put it in selection, have to put it before selection.
-                                
+                
                 // *** UPDATE THE BOARD ****
                 // Create the game data to store in Game Center.
                 let gameData = (encodeGameData() ?? match.matchData)!
                 var nextParticipants : [GKTurnBasedParticipant] = []
-
+                
                 // Remove the current participant from the matech participants.
                 if let nextParticipantIndex = activeParticipants.firstIndex(where: {
                     $0 == match.currentParticipant
@@ -523,12 +521,12 @@ import SwiftUI
                     print("Something is Wrong")
                 }
                 
-//                nextParticipants.sort() {
-//                    if let firstTurnDate = $0.lastTurnDate, let secondTurnDate = $1.lastTurnDate {
-//                        return firstTurnDate < secondTurnDate
-//                    }
-//                    return $0.status.rawValue < $1.status.rawValue 
-//                }
+                //                nextParticipants.sort() {
+                //                    if let firstTurnDate = $0.lastTurnDate, let secondTurnDate = $1.lastTurnDate {
+                //                        return firstTurnDate < secondTurnDate
+                //                    }
+                //                    return $0.status.rawValue < $1.status.rawValue
+                //                }
                 
                 for participant in nextParticipants {
                     print("Status \(participant.status)")
@@ -545,7 +543,7 @@ import SwiftUI
                         }
                         try await match.endMatchInTurn(withMatch: gameData)
                         youWon = true
-                        
+                        isGameOver = true
                         print("Whats Happening")
                     }
                 }
@@ -608,11 +606,14 @@ import SwiftUI
                         turnTimeout: GKTurnTimeoutDefault,
                         match: gameData)
                     youLost = true
+                    isGameOver = true
                 }
                 else {
                     match.currentParticipant?.matchOutcome = .won
                     try await match.endMatchInTurn(withMatch: match.matchData!)
                     youWon = true
+                    isGameOver = true
+                    
                 }
                 
                 // Notify the local player that they forfeit the match.
@@ -623,6 +624,7 @@ import SwiftUI
                 
                 // Notify the local player that they forfeit the match.
                 youLost = true
+                isGameOver = true
             }
         } catch {
             print("Error: \(error.localizedDescription).")
@@ -674,7 +676,7 @@ import SwiftUI
         let message = Message(content: content, playerName: GKLocalPlayer.local.displayName,
                               isLocalPlayer: true)
         messages.append(message)
-
+        
         
         do {
             // Create the exchange data.

@@ -26,6 +26,7 @@ struct ResponseView: View {
             .onTapGesture {
                 presentationMode.wrappedValue.dismiss()
             }
+            .disabled(game.isGameOver)
             Spacer()
             if game.myTurn {
                 if let matchMessage = game.matchMessage {
@@ -46,9 +47,11 @@ struct ResponseView: View {
             // Send text messages as exchange items.
             if let card = game.cardCurrentlyPlayed {
                 CardView(card: card, size:CGSize(width: proxy.size.width/16, height: proxy.size.height/20) )
+                    .opacity(game.inSelectionCard != nil ? 1 : 0.6)
             }
             else {
                 CardView(card: Card(coin:.special), size:CGSize(width: proxy.size.width/16, height: proxy.size.height/20))
+                    .opacity(game.inSelectionCard != nil ? 1 : 0.6)
             }
             // Send a reminder to take their turn.
             Spacer()
@@ -65,8 +68,8 @@ struct ResponseView: View {
                 AudioServicesPlaySystemSound(1105)
             }
             .buttonStyle(RemainderButtonStyle())
-            .disabled(game.myTurn)
-            Spacer()            
+            .disabled(game.myTurn || game.isGameOver)
+            Spacer()
         }
         
     }

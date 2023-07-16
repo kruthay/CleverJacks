@@ -20,7 +20,7 @@ struct GameView: View {
         ZStack {
             VStack {
                 TopMenuView(game: game)
-                
+        
                 Divider()
                 PlayerView(game: game)
                 Divider()
@@ -32,20 +32,22 @@ struct GameView: View {
                                       size : CGSize(width: min(proxy.size.width/12.5,proxy.size.height/14) , height: max(proxy.size.height/14, proxy.size.width/20)))
                             Spacer()
                             Spacer()
-                            if game.youWon == game.youLost {
+//                            if game.youWon == game.youLost {
                             ResponseView(game:game,
                                          proxy:proxy, isItAVStack:proxy.size.width > proxy.size.height )
-                                    .opacity(game.inSelectionCard != nil ? 1 : 0.6)
+                            
+                                    
                             Spacer()
                             Spacer()
                                 PlayerCardsView(game: game,
                                                 size : CGSize(width: min(proxy.size.width/12.5,proxy.size.height/14) , height: max(proxy.size.height/14, proxy.size.width/20)),
                                                 isItAVStack: proxy.size.width > proxy.size.height )
-                            }
-                            else {
-                                GameOverAlert(game: game, size: proxy.size)
-                                    .transition(.scale)
-                            }
+                                
+//                            }
+//                            else {
+//                                GameOverAlert(game: game, size: proxy.size)
+//                                    .transition(.scale)
+//                            }
                             Spacer()
                             
                         }
@@ -79,6 +81,30 @@ struct GameView: View {
             if newPhase == .background {
                 justBroughtOn = false
             }
+        }
+        .alert( isPresented: $game.youWon) {
+            Alert(
+                title: Text("Congrats! You Won"),
+                message: Text("Game Over").fontDesign(.serif),
+                primaryButton: .default(Text("Home")) {
+                    Task {
+                        game.resetGame()
+                    }
+                },
+                secondaryButton: .cancel()
+            )
+        }
+        .alert(isPresented: $game.youLost) {
+            Alert(
+                title: Text("Oops! You Lost"),
+                message: Text("Game Over").fontDesign(.serif),
+                primaryButton: .default(Text("Home")) {
+                    Task {
+                        game.resetGame()
+                    }
+                },
+                secondaryButton: .cancel()
+            )
         }
     }
 }
