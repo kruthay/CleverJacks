@@ -11,9 +11,9 @@ struct PlayerCardsView: View {
     @ObservedObject var game: CleverJacksGame
     let impactSoft = UIImpactFeedbackGenerator(style: .soft)
     var size: CGSize
-    
+    @State var isItAVStack : Bool
     var body: some View {
-            AdaptiveStack(isItAVStack: false){
+            AdaptiveStack(isItAVStack: isItAVStack ){
                 ForEach(game.myCards){ card in
                     CardView(card: card, size: size )
                         .hoverEffect(.lift)
@@ -35,6 +35,6 @@ struct PlayerCardsView: View {
 
 struct PlayerCardsPreviews: PreviewProvider {
     static var previews: some View {
-        PlayerCardsView(game: CleverJacksGame(), size: CGSize(width: 30, height: 50))
+        PlayerCardsView(game: CleverJacksGame(), size: CGSize(width: 30, height: 50), isItAVStack: true)
     }
 }

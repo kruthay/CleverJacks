@@ -245,9 +245,10 @@ import SwiftUI
                 if let whichPlayersTurn = match.currentParticipant?.player {
                     self.whichPlayersTurn = whichPlayersTurn
                 }
-                myTurn = GKLocalPlayer.local == match.currentParticipant?.player ? true : false
+                if whichPlayersTurn == localParticipant?.player {
+                    matchMessage = "Waiting Server Response"
+                }
             }
-            decodeGameData(matchData: match.matchData!)
             isLoading = false
         }
         catch {
@@ -505,6 +506,12 @@ import SwiftUI
                         return true
                     }
                     return false
+                }
+                
+                for participant in nextParticipants {
+                    print("Status \(participant.status)")
+                    print("Name \(String(describing: participant.player?.displayName))")
+                    print("Date \(String(describing: participant.lastTurnDate))")
                 }
                 
                 

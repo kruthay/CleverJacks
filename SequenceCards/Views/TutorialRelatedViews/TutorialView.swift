@@ -14,7 +14,7 @@ struct TutorialView: View {
             Spacer()
             BoardView(game: game, size: CGSize(width: 30, height: 50))
             Spacer()
-            PlayerCardsView(game: game, size:  CGSize(width: 30, height: 50))
+            PlayerCardsView(game: game, size:  CGSize(width: 30, height: 50), isItAVStack: false) // change
                 .onAppear {
                     game.myTurn = true
                     print(game.myTurn)

@@ -28,15 +28,19 @@ struct GameView: View {
                     proxy in
                         AdaptiveStack(isItAVStack: proxy.size.width < proxy.size.height) {
                             Spacer()
-                            BoardView(game: game, size : CGSize(width: min(proxy.size.width/12.5,proxy.size.height/14) , height: max(proxy.size.height/14, proxy.size.width/20)))
+                            BoardView(game: game,
+                                      size : CGSize(width: min(proxy.size.width/12.5,proxy.size.height/14) , height: max(proxy.size.height/14, proxy.size.width/20)))
                             Spacer()
                             Spacer()
                             if game.youWon == game.youLost {
-                            ResponseView(game:game, proxy:proxy, isItAVStack:proxy.size.width > proxy.size.height )
+                            ResponseView(game:game,
+                                         proxy:proxy, isItAVStack:proxy.size.width > proxy.size.height )
                                     .opacity(game.inSelectionCard != nil ? 1 : 0.6)
                             Spacer()
                             Spacer()
-                                PlayerCardsView(game: game, size : CGSize(width: min(proxy.size.width/12.5,proxy.size.height/14) , height: max(proxy.size.height/14, proxy.size.width/20)))
+                                PlayerCardsView(game: game,
+                                                size : CGSize(width: min(proxy.size.width/12.5,proxy.size.height/14) , height: max(proxy.size.height/14, proxy.size.width/20)),
+                                                isItAVStack: proxy.size.width > proxy.size.height )
                             }
                             else {
                                 GameOverAlert(game: game, size: proxy.size)
