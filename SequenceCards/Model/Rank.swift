@@ -47,7 +47,7 @@ enum Rank :  Int, CaseIterable, Codable {
         case .king:
             return Text(Image(systemName:"crown"))
         case .queen:
-            return Text(Image(systemName:"crown"))
+            return Text(Image("tiaraLarge"))
         case .jack:
             return Text(Image(systemName:"eyebrow"))
         default :

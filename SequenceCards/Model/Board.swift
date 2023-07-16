@@ -55,6 +55,9 @@ struct Board : Codable, CustomStringConvertible {
         return boardCards.joined().filter { $0.coin != nil }.count
     }
     
+    func numberOfSelectableCardsLeftInTheBoard(_ card: Card) -> Int {
+        return boardCards.joined().filter { $0.hasASameFaceAs(card) && $0.coin == nil }.count
+    }
     
     
     mutating func dealCards(noOfCardsToDeal: Int) -> [Card]{

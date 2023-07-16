@@ -43,7 +43,13 @@ import SwiftUI
     // The messages between players.
 //    var messages: [Message] = []
     @Published var messages: [Message] = []
+    @Published var unViewedMessages : [Message] = []
+    @Published var showMessages: Bool = false
     @Published var matchMessage: String? = nil
+    
+    var showDiscard : Bool {
+    checkToDiscardtheCard(inSelectionCard)
+    }
     
     @Published var board : Board? = nil
     @Published var classicView: Bool = true
@@ -230,7 +236,7 @@ import SwiftUI
     func refresh() async {
         guard currentMatchID != nil else {
             playingGame = false
-            isLoading.toggle()
+            isLoading = false
             return
         }
         do {
@@ -242,7 +248,7 @@ import SwiftUI
                 myTurn = GKLocalPlayer.local == match.currentParticipant?.player ? true : false
             }
             decodeGameData(matchData: match.matchData!)
-            isLoading.toggle()
+            isLoading = false
         }
         catch {
             print("Error: \(error.localizedDescription).")
@@ -253,6 +259,7 @@ import SwiftUI
         guard let selectingCard = inSelectionCard else {
             return false
         }
+        
         if card.belongsToASequence {
             return false
         }
@@ -263,9 +270,39 @@ import SwiftUI
         else if selectingCard.isItAOneEyedJack && card.coin != nil && card.coin != .special && card.coin != localParticipant?.data.coin {
                 return true
         }
-        return selectingCard.rank == card.rank && selectingCard.suit == card.suit && card.coin == nil
+        return selectingCard.hasASameFaceAs(card) && card.coin == nil
     }
     
+    func checkToDiscardtheCard(_ card: Card?) -> Bool {
+        guard let discardableCard = card else {
+            return false
+        }
+        if let numberOfCardsLeft = board?.numberOfSelectableCardsLeftInTheBoard(discardableCard) {
+            print(numberOfCardsLeft)
+            if numberOfCardsLeft == 0 {
+                return true
+            }
+        }
+        return false
+    }
+    
+    func discardTheCard() {
+        if let selectingCard = inSelectionCard {
+            if checkToDiscardtheCard(selectingCard) {
+                if let indexTobeRemoved = localParticipant?.data.cardsOnHand.firstIndex(of: selectingCard) {
+                    localParticipant?.data.cardsOnHand.remove(at: indexTobeRemoved)
+                    if let card = board?.cardStack.popLast() {
+                        print("Last Card from the stack the SelectACard\(card)")
+                        localParticipant?.data.cardsOnHand.append(card)
+                    }
+                    else {
+                        print("Something is Wrong")
+                        matchMessage = "Match Tied"
+                    }
+                }
+            }
+        }
+    }
     
     
     /// Resets the game interface to the content view.
@@ -569,6 +606,7 @@ import SwiftUI
         let message = Message(content: content, playerName: GKLocalPlayer.local.displayName,
                               isLocalPlayer: true)
         messages.append(message)
+
         
         do {
             // Create the exchange data.

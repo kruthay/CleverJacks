@@ -47,6 +47,7 @@
 		87EAF8DC2A60C0B700A9E63C /* RoundedCross.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EAF8DB2A60C0B700A9E63C /* RoundedCross.swift */; };
 		87EAF8DE2A60C0CE00A9E63C /* SlimRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EAF8DD2A60C0CE00A9E63C /* SlimRectangle.swift */; };
 		87EAF8E02A60C0F300A9E63C /* Triangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EAF8DF2A60C0F300A9E63C /* Triangle.swift */; };
+		87F40CD52A6344F300AE1D69 /* NotificationCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F40CD42A6344F300AE1D69 /* NotificationCountView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,6 +113,7 @@
 		87EAF8DB2A60C0B700A9E63C /* RoundedCross.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCross.swift; sourceTree = "<group>"; };
 		87EAF8DD2A60C0CE00A9E63C /* SlimRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlimRectangle.swift; sourceTree = "<group>"; };
 		87EAF8DF2A60C0F300A9E63C /* Triangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Triangle.swift; sourceTree = "<group>"; };
+		87F40CD42A6344F300AE1D69 /* NotificationCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCountView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,6 +237,7 @@
 				87D157522A535AB200898EC7 /* PlayerCardsView.swift */,
 				8784C9202A62629200CBC21A /* GameOverAlert.swift */,
 				87D157562A53742500898EC7 /* BoardView.swift */,
+				87F40CD42A6344F300AE1D69 /* NotificationCountView.swift */,
 				87D1574E2A5359DD00898EC7 /* CardView.swift */,
 				87D1574C2A53599000898EC7 /* CoinView.swift */,
 			);
@@ -445,6 +448,7 @@
 				87D157442A53552300898EC7 /* SequenceGame+GKTurnBasedControllerDelegate.swift in Sources */,
 				87BE05992A5B33C20095FDC9 /* PlayerView.swift in Sources */,
 				87D157422A53548F00898EC7 /* CleverJacksGame.swift in Sources */,
+				87F40CD52A6344F300AE1D69 /* NotificationCountView.swift in Sources */,
 				87D157362A5353D100898EC7 /* Suit.swift in Sources */,
 				87B6C0132A5E38F9002C7CBA /* MessageView.swift in Sources */,
 				87EAF8E02A60C0F300A9E63C /* Triangle.swift in Sources */,

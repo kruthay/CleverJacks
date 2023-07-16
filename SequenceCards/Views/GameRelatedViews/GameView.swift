@@ -17,10 +17,10 @@ struct GameView: View {
     let timer = Timer.publish(every: 20, on: .current, in: .common).autoconnect()
     var body: some View {
         
-        ZStack(alignment: .bottom ) {
-            
+        ZStack {
             VStack {
                 TopMenuView(game: game)
+                
                 Divider()
                 PlayerView(game: game)
                 Divider()
@@ -31,31 +31,38 @@ struct GameView: View {
                             BoardView(game: game, size : CGSize(width: min(proxy.size.width/12.5,proxy.size.height/14) , height: max(proxy.size.height/14, proxy.size.width/20)))
                             Spacer()
                             Spacer()
+                            if game.youWon == game.youLost {
                             ResponseView(game:game, proxy:proxy, isItAVStack:proxy.size.width > proxy.size.height )
                                     .opacity(game.inSelectionCard != nil ? 1 : 0.6)
                             Spacer()
                             Spacer()
-                            PlayerCardsView(game: game, size : CGSize(width: min(proxy.size.width/12.5,proxy.size.height/14) , height: max(proxy.size.height/14, proxy.size.width/20)))
-                                .disabled(game.youWon || game.youLost)
-                                .opacity(game.youWon || game.youLost ? 0 : 1 )
+                                PlayerCardsView(game: game, size : CGSize(width: min(proxy.size.width/12.5,proxy.size.height/14) , height: max(proxy.size.height/14, proxy.size.width/20)))
+                            }
+                            else {
+                                GameOverAlert(game: game, size: proxy.size)
+                                    .transition(.scale)
+                            }
                             Spacer()
                             
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
-            GameOverAlert(game: game)
+
+
         }
+
         .confettiCannon(counter: $game.sequencesChanged, num: justBroughtOn ? 0 : 100, repetitions: game.myNoOfSequences, repetitionInterval: 0.7)
-        
-        
-        
-        
+        .sheet(isPresented: $game.showMessages) {
+            ChatView(game: game)
+        }
         .padding()
         .onReceive(timer) { _ in
             game.isLoading = true
             justBroughtOn = false
-            print(justBroughtOn)
+                Task {
+                    await game.refresh()
+                }
         }
         .onChange(of: scenePhase) { newPhase in
             if newPhase == .active {
@@ -78,6 +85,7 @@ struct GameView: View {
 struct GameViewPreviews: PreviewProvider {
     static var previews: some View {
         GameView(game: CleverJacksGame())
+        GameView(game:CleverJacksGame())
     }
 }
 

@@ -318,6 +318,7 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                 let content = String(decoding: exchange.data!, as: UTF8.self)
                 let message = Message(content: content, playerName: exchange.sender.player?.displayName ?? "unknown", isLocalPlayer: false)
                 messages.append(message)
+                unViewedMessages.append(message)
             }
             
             // Reply to the exchange request.

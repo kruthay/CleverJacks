@@ -8,39 +8,39 @@
 import SwiftUI
 
 struct GameOverAlert: View {
-    @ObservedObject var game: CleverJacksGame
     @Environment(\.colorScheme) var colorScheme
-    var showAlertForTesting = false
+    @ObservedObject var game : CleverJacksGame
+    var size : CGSize
     var body: some View {
         
+        
+        if game.youWon || game.youLost {
             ZStack {
-                if game.youWon || game.youLost || showAlertForTesting {
-                RoundedRectangle(cornerRadius: 10)
+                RoundedRectangle(cornerRadius: 20)
                     .strokeBorder(style: StrokeStyle(lineWidth: 1))
                     .background(colorScheme == .dark ? .black : .white)
                 VStack {
                     Spacer()
-                    if game.youWon {
+                    Text("Game Over")
+                    Divider()
+                    if game.youWon  {
                         Text("Congrats! You Won")
                             .fontDesign(.serif)
-                            .frame(height: 50)
                             .layoutPriority(2)
                     }
-                    else {
+                    else if  game.youLost {
                         Text("Oops! You Lost")
                             .fontDesign(.serif)
-                            .frame(height: 50)
                             .layoutPriority(2)
                     }
                     Spacer()
                 }
                 .layoutPriority(1)
-                .frame(width: 240, height: 80, alignment: .bottom)
                 
-
             }
+            .frame(width: size.width, height: size.height/10, alignment: .bottom)
         }
-            .transition(.scale)
+        
     }
 }
 
@@ -48,6 +48,6 @@ struct GameOverAlert: View {
 struct GameOverAlertPreviews: PreviewProvider {
     
     static var previews: some View {
-        GameOverAlert(game: CleverJacksGame(), showAlertForTesting: true)
+        GameOverAlert(game : CleverJacksGame(), size : CGSize(width: 2000, height: 100))
     }
 }

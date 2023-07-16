@@ -33,6 +33,6 @@ struct BoardCardView: View {
 
 struct BoardCardViewPreviews: PreviewProvider {
     static var previews: some View {
-        BoardCardView(game:CleverJacksGame(), card: Card(rank: .ace, suit: .clubs), size: CGSize(width: 30, height: 50))
+        BoardCardView(game:CleverJacksGame(), card: Card(rank: .queen, suit: .clubs), size: CGSize(width: 30, height: 50))
     }
 }

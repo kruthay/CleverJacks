@@ -32,4 +32,9 @@ struct Card : Identifiable, Equatable, Hashable, CustomStringConvertible, Codabl
         self.suit = suit
         self.coin = coin
     }
+    
+    
+    func hasASameFaceAs(_ card: Card) -> Bool {
+        return self.suit == card.suit && self.rank == card.rank
+    }
 }

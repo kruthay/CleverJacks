@@ -36,7 +36,7 @@ struct ChatView: View {
             }
             // Enter text messages here.
             HStack {
-                TextField("Message...\(id)", text: $typingMessage)
+                TextField("Message...", text: $typingMessage)
                     .onSubmit {
                         Task {
                             await game.sendMessage(content: typingMessage)
@@ -48,6 +48,9 @@ struct ChatView: View {
             }
             .frame(minHeight: 50)
             .padding()
+        }
+        .onAppear {
+            game.unViewedMessages = []
         }
     }
 }

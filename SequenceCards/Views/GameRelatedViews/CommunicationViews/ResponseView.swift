@@ -19,10 +19,10 @@ struct ResponseView: View {
             Spacer()
             Button("Message") {
                 withAnimation(.easeInOut(duration: 1)) {
-                    showMessages = true
+                    game.showMessages = true
                 }
             }
-            .buttonStyle(MessageButtonStyle())
+            .buttonStyle(MessageButtonStyle(count: game.unViewedMessages.count))
             .onTapGesture {
                 presentationMode.wrappedValue.dismiss()
             }
@@ -52,6 +52,11 @@ struct ResponseView: View {
             }
             // Send a reminder to take their turn.
             Spacer()
+            if game.showDiscard {
+                Button("Discard The Card") {
+                    game.discardTheCard()
+                }
+            }
             Spacer()
             Button("Remainder") {
                 Task {
@@ -63,10 +68,6 @@ struct ResponseView: View {
             .disabled(game.myTurn)
             Spacer()            
         }
-        .sheet(isPresented: $showMessages) {
-            ChatView(game: game)
-        }
-        
     }
 }
 
@@ -81,9 +82,13 @@ struct ResponseViewPreviews: PreviewProvider {
 }
 
 struct MessageButtonStyle: ButtonStyle {
+    var count : Int
     func makeBody(configuration: Configuration) -> some View {
         HStack {
             Image(systemName: configuration.isPressed ? "bubble.left.fill" : "bubble.left")
+                .overlay(
+                    NotificationCountView(value: .constant(count))
+                        )
         }
         .foregroundColor(Color.blue)
     }

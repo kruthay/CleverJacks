@@ -70,7 +70,7 @@ struct CardView: View {
 
     struct CardViewPreviews: PreviewProvider {
         static var previews: some View {
-            CardView(card: Card(rank: .jack, suit: .diamonds), size:CGSize(width: 30, height: 50))
+            CardView(card: Card(rank: .queen, suit: .diamonds), size:CGSize(width: 300, height: 500))
         }
     }
 
