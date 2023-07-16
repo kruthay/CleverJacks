@@ -241,14 +241,18 @@ import SwiftUI
         }
         do {
             let match = try await GKTurnBasedMatch.load(withID: currentMatchID!)
-            if myTurn == false {
+            if let aPlayerWhoIsStillMatching = match.participants.firstIndex(where: {$0.status != .active || $0.status != .done}){
+                matchMessage = "Waiting for all players"
+            }
+            if myTurn == false && localParticipant?.data.coin != nil {
                 if let whichPlayersTurn = match.currentParticipant?.player {
                     self.whichPlayersTurn = whichPlayersTurn
                 }
-                if whichPlayersTurn == localParticipant?.player {
+                if whichPlayersTurn == localParticipant?.player  {
                     matchMessage = "Waiting Server Response"
                 }
             }
+            decodeGameData(matchData: match.matchData!)
             isLoading = false
         }
         catch {
@@ -276,6 +280,9 @@ import SwiftUI
     
     func checkToDiscardtheCard(_ card: Card?) -> Bool {
         guard let discardableCard = card else {
+            return false
+        }
+        if discardableCard.isItATwoEyedJack || discardableCard.isItAOneEyedJack {
             return false
         }
         if let numberOfCardsLeft = board?.numberOfSelectableCardsLeftInTheBoard(discardableCard) {
@@ -377,7 +384,6 @@ import SwiftUI
         print("StartMatch is Called.")
         resetGame()
         board = Board(classicView: classicView, numberOfPlayers: minPlayers)
-        
         // Create a match request.
         // add all the necessary functions somewhere here
         let request = GKMatchRequest()
@@ -411,21 +417,24 @@ import SwiftUI
                     if match.currentParticipant?.player == localParticipant?.player {
                         // The game updates the data when turn-based events occur, so this game instance should
                         // have the current data.
-                        
                         // Create the game data to store in Game Center.
                         let gameData = (encodeGameData() ?? match.matchData)!
-                        
                         // Remove the participants who quit and the current participant.
                         let nextParticipants = match.participants.filter {
                             ($0.status != .done) && ($0 != match.currentParticipant)
                         }
-                        
                         // Forfeit the match.
-                        try await match.participantQuitInTurn(
-                            with: GKTurnBasedMatch.Outcome.quit,
-                            nextParticipants: nextParticipants,
-                            turnTimeout: GKTurnTimeoutDefault,
-                            match: gameData)
+                        if nextParticipants.count > 0 {
+                            try await match.participantQuitInTurn(
+                                with: GKTurnBasedMatch.Outcome.quit,
+                                nextParticipants: nextParticipants,
+                                turnTimeout: GKTurnTimeoutDefault,
+                                match: gameData)
+                        }
+                        else {
+                            match.currentParticipant?.matchOutcome = .won
+                            try await match.endMatchInTurn(withMatch: match.matchData!)
+                        }
                     } else {
                         // Forfeit the match while it's not the local player's turn.
                         try await match.participantQuitOutOfTurn(with: GKTurnBasedMatch.Outcome.quit)
@@ -438,6 +447,18 @@ import SwiftUI
             }
         } catch {
             print("Error: \(error.localizedDescription).")
+            print("Retrying")
+            do {
+                let existingMatches = try await GKTurnBasedMatch.loadMatches()
+                for match in existingMatches {
+                    try await match.remove()
+                }
+                print("Retry sucessful")
+            }
+            catch {
+                print("Retried Error: \(error.localizedDescription).")
+                print("Retry Failed Due to Game Center Response")
+            }
         }
         
     }
@@ -490,19 +511,24 @@ import SwiftUI
                 // *** UPDATE THE BOARD ****
                 // Create the game data to store in Game Center.
                 let gameData = (encodeGameData() ?? match.matchData)!
-                
+                var nextParticipants : [GKTurnBasedParticipant] = []
 
                 // Remove the current participant from the matech participants.
-                var nextParticipants = activeParticipants.filter {
-                    $0 != match.currentParticipant
+                if let nextParticipantIndex = activeParticipants.firstIndex(where: {
+                    $0 == match.currentParticipant
+                }) {
+                    nextParticipants = Array(activeParticipants[(nextParticipantIndex+1)...]) + Array(activeParticipants[..<nextParticipantIndex])
+                }
+                else {
+                    print("Something is Wrong")
                 }
                 
-                nextParticipants.sort() {
-                    if let firstTurnDate = $0.lastTurnDate, let secondTurnDate = $1.lastTurnDate {
-                        return firstTurnDate < secondTurnDate
-                    }
-                    return $0.status.rawValue < $1.status.rawValue 
-                }
+//                nextParticipants.sort() {
+//                    if let firstTurnDate = $0.lastTurnDate, let secondTurnDate = $1.lastTurnDate {
+//                        return firstTurnDate < secondTurnDate
+//                    }
+//                    return $0.status.rawValue < $1.status.rawValue 
+//                }
                 
                 for participant in nextParticipants {
                     print("Status \(participant.status)")
@@ -575,14 +601,22 @@ import SwiftUI
                 }
                 
                 // Forfeit the match.
-                try await match.participantQuitInTurn(
-                    with: GKTurnBasedMatch.Outcome.quit,
-                    nextParticipants: nextParticipants,
-                    turnTimeout: GKTurnTimeoutDefault,
-                    match: gameData)
+                if nextParticipants.count > 0 {
+                    try await match.participantQuitInTurn(
+                        with: GKTurnBasedMatch.Outcome.quit,
+                        nextParticipants: nextParticipants,
+                        turnTimeout: GKTurnTimeoutDefault,
+                        match: gameData)
+                    youLost = true
+                }
+                else {
+                    match.currentParticipant?.matchOutcome = .won
+                    try await match.endMatchInTurn(withMatch: match.matchData!)
+                    youWon = true
+                }
                 
                 // Notify the local player that they forfeit the match.
-                youLost = true
+                
             } else {
                 // Forfeit the match while it's not the local player's turn.
                 try await match.participantQuitOutOfTurn(with: GKTurnBasedMatch.Outcome.quit)

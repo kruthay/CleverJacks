@@ -19,11 +19,11 @@ struct StartButtonView: View {
             .easeInOut(duration: 2) //.easeIn, .easyOut, .linear, etc...
             .repeatForever()
     }
-
+    
     var body: some View {
         Button {
             impactHeavy.impactOccurred()
-            game.startMatch()            
+            game.startMatch()
         } label: {
             Label(
                 title: { },

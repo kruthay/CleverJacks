@@ -17,13 +17,10 @@ struct SettingsView: View {
         VStack {
             Spacer()
             Text("Game Style")
-                .font(.title)
-            
+                .font(.title)   
             Spacer()
             VStack(alignment:.leading) {
                 Text("Board Style")
-                
-                
                 Picker("Classic Board", selection: $classicView) {
                     Text("Classic Board").tag(true)
                     Text("Random Board").tag(false)

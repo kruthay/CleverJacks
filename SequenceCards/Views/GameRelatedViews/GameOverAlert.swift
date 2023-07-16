@@ -38,7 +38,7 @@ struct GameOverAlert: View {
                 .layoutPriority(1)
                 
             }
-            .frame(width: size.width, height: size.height/10, alignment: .bottom)
+            .frame(width: min(size.width, size.height), height: size.height/10, alignment: .bottom)
             .onAppear {
                 Task {
                    await game.refresh()

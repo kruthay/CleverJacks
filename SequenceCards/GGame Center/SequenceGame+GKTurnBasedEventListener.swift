@@ -173,26 +173,17 @@ extension CleverJacksGame : GKTurnBasedEventListener{
             }
             
         case .ended:
-            /// To Do
-            ///  Decode and provide only BoardView, Players, and recentlyPlayedCard
-            ///
             Task {
                 do {
-                    playingGame = true
+
+                    youWon = match.currentParticipant?.matchOutcome == .won
+                    youLost = !youWon
                     let participants = match.participants.filter {
                         self.localParticipant?.player.displayName != $0.player?.displayName
                     }
                     if let gameData = decode(matchData: match.matchData!) {
-                        /// Use this information and update respective code, if it's not decodable, that means it's the first players turn, else it's not. When it's the first players first turn, update
-                        ///   Based on the number of Players, let's say 6 and it's a twoVtwo game, so 3 teams, and hence 3 colors, or if it's threeVthree game, two teams and hence 2 colors, we have to participants and decide how we are going to connect them..
-                        ///   It could be completely random, even if we select 3 players, the other 3 players might get automatched.. And as it's turn based, the next participant will always be.. the next person in line..
-                        ///   This means they can't automatch with team selection, they always have to select team members. Team members must be alternative or we can add flag them some how to belong to a specific team.
                         print(gameData)
                         for participant in participants {
-                            // If participant is nil, then it's first time
-                            print("Participants Count \(participants.count)")
-                            print(participant.status)
-                            print("Whose turn it is now \(String(describing: match.currentParticipant?.player?.displayName))")
                             
                             if (participant.status != .matching) {
                                 if let player = participant.player {
@@ -210,19 +201,13 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                                     }
                                 }
                             }
-                            
-                            
-                            
-                            
-                            
                         }
-
-                        
                     }
                     decodeGameData(matchData: match.matchData!)
                     currentMatchID = match.matchID
                     matchMessage = match.message
                     print("Match ended.")
+                    print("Playing Game \(playingGame), youWon \(youWon) " )
                 }
                 catch {
                     print("Error: \(error.localizedDescription).")
@@ -238,16 +223,8 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                         self.localParticipant?.player.displayName != $0.player?.displayName
                     }
                     if let gameData = decode(matchData: match.matchData!) {
-                        /// Use this information and update respective code, if it's not decodable, that means it's the first players turn, else it's not. When it's the first players first turn, update
-                        ///   Based on the number of Players, let's say 6 and it's a twoVtwo game, so 3 teams, and hence 3 colors, or if it's threeVthree game, two teams and hence 2 colors, we have to participants and decide how we are going to connect them..
-                        ///   It could be completely random, even if we select 3 players, the other 3 players might get automatched.. And as it's turn based, the next participant will always be.. the next person in line..
-                        ///   This means they can't automatch with team selection, they always have to select team members. Team members must be alternative or we can add flag them some how to belong to a specific team.
                         print(gameData)
                         for participant in participants {
-                            // If participant is nil, then it's first time
-                            print("Participants Count \(participants.count)")
-                            print(participant.status)
-                            print("Whose turn it is now \(String(describing: match.currentParticipant?.player?.displayName))")
                             
                             if (participant.status != .matching) {
                                 if let player = participant.player {

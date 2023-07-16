@@ -15,34 +15,21 @@ struct ContentView: View {
                 ZStack {
                     GameView(game:game)
                         .transition(.scale)
-                    
                 }
             }
             else {
                 HomeView(game: game)
             }
-
         }
 
         .onAppear {
             if !game.playingGame {
                 game.authenticatePlayer()
             }
-            else {
-                game.resetGame()
-            }
+            
         }
-
-
-        
-        
     }
 }
-
-//    #Preview {
-//        ContentView()
-//
-//    }
 
 
 struct ContentViewPreviews: PreviewProvider {

@@ -14,7 +14,6 @@ struct LogoAndNameView: View {
             Image(colorScheme == .dark ? "SequenceLogo Dark" : "SequenceLogo")
                 .resizable()
                 .frame(width: 80, height: 80)
-            
             Text("Clever Jacks")
                 .fontDesign(.serif)
                 .font(.largeTitle)
