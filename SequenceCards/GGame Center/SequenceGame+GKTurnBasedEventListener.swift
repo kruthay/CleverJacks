@@ -175,9 +175,10 @@ extension CleverJacksGame : GKTurnBasedEventListener{
         case .ended:
             Task {
                 do {
-
-                    youWon = match.currentParticipant?.matchOutcome == .won
+                    playingGame = true
+                    youWon = match.currentParticipant?.matchOutcome == .won ? true : false
                     youLost = !youWon
+                    print("Playing Game \(playingGame), youWon \(youWon) " )
                     let participants = match.participants.filter {
                         self.localParticipant?.player.displayName != $0.player?.displayName
                     }
@@ -188,16 +189,15 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                             if (participant.status != .matching) {
                                 if let player = participant.player {
                                     if opponent == nil && opponent2?.player != player {
-                                        // Load the opponent's avatar and create the opponent object.
-                                        let image = try await player.loadPhoto(for: GKPlayer.PhotoSize.small)
+//                                        // Load the opponent's avatar and create the opponent object. Error When Loading
+//                                        let image = try await player.loadPhoto(for: GKPlayer.PhotoSize.small)
                                         opponent = Participant(player: player,
-                                                               avatar: Image(uiImage: image))
-                                        
+                                                               avatar: Image(systemName: "person.circle"))
                                     }
                                     else if opponent2 == nil && gameData.board?.numberOfPlayers ?? 0 > 2 && opponent?.player != player {
-                                        let image = try await player.loadPhoto(for: GKPlayer.PhotoSize.small)
+//                                        let image = try await player.loadPhoto(for: GKPlayer.PhotoSize.small)
                                         opponent2 =  Participant(player: player,
-                                                                 avatar: Image(uiImage: image))
+                                                                 avatar: Image(systemName: "person.circle"))
                                     }
                                 }
                             }
@@ -208,9 +208,6 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                     matchMessage = match.message
                     print("Match ended.")
                     print("Playing Game \(playingGame), youWon \(youWon) " )
-                }
-                catch {
-                    print("Error: \(error.localizedDescription).")
                 }
             }
             
@@ -229,16 +226,15 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                             if (participant.status != .matching) {
                                 if let player = participant.player {
                                     if opponent == nil && opponent2?.player != player {
-                                        // Load the opponent's avatar and create the opponent object.
-                                        let image = try await player.loadPhoto(for: GKPlayer.PhotoSize.small)
+//                                        // Load the opponent's avatar and create the opponent object.
+//                                        let image = try await player.loadPhoto(for: GKPlayer.PhotoSize.small)
                                         opponent = Participant(player: player,
-                                                               avatar: Image(uiImage: image))
-                                        
+                                                               avatar: Image(systemName: "person.circle"))
                                     }
                                     else if opponent2 == nil && gameData.board?.numberOfPlayers ?? 0 > 2 && opponent?.player != player {
-                                        let image = try await player.loadPhoto(for: GKPlayer.PhotoSize.small)
+//                                        let image = try await player.loadPhoto(for: GKPlayer.PhotoSize.small)
                                         opponent2 =  Participant(player: player,
-                                                                 avatar: Image(uiImage: image))
+                                                                 avatar: Image(systemName: "person.circle"))
                                     }
                                 }
                             }
@@ -249,9 +245,6 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                     currentMatchID = match.matchID
                     matchMessage = match.message
                     print("Match ended.")
-                }
-                catch {
-                    print("Error: \(error.localizedDescription).")
                 }
             }
 
