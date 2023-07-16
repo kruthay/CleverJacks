@@ -21,7 +21,7 @@ extension CleverJacksGame : GKTurnBasedEventListener{
     
     /// Handles multiple turn-based events during a match.
     func player(_ player: GKPlayer, receivedTurnEventFor match: GKTurnBasedMatch, didBecomeActive: Bool) {
-        print("In player")
+        
         // Handles these turn-based events when:
         // 1. The local player accepts an invitation from another participant.
         // 2. GameKit passes the turn to the local player.
@@ -69,8 +69,7 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                         // Display the game view for this match.
                         playingGame = true
                         
-                        // Update the interface depending on whether it's the local player's turn.
-                        myTurn = GKLocalPlayer.local == match.currentParticipant?.player ? true : false
+                        
                         
                         if let thisPlayersTurn = match.currentParticipant?.player {
                             self.whichPlayersTurn = thisPlayersTurn
@@ -163,6 +162,9 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                         matchMessage = match.message
                         
                         // Retain the match ID so action methods can load the current match object later.
+                        
+                        // Update the interface depending on whether it's the local player's turn.
+                        myTurn = GKLocalPlayer.local == match.currentParticipant?.player ? true : false
                     }
                 } catch {
                     // Handle the error.
