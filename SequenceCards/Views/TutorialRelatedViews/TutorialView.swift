@@ -8,13 +8,17 @@
 import SwiftUI
 
 struct TutorialView: View {
-    @ObservedObject var game: CleverJacksGame
+    @ObservedObject var game: TutorialCleverJacksGame
     var body: some View {
         VStack{
             Spacer()
-            BoardView(game: game, size: CGSize(width: 30, height: 50))
+            Button("Start Tutorial") {
+                game.startTutorialGame()
+            }
+            TutorialBoardView(game: game, size: CGSize(width: 30, height: 50))
+            
             Spacer()
-            PlayerCardsView(game: game, size:  CGSize(width: 30, height: 50), isItAVStack: false) // change
+            TutorialPlayerCardsView(game: game, size:  CGSize(width: 30, height: 50), isItAVStack: false) // change
                 .onAppear {
                     game.myTurn = true
                     print(game.myTurn)
@@ -28,6 +32,6 @@ struct TutorialView: View {
 
 struct TutorialViewPreviews: PreviewProvider {
     static var previews: some View {
-        TutorialView(game: CleverJacksGame())
+        TutorialView(game: TutorialCleverJacksGame())
     }
 }

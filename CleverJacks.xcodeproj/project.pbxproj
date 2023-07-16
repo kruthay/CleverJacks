@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		87475E212A646A1900804E18 /* TutorialCleverJacksGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87475E202A646A1900804E18 /* TutorialCleverJacksGame.swift */; };
+		87475E232A647C6600804E18 /* TutorialBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87475E222A647C6600804E18 /* TutorialBoardView.swift */; };
+		87475E252A647CB300804E18 /* TutorialPlayerCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87475E242A647CB300804E18 /* TutorialPlayerCardsView.swift */; };
+		87475E272A647D1000804E18 /* TutorialBoardCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87475E262A647D1000804E18 /* TutorialBoardCardView.swift */; };
 		8784C9192A6216FD00CBC21A /* LogoAndNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8784C9182A6216FD00CBC21A /* LogoAndNameView.swift */; };
 		8784C91B2A62177C00CBC21A /* StartButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8784C91A2A62177C00CBC21A /* StartButtonView.swift */; };
 		8784C91D2A625A4B00CBC21A /* TopMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8784C91C2A625A4B00CBC21A /* TopMenuView.swift */; };
@@ -69,6 +73,10 @@
 
 /* Begin PBXFileReference section */
 		873634B82A591B0A00D24B64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		87475E202A646A1900804E18 /* TutorialCleverJacksGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialCleverJacksGame.swift; sourceTree = "<group>"; };
+		87475E222A647C6600804E18 /* TutorialBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialBoardView.swift; sourceTree = "<group>"; };
+		87475E242A647CB300804E18 /* TutorialPlayerCardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPlayerCardsView.swift; sourceTree = "<group>"; };
+		87475E262A647D1000804E18 /* TutorialBoardCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialBoardCardView.swift; sourceTree = "<group>"; };
 		8784C9182A6216FD00CBC21A /* LogoAndNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoAndNameView.swift; sourceTree = "<group>"; };
 		8784C91A2A62177C00CBC21A /* StartButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartButtonView.swift; sourceTree = "<group>"; };
 		8784C91C2A625A4B00CBC21A /* TopMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopMenuView.swift; sourceTree = "<group>"; };
@@ -248,6 +256,9 @@
 			isa = PBXGroup;
 			children = (
 				87B6C0162A5E6928002C7CBA /* TutorialView.swift */,
+				87475E222A647C6600804E18 /* TutorialBoardView.swift */,
+				87475E262A647D1000804E18 /* TutorialBoardCardView.swift */,
+				87475E242A647CB300804E18 /* TutorialPlayerCardsView.swift */,
 			);
 			path = TutorialRelatedViews;
 			sourceTree = "<group>";
@@ -291,6 +302,7 @@
 			isa = PBXGroup;
 			children = (
 				87D157412A53548F00898EC7 /* CleverJacksGame.swift */,
+				87475E202A646A1900804E18 /* TutorialCleverJacksGame.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -446,6 +458,7 @@
 				87D157482A5355A500898EC7 /* SequenceGame+MatchData.swift in Sources */,
 				87D157532A535AB300898EC7 /* PlayerCardsView.swift in Sources */,
 				87D157442A53552300898EC7 /* SequenceGame+GKTurnBasedControllerDelegate.swift in Sources */,
+				87475E232A647C6600804E18 /* TutorialBoardView.swift in Sources */,
 				87BE05992A5B33C20095FDC9 /* PlayerView.swift in Sources */,
 				87D157422A53548F00898EC7 /* CleverJacksGame.swift in Sources */,
 				87F40CD52A6344F300AE1D69 /* NotificationCountView.swift in Sources */,
@@ -457,12 +470,15 @@
 				8784C9192A6216FD00CBC21A /* LogoAndNameView.swift in Sources */,
 				87B6C0172A5E6928002C7CBA /* TutorialView.swift in Sources */,
 				87D157552A53736F00898EC7 /* BoardCardView.swift in Sources */,
+				87475E212A646A1900804E18 /* TutorialCleverJacksGame.swift in Sources */,
 				87D1574D2A53599000898EC7 /* CoinView.swift in Sources */,
 				87D1570C2A5352EA00898EC7 /* SequenceCardsApp.swift in Sources */,
 				8784C91F2A625C5600CBC21A /* AdaptiveStack.swift in Sources */,
 				87B6C0152A5E3922002C7CBA /* ChatView.swift in Sources */,
 				879EF3F32A5FAB19000D9088 /* ResponseView.swift in Sources */,
 				87D157402A53546500898EC7 /* Board.swift in Sources */,
+				87475E252A647CB300804E18 /* TutorialPlayerCardsView.swift in Sources */,
+				87475E272A647D1000804E18 /* TutorialBoardCardView.swift in Sources */,
 				87D157572A53742500898EC7 /* BoardView.swift in Sources */,
 				87EAF8DC2A60C0B700A9E63C /* RoundedCross.swift in Sources */,
 				87EAF8DE2A60C0CE00A9E63C /* SlimRectangle.swift in Sources */,

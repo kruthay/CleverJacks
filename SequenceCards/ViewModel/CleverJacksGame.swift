@@ -39,8 +39,9 @@ import SwiftUI
     
     @Published var myTurn = false
     @Published var whichPlayersTurn: GKPlayer? = nil
-    // Check if enum of local, player2, player3 solves this?
     
+    var lastPlayedBy = ""
+    // Check if enum of local, player2, player3 solves this?
     @Published var noOfCardsToDeal = 6
     // The messages between players.
     //    var messages: [Message] = []
@@ -61,7 +62,7 @@ import SwiftUI
     var numberOfPlayers : Int {
         board?.numberOfPlayers ?? minPlayers
     }
-    
+
     var boardCards: [[Card]] {
         board?.boardCards ?? Board(classicView: true, numberOfPlayers: 2).boardCards
     }
@@ -139,6 +140,8 @@ import SwiftUI
     }
     
     
+    
+    
     /// The root view controller of the window.
     var rootViewController: UIViewController? {
         let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
@@ -158,15 +161,13 @@ import SwiftUI
     
     
     func selectACard(_ card: Card) -> Card? {
-        print("In selectACard")
-        print("cardStack's count \(String(describing: board?.cardStack.count))")
         if !isItAValidSelectionCard(card) {
             matchMessage = "Invalid Card"
             return nil
             // throws an error saying card is already a part of sequence can't change it
         }
         guard let selectingCard = inSelectionCard, let index = board?.boardCards.indicesOf(x: card), let cardsOnHand = localParticipant?.data.cardsOnHand  else {
-            print("Something is Wrong, Card should be in the range and selectingcard shouldn't be nill")
+            matchMessage = "Try Again"
             return nil
             // throws an alert saying select a card
         }
@@ -179,7 +180,6 @@ import SwiftUI
         if let indexTobeRemoved = localParticipant?.data.cardsOnHand.firstIndex(of: selectingCard) {
             localParticipant?.data.cardsOnHand.remove(at: indexTobeRemoved)
             if let card = board?.cardStack.popLast() {
-                print("Last Card from the stack the SelectACard\(card)")
                 localParticipant?.data.cardsOnHand.append(card)
             }
             else {
@@ -226,7 +226,6 @@ import SwiftUI
         Task {
             await takeTurn()
         }
-        print("Out SelectACard")
         return selectingCard
     }
     
@@ -238,11 +237,13 @@ import SwiftUI
         }
         do {
             let match = try await GKTurnBasedMatch.load(withID: currentMatchID!)
-            if match.participants.firstIndex(where: {$0.status != .active || $0.status != .done}) != nil {
-                matchMessage = "Waiting for all players"
+            if let index =  match.participants.firstIndex(where: {$0.status != .active && $0.status != .done}) {
+                matchMessage = "Waiting for all players "
+                print("Player \(String(describing: match.participants[index].player?.displayName))")
             }
             if myTurn == false && localParticipant?.data.coin != nil {
                 if let whichPlayersTurn = match.currentParticipant?.player {
+                    
                     self.whichPlayersTurn = whichPlayersTurn
                 }
                 if whichPlayersTurn == localParticipant?.player  {
@@ -296,7 +297,6 @@ import SwiftUI
                 if let indexTobeRemoved = localParticipant?.data.cardsOnHand.firstIndex(of: selectingCard) {
                     localParticipant?.data.cardsOnHand.remove(at: indexTobeRemoved)
                     if let card = board?.cardStack.popLast() {
-                        print("Last Card from the stack the SelectACard\(card)")
                         localParticipant?.data.cardsOnHand.append(card)
                     }
                     else {
@@ -326,6 +326,8 @@ import SwiftUI
         cardCurrentlyPlayed = nil
         board = nil
         sequencesChanged = 0
+        lastPlayedBy = ""
+        whichPlayersTurn = nil
     }
     
     /// Authenticates the local player and registers for turn-based events.
@@ -378,7 +380,6 @@ import SwiftUI
     func startMatch(_ playersToInvite: [GKPlayer]? = nil) {
         // Initialize the match data.
         
-        print("StartMatch is Called.")
         resetGame()
         board = Board(classicView: classicView, numberOfPlayers: minPlayers)
         // Create a match request.
@@ -470,7 +471,7 @@ import SwiftUI
         
         // Check whether there's an ongoing match.
         guard currentMatchID != nil else { return }
-        
+                
         do {
             // Load the most recent match object from the match ID.
             let match = try await GKTurnBasedMatch.load(withID: currentMatchID!)
@@ -480,7 +481,6 @@ import SwiftUI
                 $0.status != .done
             }
             
-            print("Active Participants \(activeParticipants.count)")
             
             // End the match if the active participants drop below the minimum. Only the current
             // participant can end a match, so check for this condition in this method when it
@@ -521,18 +521,6 @@ import SwiftUI
                     print("Something is Wrong")
                 }
                 
-                //                nextParticipants.sort() {
-                //                    if let firstTurnDate = $0.lastTurnDate, let secondTurnDate = $1.lastTurnDate {
-                //                        return firstTurnDate < secondTurnDate
-                //                    }
-                //                    return $0.status.rawValue < $1.status.rawValue
-                //                }
-                
-                for participant in nextParticipants {
-                    print("Status \(participant.status)")
-                    print("Name \(String(describing: participant.player?.displayName))")
-                    print("Date \(String(describing: participant.lastTurnDate))")
-                }
                 
                 
                 if let requiredNoOfSequences = board?.requiredNoOfSequences {

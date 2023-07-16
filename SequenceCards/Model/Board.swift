@@ -21,11 +21,29 @@ struct Board : Codable, CustomStringConvertible {
     let numberOfPlayers: Int
     let requiredNoOfSequences: Int
     
+    init(tutorial: Bool = true ) {
+        self.numberOfPlayers = 2
+        let decks = [Deck(), Deck()]
+        
+        self.cardStack = decks.map { $0.cards }.reduce([], +).shuffled()
+        
+        let firstPersonCards = [Card(rank: .nine, suit: .spades ) , Card(rank: .queen , suit:.hearts) , Card(rank: .six, suit: .diamonds), Card(rank: .three, suit: .clubs) , Card(rank: .five, suit: .hearts)].shuffled()
+        for card in firstPersonCards {
+            cardStack.removeAll {
+                $0.hasASameFaceAs(card)
+            }
+        }
+        
+        
+        
+        self.requiredNoOfSequences = 2
+        self.boardCards = createAClassicBoard()
+    }
+    
     
     init(classicView : Bool = true, numberOfPlayers : Int) {
         self.numberOfPlayers = numberOfPlayers
         let decks = [Deck(), Deck()]
-        print("Deck Ids \(decks[0].id) , \(decks[1].id)")
         cardStack = decks.map { $0.cards }.reduce([], +).shuffled()
         if numberOfPlayers % 3 == 0 {
             requiredNoOfSequences = 1

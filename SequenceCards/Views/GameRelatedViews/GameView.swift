@@ -43,11 +43,6 @@ struct GameView: View {
                                                 size : CGSize(width: min(proxy.size.width/12.5,proxy.size.height/14) , height: max(proxy.size.height/14, proxy.size.width/20)),
                                                 isItAVStack: proxy.size.width > proxy.size.height )
                                 
-//                            }
-//                            else {
-//                                GameOverAlert(game: game, size: proxy.size)
-//                                    .transition(.scale)
-//                            }
                             Spacer()
                             
                         }

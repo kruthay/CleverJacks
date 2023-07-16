@@ -39,6 +39,7 @@ struct GameData: Codable, CustomStringConvertible {
     var board: Board?
     var cardCurrentlyPlayed : Card?
     var allPlayersData : [String: Participant.PlayerGameData]
+    var lastPlayedBy: String
     var description: String {
         return "PlayerData : \(allPlayersData) Board : \(String(describing: board))"
     }
@@ -56,6 +57,7 @@ extension CleverJacksGame {
         // Create a dictionary of data for each player.
         var allPlayersData = [String: Participant.PlayerGameData]()
         // Add the local player's items.
+        var lastPlayedBy = ""
         if let localPlayerName = localParticipant?.player.displayName {
             if let playerGameData = localParticipant?.data {
                 allPlayersData[localPlayerName] = playerGameData
@@ -78,8 +80,12 @@ extension CleverJacksGame {
             }
         }
         
+        if let playersName = whichPlayersTurn?.displayName {
+            lastPlayedBy = playersName
+        }
         
-        let gameData = GameData(board: board , cardCurrentlyPlayed: cardCurrentlyPlayed, allPlayersData: allPlayersData)
+        
+        let gameData = GameData(board: board , cardCurrentlyPlayed: cardCurrentlyPlayed, allPlayersData: allPlayersData, lastPlayedBy: lastPlayedBy)
         
         return encode(gameData: gameData)
     }
@@ -120,6 +126,8 @@ extension CleverJacksGame {
         cardCurrentlyPlayed = gameData.cardCurrentlyPlayed
         // update the current board,
         board = gameData.board
+        
+        lastPlayedBy = gameData.lastPlayedBy
         
 
         //  we don't need items for now.
