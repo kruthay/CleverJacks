@@ -151,12 +151,15 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                         currentMatchID = match.matchID
                         // Display the match message.
                         matchMessage = match.message
-                        
+
                         // Retain the match ID so action methods can load the current match object later.
-                        if let currentPlayersName = whichPlayersTurn?.displayName {
-                            if currentPlayersName == lastPlayedBy {
-                                match.message = "Network issue"
-                                await takeTurn()
+                        if GKLocalPlayer.local == match.currentParticipant?.player {
+                            if let currentPlayersName = match.currentParticipant?.player?.displayName {
+                                if currentPlayersName == lastPlayedBy && lastPlayedBy != "" {
+                                    print("Current \(currentPlayersName), Previous \(lastPlayedBy)")
+                                    match.message = "Network issue"
+                                    await takeTurn()
+                                }
                             }
                         }
                         // Update the interface depending on whether it's the local player's turn.
@@ -270,6 +273,7 @@ extension CleverJacksGame : GKTurnBasedEventListener{
         isGameOver = true
         youWon = match.currentParticipant?.matchOutcome == .won ? true : false
         youLost = match.currentParticipant?.matchOutcome == .lost ? true : false
+        print("In the player matchEnded")
         //        GKNotificationBanner.show(withTitle: "Match Ended Title",
         //                                  message: "This is a GKNotificationBanner message.", completionHandler: nil)
         //

@@ -48,7 +48,7 @@ struct SettingsView: View {
             .disabled(!game.matchAvailable)
             Spacer()
             Text(UIApplication.appVersion ?? "")
-            Text("1")
+            Text("2")
         }
         .padding()
         .onChange(of: noOfPlayers) { noOfPlayers in
