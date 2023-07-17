@@ -24,13 +24,22 @@ struct Participant: Identifiable {
     var id = UUID()
     var player: GKPlayer
     var avatar = Image(systemName: "person")
-    var data = PlayerGameData()
+    var data : PlayerGameData?
     struct PlayerGameData : Codable {
         var cardsOnHand : [Card] = []
-        var coin : Coin? = nil
+        let coin : Coin?
         var noOfSequences = 0
         var turns = 0
+        let currentMatchID : String 
+        var result : Result = .noResult
+        
     }
+}
+
+enum Result : Codable {
+    case won
+    case lost
+    case noResult
 }
 
 

@@ -99,44 +99,44 @@ import SwiftUI
     
     
     var myNoOfSequences : Int {
-        get {localParticipant?.data.noOfSequences ?? 0}
-        set {localParticipant?.data.noOfSequences = newValue}
+        get {localParticipant?.data?.noOfSequences ?? 0}
+        set {localParticipant?.data?.noOfSequences = newValue}
     }
     
     var opponentNoOfSequences : Int {
-        opponent?.data.noOfSequences ?? 0
+        opponent?.data?.noOfSequences ?? 0
     }
     
     var opponent2NoOfSequences : Int {
-        opponent2?.data.noOfSequences ?? 0
+        opponent2?.data?.noOfSequences ?? 0
     }
     
     
     var myCards : [Card] {
-        localParticipant?.data.cardsOnHand ?? []
+        localParticipant?.data?.cardsOnHand ?? []
     }
     
     var myCoin : Coin? {
-        localParticipant?.data.coin ?? .blue
+        localParticipant?.data?.coin ?? .blue
     }
     var opponentCoin : Coin? {
-        opponent?.data.coin ?? .green
+        opponent?.data?.coin ?? .green
     }
     
     var opponent2Coin : Coin? {
-        opponent2?.data.coin ?? .red
+        opponent2?.data?.coin ?? .red
     }
     
     var myTurns : Int {
-        localParticipant?.data.turns ?? 0
+        localParticipant?.data?.turns ?? 0
     }
     
     var opponentTurns : Int {
-        opponent?.data.turns ?? 0
+        opponent?.data?.turns ?? 0
     }
     
     var opponent2Turns : Int {
-        opponent2?.data.turns ?? 0
+        opponent2?.data?.turns ?? 0
     }
     
     
@@ -158,7 +158,27 @@ import SwiftUI
         return  true
     }
     
-    
+    func checkIfYouWon() async -> Bool? {
+        guard currentMatchID != nil else {
+            playingGame = false
+            return nil
+        }
+        do {
+            let match = try await GKTurnBasedMatch.load(withID: currentMatchID!)
+            if let currentPlayer = match.participants.first(where: { $0.player == GKLocalPlayer.local }) {
+                if currentPlayer.matchOutcome == .won {
+                    return true
+                }
+                else if currentPlayer.matchOutcome == .lost {
+                    return false
+                }
+            }
+        }
+        catch {
+            print("Error: \(error.localizedDescription).")
+        }
+        return nil
+    }
     
     func selectACard(_ card: Card) -> Card? {
         if !isItAValidSelectionCard(card) {
@@ -166,7 +186,7 @@ import SwiftUI
             return nil
             // throws an error saying card is already a part of sequence can't change it
         }
-        guard let selectingCard = inSelectionCard, let index = board?.boardCards.indicesOf(x: card), let cardsOnHand = localParticipant?.data.cardsOnHand  else {
+        guard let selectingCard = inSelectionCard, let index = board?.boardCards.indicesOf(x: card), let cardsOnHand = localParticipant?.data?.cardsOnHand  else {
             matchMessage = "Try Again"
             return nil
             // throws an alert saying select a card
@@ -177,10 +197,10 @@ import SwiftUI
             return nil
         }
         
-        if let indexTobeRemoved = localParticipant?.data.cardsOnHand.firstIndex(of: selectingCard) {
-            localParticipant?.data.cardsOnHand.remove(at: indexTobeRemoved)
+        if let indexTobeRemoved = localParticipant?.data?.cardsOnHand.firstIndex(of: selectingCard) {
+            localParticipant?.data?.cardsOnHand.remove(at: indexTobeRemoved)
             if let card = board?.cardStack.popLast() {
-                localParticipant?.data.cardsOnHand.append(card)
+                localParticipant?.data?.cardsOnHand.append(card)
             }
             else {
                 print("Something is Wrong")
@@ -195,17 +215,17 @@ import SwiftUI
         
         if card.coin == nil {
             if myTurn {
-                board?.boardCards[index.0][index.1].coin = localParticipant?.data.coin
+                board?.boardCards[index.0][index.1].coin = localParticipant?.data?.coin
             }// redo
             else {
-                if localParticipant?.data.coin == .special {
+                if localParticipant?.data?.coin == .special {
                     print("Local Participant coin cannot be special")
                 }
                 print("Error")
             }
         }
         
-        else if card.coin == opponent?.data.coin || card.coin == opponent2?.data.coin {
+        else if card.coin == opponent?.data?.coin || card.coin == opponent2?.data?.coin {
             if myTurn {
                 board?.boardCards[index.0][index.1].coin = nil
             }
@@ -219,7 +239,7 @@ import SwiftUI
         }
         cardCurrentlyPlayed = selectingCard
         if let numberOfSequences = board?.getNumberOfSequences(index: index) {
-            localParticipant?.data.noOfSequences +=  numberOfSequences
+            localParticipant?.data?.noOfSequences +=  numberOfSequences
             sequencesChanged += numberOfSequences
         }
         
@@ -241,7 +261,7 @@ import SwiftUI
                 matchMessage = "Waiting for all players "
                 print("Player \(String(describing: match.participants[index].player?.displayName))")
             }
-            if myTurn == false && localParticipant?.data.coin != nil {
+            if myTurn == false && localParticipant?.data?.coin != nil {
                 if let whichPlayersTurn = match.currentParticipant?.player {
                     
                     self.whichPlayersTurn = whichPlayersTurn
@@ -269,7 +289,7 @@ import SwiftUI
         if selectingCard.isItATwoEyedJack && card.coin == nil   {
             return true
         }
-        else if selectingCard.isItAOneEyedJack && card.coin != nil && card.coin != .special && card.coin != localParticipant?.data.coin {
+        else if selectingCard.isItAOneEyedJack && card.coin != nil && card.coin != .special && card.coin != localParticipant?.data?.coin {
             return true
         }
         return selectingCard.hasASameFaceAs(card) && card.coin == nil
@@ -283,7 +303,6 @@ import SwiftUI
             return false
         }
         if let numberOfCardsLeft = board?.numberOfSelectableCardsLeftInTheBoard(discardableCard) {
-            print(numberOfCardsLeft)
             if numberOfCardsLeft == 0 {
                 return true
             }
@@ -294,10 +313,10 @@ import SwiftUI
     func discardTheCard() {
         if let selectingCard = inSelectionCard {
             if checkToDiscardtheCard(selectingCard) {
-                if let indexTobeRemoved = localParticipant?.data.cardsOnHand.firstIndex(of: selectingCard) {
-                    localParticipant?.data.cardsOnHand.remove(at: indexTobeRemoved)
+                if let indexTobeRemoved = localParticipant?.data?.cardsOnHand.firstIndex(of: selectingCard) {
+                    localParticipant?.data?.cardsOnHand.remove(at: indexTobeRemoved)
                     if let card = board?.cardStack.popLast() {
-                        localParticipant?.data.cardsOnHand.append(card)
+                        localParticipant?.data?.cardsOnHand.append(card)
                     }
                     else {
                         print("Something is Wrong")
@@ -318,7 +337,7 @@ import SwiftUI
         youLost = false
         isGameOver = false
         myTurn = false
-        localParticipant?.data = Participant.PlayerGameData()
+        localParticipant?.data = nil
         opponent = nil
         opponent2 = nil
         currentMatchID = nil
@@ -501,7 +520,7 @@ import SwiftUI
                 // Otherwise, take the turn and pass to the next participants.
                 
                 // Update the game data.
-                localParticipant?.data.turns += 1
+                localParticipant?.data?.turns += 1
                 
                 // Can't use here because the cards has to be selected for you to take turn and turn can be taken only after selection
                 // Can't put it in selection, have to put it before selection.
@@ -524,7 +543,7 @@ import SwiftUI
                 
                 
                 if let requiredNoOfSequences = board?.requiredNoOfSequences {
-                    if localParticipant?.data.noOfSequences == requiredNoOfSequences {
+                    if localParticipant?.data?.noOfSequences == requiredNoOfSequences {
                         match.currentParticipant?.matchOutcome = .won
                         for participant in nextParticipants {
                             participant.matchOutcome = .lost
@@ -533,6 +552,7 @@ import SwiftUI
                         youWon = true
                         isGameOver = true
                         print("Whats Happening")
+
                     }
                 }
                 else if board?.cardStack.count == 0 {
