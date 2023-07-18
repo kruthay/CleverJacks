@@ -28,7 +28,6 @@ struct ResponseView: View {
             }
             .disabled(game.isGameOver)
             Spacer()
-            if game.myTurn {
                 if let matchMessage = game.matchMessage {
                     HStack {
                         Text(matchMessage)
@@ -42,7 +41,6 @@ struct ResponseView: View {
                         AudioServicesPlaySystemSound(1106)
                     }
                 }
-            }
             Spacer()
             // Send text messages as exchange items.
             if let card = game.cardCurrentlyPlayed {

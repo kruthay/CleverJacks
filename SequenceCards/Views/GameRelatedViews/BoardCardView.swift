@@ -21,6 +21,7 @@ struct BoardCardView: View {
             .onTapGesture {
                 if game.canChooseThisCard(card) && game.myTurn {
                     withAnimation{
+                        
                         if game.selectACard(card) != nil {
                             game.inSelectionCard = nil
                         }

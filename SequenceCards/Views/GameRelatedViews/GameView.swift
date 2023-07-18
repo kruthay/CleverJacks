@@ -77,18 +77,20 @@ struct GameView: View {
                 justBroughtOn = false
             }
         }
-        .alert( isPresented: $game.youWon) {
-            Alert(
-                title: Text("Congrats! You Won"),
-                message: Text("Game Over").fontDesign(.serif),
-                primaryButton: .default(Text("Home")) {
-                    Task {
-                        game.resetGame()
+        .alert(
+            Text("Congrats! You Won"),
+            isPresented: $game.youWon ) {
+                    Button("Home", role: .destructive) {
+                        Task {
+                            game.resetGame()
+                        }
                     }
-                },
-                secondaryButton: .cancel()
-            )
-        }
+                    Button("Cancel", role: .cancel) {
+                        Task {
+                        }
+                    }
+                } message: {  Text("Game Over").fontDesign(.serif) }
+        
         .alert(isPresented: $game.youLost) {
             Alert(
                 title: Text("Oops! You Lost"),

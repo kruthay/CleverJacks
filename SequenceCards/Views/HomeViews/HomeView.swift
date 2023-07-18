@@ -16,7 +16,6 @@ struct HomeView: View {
     @State var showSettings: Bool = false
     var body: some View {
         VStack {
-            
             Spacer()
             LogoAndNameView()
             Spacer()

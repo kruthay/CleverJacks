@@ -130,9 +130,7 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                                 }
                                     
                                 let data = Participant.PlayerGameData(cardsOnHand : assignDealtCards, coin: assignCoin, currentMatchID: match.matchID)
-                                localParticipant?.data = data
-                                
-                                
+                                localParticipant?.data = data 
                             }
                             if match.currentParticipant?.matchOutcome == .lost {
                                 print("You lose in this.. ")
@@ -176,14 +174,23 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                 do {
                     playingGame = true
                     isGameOver = true
-                    youWon = match.currentParticipant?.matchOutcome == .won ? true : false
-                    youLost = match.currentParticipant?.matchOutcome == .lost ? true : false
-                    print("Playing Game \(playingGame), youWon \(youWon) " )
+                    if let localPlayer = match.participants.first(where: { $0.player?.displayName == localParticipant?.player.displayName }) {
+                        youWon = localPlayer.matchOutcome == .won ? true : false
+                        youLost = localPlayer.matchOutcome == .lost ? true : false
+                    }
+                    
+                    if youWon {
+                        matchMessage = "You Won"
+                        
+                    }
+                    if youLost {
+                        matchMessage = "You Lost"
+                    }
+                    print("Playing Game \(playingGame), youWon \(youWon)" )
                     let participants = match.participants.filter {
                         self.localParticipant?.player.displayName != $0.player?.displayName
                     }
                     if let gameData = decode(matchData: match.matchData!) {
-                        
                         for participant in participants {
                             
                             if (participant.status != .matching) {
@@ -205,7 +212,7 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                     }
                     decodeGameData(matchData: match.matchData!)
                     currentMatchID = match.matchID
-                    matchMessage = match.message
+                    
                     print("Match ended.")
                     print("Playing Game \(playingGame), youWon \(youWon) " )
                 }
@@ -270,9 +277,10 @@ extension CleverJacksGame : GKTurnBasedEventListener{
     func player(_ player: GKPlayer, matchEnded match: GKTurnBasedMatch) {
         // Notify the local participant when the match ends.
         playingGame = true
-        isGameOver = true
-        youWon = match.currentParticipant?.matchOutcome == .won ? true : false
-        youLost = match.currentParticipant?.matchOutcome == .lost ? true : false
+//        if let localPlayer = match.participants.first(where: { $0.player?.displayName == localParticipant?.player.displayName }) {
+//        youWon = localPlayer.matchOutcome == .won ? true : false
+//        youLost = localPlayer.matchOutcome == .lost ? true : false
+//    }
         print("In the player matchEnded")
         //        GKNotificationBanner.show(withTitle: "Match Ended Title",
         //                                  message: "This is a GKNotificationBanner message.", completionHandler: nil)

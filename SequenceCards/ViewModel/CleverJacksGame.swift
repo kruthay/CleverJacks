@@ -269,8 +269,8 @@ import SwiftUI
                 if whichPlayersTurn == localParticipant?.player  {
                     matchMessage = "Waiting Server Response"
                 }
+                
             }
-            decodeGameData(matchData: match.matchData!)
             isLoading = false
         }
         catch {
@@ -551,11 +551,10 @@ import SwiftUI
                         try await match.endMatchInTurn(withMatch: gameData)
                         youWon = true
                         isGameOver = true
-                        print("Whats Happening")
 
                     }
                 }
-                else if board?.cardStack.count == 0 {
+                if board?.cardStack.count == 0 && !isGameOver {
                     match.currentParticipant?.matchOutcome = .tied
                     for participant in nextParticipants {
                         participant.matchOutcome = .tied
@@ -564,15 +563,17 @@ import SwiftUI
                 }
                 
                 // Set the match message.
-                match.setLocalizableMessageWithKey( myTurn ? "Your Turn" : "Opponents Turn", arguments: nil)
                 
-                // Save any exchanges.
-                saveExchanges(for: match)
-                
-                // Pass the turn to the next participant.
-                try await match.endTurn(withNextParticipants: nextParticipants, turnTimeout: GKTurnTimeoutDefault,
-                                        match: gameData)
-                
+                    match.setLocalizableMessageWithKey( myTurn ? "Your Turn" : "", arguments: nil)
+                    
+                    // Save any exchanges.
+                    saveExchanges(for: match)
+                if isGameOver == false {
+                    // Pass the turn to the next participant.
+                    try await match.endTurn(withNextParticipants: nextParticipants, turnTimeout: GKTurnTimeoutDefault,
+                                            match: gameData)
+                }
+
                 myTurn = false
             }
         } catch {

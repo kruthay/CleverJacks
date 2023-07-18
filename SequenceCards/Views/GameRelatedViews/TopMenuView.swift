@@ -39,18 +39,21 @@ struct TopMenuView: View {
             .disabled(game.isGameOver)
         }
         .padding(.horizontal)
-        .alert(isPresented:$showForfeitAlert) {
-            Alert(
-                title: Text("Are you sure you want to forfeit this match?"),
-                message: Text("Your opponent will be awarded the win"),
-                primaryButton: .destructive(Text("Forfeit")) {
-                    Task {
-                        await game.forfeitMatch()
+        
+        .alert(
+            Text("Are you sure you want to forfeit this match?"),
+            isPresented: $showForfeitAlert ) {
+                    Button("Forfeit", role: .destructive) {
+                        Task {
+                            await game.forfeitMatch()
+                        }
                     }
-                },
-                secondaryButton: .cancel()
-            )
-        }
+                    Button("Cancel", role: .cancel) {
+                        Task {
+                            showForfeitAlert = false
+                        }
+                    }
+                } message: { Text("Your opponent will be awarded the win") }
 
     }
 }
