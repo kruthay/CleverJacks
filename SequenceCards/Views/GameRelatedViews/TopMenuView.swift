@@ -21,9 +21,7 @@ struct TopMenuView: View {
             Spacer()
             Button {
                 game.isLoading = true
-                Task {
-                    await game.refresh()
-                }
+                game.refresh()
             } label: {
                 Text(Image(systemName: "arrow.clockwise"))
             }
@@ -49,7 +47,7 @@ struct TopMenuView: View {
                         }
                     }
                     Button("Cancel", role: .cancel) {
-                        Task {
+                        withAnimation {
                             showForfeitAlert = false
                         }
                     }

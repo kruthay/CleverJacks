@@ -78,9 +78,7 @@ class TutorialCleverJacksGame: NSObject, ObservableObject {
     var opponent2Avatar: Image {
         opponent2?.avatar ?? Image(systemName: "person.crop.circle")
     }
-    
-    
-    
+
     var myNoOfSequences : Int {
         get {localParticipant?.data.noOfSequences ?? 0}
         set {localParticipant?.data.noOfSequences = newValue}

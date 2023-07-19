@@ -32,7 +32,6 @@ struct GameView: View {
                                       size : CGSize(width: min(proxy.size.width/12.5,proxy.size.height/14) , height: max(proxy.size.height/14, proxy.size.width/20)))
                             Spacer()
                             Spacer()
-//                            if game.youWon == game.youLost {
                             ResponseView(game:game,
                                          proxy:proxy, isItAVStack:proxy.size.width > proxy.size.height )
                             
@@ -61,17 +60,13 @@ struct GameView: View {
         .onReceive(timer) { _ in
             game.isLoading = true
             justBroughtOn = false
-                Task {
-                    await game.refresh()
-                }
+            game.refresh()
         }
         .onChange(of: scenePhase) { newPhase in
             if newPhase == .active {
                 justBroughtOn = true
                 game.isLoading = true
-                Task {
-                    await game.refresh()
-                }
+                game.refresh()
             }
             if newPhase == .background {
                 justBroughtOn = false
@@ -81,13 +76,12 @@ struct GameView: View {
             Text("Congrats! You Won"),
             isPresented: $game.youWon ) {
                     Button("Home", role: .destructive) {
-                        Task {
+                        withAnimation {
                             game.resetGame()
                         }
                     }
                     Button("Cancel", role: .cancel) {
-                        Task {
-                        }
+                        
                     }
                 } message: {  Text("Game Over").fontDesign(.serif) }
         
@@ -96,7 +90,7 @@ struct GameView: View {
                 title: Text("Oops! You Lost"),
                 message: Text("Game Over").fontDesign(.serif),
                 primaryButton: .default(Text("Home")) {
-                    Task {
+                    withAnimation {
                         game.resetGame()
                     }
                 },

@@ -15,10 +15,7 @@ import SwiftUI
     // The game interface state.
     @Published var matchAvailable = false
     @Published var playingGame = false
-    
     @Published var inSelectionCard : Card? = nil
-    
-    
     @Published var isLoading = false
     
     // Outcomes of the game for notifing players.
@@ -148,7 +145,7 @@ import SwiftUI
         return windowScene?.windows.first?.rootViewController
     }
     
-    func isItAValidSelectionCard(_ card: Card) -> Bool {
+    func isCardSelectable(_ card: Card) -> Bool {
         if card.belongsToASequence {
             return false
         }
@@ -158,30 +155,9 @@ import SwiftUI
         return  true
     }
     
-    func checkIfYouWon() async -> Bool? {
-        guard currentMatchID != nil else {
-            playingGame = false
-            return nil
-        }
-        do {
-            let match = try await GKTurnBasedMatch.load(withID: currentMatchID!)
-            if let currentPlayer = match.participants.first(where: { $0.player == GKLocalPlayer.local }) {
-                if currentPlayer.matchOutcome == .won {
-                    return true
-                }
-                else if currentPlayer.matchOutcome == .lost {
-                    return false
-                }
-            }
-        }
-        catch {
-            print("Error: \(error.localizedDescription).")
-        }
-        return nil
-    }
     
     func selectACard(_ card: Card) -> Card? {
-        if !isItAValidSelectionCard(card) {
+        if !isCardSelectable(card) {
             matchMessage = "Invalid Card"
             return nil
             // throws an error saying card is already a part of sequence can't change it
@@ -214,29 +190,16 @@ import SwiftUI
         }
         
         if card.coin == nil {
-            if myTurn {
                 board?.boardCards[index.0][index.1].coin = localParticipant?.data?.coin
-            }// redo
-            else {
-                if localParticipant?.data?.coin == .special {
-                    print("Local Participant coin cannot be special")
-                }
-                print("Error")
-            }
         }
         
-        else if card.coin == opponent?.data?.coin || card.coin == opponent2?.data?.coin {
-            if myTurn {
+        else if card.coin == opponent?.data?.coin || card.coin == opponent2?.data?.coin && card.coin != .special {
                 board?.boardCards[index.0][index.1].coin = nil
-            }
-            else {
-                print("Error")
-            }
-            
         }
         else {
             return nil
         }
+        
         cardCurrentlyPlayed = selectingCard
         if let numberOfSequences = board?.getNumberOfSequences(index: index) {
             localParticipant?.data?.noOfSequences +=  numberOfSequences
@@ -249,35 +212,7 @@ import SwiftUI
         return selectingCard
     }
     
-    func refresh() async {
-        guard currentMatchID != nil else {
-            playingGame = false
-            isLoading = false
-            return
-        }
-        do {
-            let match = try await GKTurnBasedMatch.load(withID: currentMatchID!)
-            if let index =  match.participants.firstIndex(where: {$0.status != .active && $0.status != .done}) {
-                matchMessage = "Waiting for all players "
-                print("Player \(String(describing: match.participants[index].player?.displayName))")
-            }
-            if myTurn == false && localParticipant?.data?.coin != nil {
-                if let whichPlayersTurn = match.currentParticipant?.player {
-                    
-                    self.whichPlayersTurn = whichPlayersTurn
-                }
-                if whichPlayersTurn == localParticipant?.player  {
-                    matchMessage = "Waiting Server Response"
-                }
-                
-            }
-            isLoading = false
-        }
-        catch {
-            print("Error: \(error.localizedDescription).")
-        }
-    }
-    
+        
     func canChooseThisCard(_ card: Card) -> Bool {
         guard let selectingCard = inSelectionCard else {
             return false
@@ -327,6 +262,47 @@ import SwiftUI
         }
     }
     
+    
+    func refresh() {
+        guard currentMatchID != nil else {
+            resetGame()
+            return
+        }
+        Task(priority: .low) {
+            do {
+                
+                let match = try await GKTurnBasedMatch.load(withID: currentMatchID!)
+                if let index =  match.participants.firstIndex(where: {$0.status != .active && $0.status != .done}) {
+                    matchMessage = "Waiting for all players "
+                    print("Player \(String(describing: match.participants[index].player?.displayName))")
+                }
+                if myTurn == false && localParticipant?.data?.coin != nil {
+                    if let whichPlayersTurn = match.currentParticipant?.player {
+                        self.whichPlayersTurn = whichPlayersTurn
+                    }
+                    if whichPlayersTurn == localParticipant?.player  {
+                        matchMessage = "Waiting Server Response"
+                    }
+                }
+                if let currentCardsCount = board?.cardStack.count, let cardCountInTheDecodedGameData = decode(matchData: match.matchData!)?.board?.cardStack.count {
+                    if currentCardsCount > cardCountInTheDecodedGameData {
+                        decodeGameData(matchData: match.matchData!)
+                    }
+                    else {
+                        print( currentCardsCount, cardCountInTheDecodedGameData)
+                    }
+                }
+                else {
+                    print("both are nil")
+                }
+                isLoading = false
+            }
+            catch {
+                print("Error: \(error.localizedDescription).")
+            }
+        }
+    }
+
     
     /// Resets the game interface to the content view.
     func resetGame() {
