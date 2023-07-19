@@ -29,7 +29,7 @@ extension CleverJacksGame : GKTurnBasedEventListener{
         
         switch match.status {
         case .open:
-            Task(priority: .high) {
+            Task {
                 do {
                     // If the match is open, first check whether game play should continue.
                     // Remove participants who quit or otherwise aren't in the match.

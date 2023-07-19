@@ -268,7 +268,7 @@ import SwiftUI
             resetGame()
             return
         }
-        Task(priority: .low) {
+        Task {
             do {
                 
                 let match = try await GKTurnBasedMatch.load(withID: currentMatchID!)
