@@ -189,7 +189,7 @@
 				87EAF8E42A60C19B00A9E63C /* Views */,
 				87EAF8E62A60C22200A9E63C /* Model */,
 				87EAF8E72A60C23000A9E63C /* ViewModel */,
-				87EAF8E82A60C23F00A9E63C /* GGame Center */,
+				87EAF8E82A60C23F00A9E63C /* Game Center */,
 				87D1570F2A5352EB00898EC7 /* Assets.xcassets */,
 				87D157112A5352EB00898EC7 /* Preview Content */,
 			);
@@ -307,14 +307,14 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		87EAF8E82A60C23F00A9E63C /* GGame Center */ = {
+		87EAF8E82A60C23F00A9E63C /* Game Center */ = {
 			isa = PBXGroup;
 			children = (
 				87D157432A53552300898EC7 /* SequenceGame+GKTurnBasedControllerDelegate.swift */,
 				87D157452A53555200898EC7 /* SequenceGame+GKTurnBasedEventListener.swift */,
 				87D157472A5355A500898EC7 /* SequenceGame+MatchData.swift */,
 			);
-			path = "GGame Center";
+			path = "Game Center";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -13,21 +13,22 @@ struct ResponseView: View {
     @State private var showMessages: Bool = false
     @ObservedObject var game: CleverJacksGame
     var proxy : GeometryProxy
-    @State var isItAVStack = false
+    @State var isItAVStack : Bool
     var body: some View {
         AdaptiveStack(isItAVStack: isItAVStack) {
-            Spacer()
-            Button("Message") {
-                withAnimation(.easeInOut(duration: 1)) {
-                    game.showMessages = true
+            Group {
+                Spacer()
+                Button("Message") {
+                    withAnimation(.easeInOut(duration: 1)) {
+                        game.showMessages = true
+                    }
                 }
-            }
-            .buttonStyle(MessageButtonStyle(count: game.unViewedMessages.count))
-            .onTapGesture {
-                presentationMode.wrappedValue.dismiss()
-            }
-            .disabled(game.isGameOver)
-            Spacer()
+                .buttonStyle(MessageButtonStyle(count: game.unViewedMessages.count))
+                .onTapGesture {
+                    presentationMode.wrappedValue.dismiss()
+                }
+                .disabled(game.isGameOver)
+                Spacer()
                 if let matchMessage = game.matchMessage {
                     HStack {
                         Text(matchMessage)
@@ -41,34 +42,42 @@ struct ResponseView: View {
                         AudioServicesPlaySystemSound(1106)
                     }
                 }
-            Spacer()
+            }
+            
             // Send text messages as exchange items.
-            if let card = game.cardCurrentlyPlayed {
-                CardView(card: card, size:CGSize(width: proxy.size.width/16, height: proxy.size.height/20) )
-                    .opacity(game.inSelectionCard != nil ? 1 : 0.6)
-            }
-            else {
-                CardView(card: Card(coin:.special), size:CGSize(width: proxy.size.width/16, height: proxy.size.height/20))
-                    .opacity(game.inSelectionCard != nil ? 1 : 0.6)
-            }
-            // Send a reminder to take their turn.
-            Spacer()
-            if game.showDiscard {
-                Button("Discard The Card") {
-                    game.discardTheCard()
+            Group {
+                Spacer()
+                if let card = game.cardCurrentlyPlayed {
+                    CardView(card: card, size:CGSize(width: proxy.size.width/16, height: proxy.size.height/20) )
+                        .opacity(game.inSelectionCard != nil ? 1 : 0.6)
                 }
-            }
-            Spacer()
-            Button("Remainder") {
-                Task {
-                    await game.sendReminder()
+                else {
+                    CardView(card: Card(coin:.special), size:CGSize(width: proxy.size.width/16, height: proxy.size.height/20))
+                        .opacity(game.inSelectionCard != nil ? 1 : 0.6)
                 }
-                AudioServicesPlaySystemSound(1105)
+                // Send a reminder to take their turn.
+                Spacer()
             }
-            .buttonStyle(RemainderButtonStyle())
-            .disabled(game.myTurn || game.isGameOver)
-            Spacer()
+            Group {
+                
+                if game.showDiscard {
+                    Button("Discard The Card") {
+                        game.discardTheCard()
+                    }
+                }
+                Spacer()
+                Button("Remainder") {
+                    Task {
+                        await game.sendReminder()
+                    }
+                    AudioServicesPlaySystemSound(1105)
+                }
+                .buttonStyle(RemainderButtonStyle())
+                .disabled((game.myTurn || game.isGameOver))
+                Spacer()
+            }
         }
+        
         
     }
 }
@@ -78,7 +87,7 @@ struct ResponseView: View {
 struct ResponseViewPreviews: PreviewProvider {
     static var previews: some View {
         GeometryReader { proxy in
-            ResponseView(game: CleverJacksGame(), proxy: proxy)
+            ResponseView(game: CleverJacksGame(), proxy: proxy, isItAVStack: false)
         }
     }
 }
@@ -90,7 +99,7 @@ struct MessageButtonStyle: ButtonStyle {
             Image(systemName: configuration.isPressed ? "bubble.left.fill" : "bubble.left")
                 .overlay(
                     NotificationCountView(value: .constant(count))
-                        )
+                )
         }
         .foregroundColor(Color.blue)
     }

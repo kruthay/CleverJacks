@@ -47,7 +47,7 @@ struct SettingsView: View {
             .buttonStyle(.bordered)
             .disabled(!game.matchAvailable)
             Spacer()
-            Text("1.01 39")
+            Text("1.01 40")
         }
         .padding()
         .onChange(of: noOfPlayers) { noOfPlayers in
