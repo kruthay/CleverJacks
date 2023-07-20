@@ -26,10 +26,11 @@ extension CleverJacksGame : GKTurnBasedEventListener{
         // 2. GameKit passes the turn to the local player.
         // 3. The local player opens an existing or completed match.
         // 4. Another player forfeits the match.
-        
+        print("IN PLAYER")
         switch match.status {
         case .open:
             Task {
+                print("IN Player's TASK")
                 do {
                     // If the match is open, first check whether game play should continue.
                     // Remove participants who quit or otherwise aren't in the match.
@@ -109,9 +110,15 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                         }
                         // Restore the current game data from the match object.
                         // oppoents are created before this step so that decoded information is added to their profile.
-                        decodeGameData(matchData: match.matchData!)
-                        
-                        
+                        if let currentCardsCount = board?.cardStack.count, let cardCountInTheDecodedGameData = decode(matchData: match.matchData!)?.board?.cardStack.count {
+                            if currentCardsCount >= cardCountInTheDecodedGameData {
+                                decodeGameData(matchData: match.matchData!)
+                            }
+                            else {
+                                
+                                print("InPlayer \(currentCardsCount), \(cardCountInTheDecodedGameData)")
+                            }
+                        }
                         // When Local Player is invited.
                         if match.currentParticipant?.player == localParticipant?.player {
                             if localParticipant?.data == nil {
@@ -122,7 +129,13 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                                     assignCoin = coin
                                 }
                                 else {
-                                    fatalError("Coins cannot be nil")
+                                    print("Coins cannot be nil")
+                                    if let gameData = decode(matchData: match.matchData!) {
+                                        print(gameData)
+                                    }
+                                    else {
+                                        print("GAME DATA IS NIL MAtch ID: \(String(describing: currentMatchID))")
+                                    }
                                 }
                                 
                                 if let cards = board?.dealCards(noOfCardsToDeal: self.noOfCardsToDeal) {
@@ -169,6 +182,7 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                     // Handle the error.
                     print("Error: \(error.localizedDescription).")
                 }
+                print("PLAYER's TASK DONE")
             }
             
         case .ended:

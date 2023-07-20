@@ -47,8 +47,7 @@ struct SettingsView: View {
             .buttonStyle(.bordered)
             .disabled(!game.matchAvailable)
             Spacer()
-            Text(UIApplication.appVersion ?? "")
-            Text("2")
+            Text("1.01 39")
         }
         .padding()
         .onChange(of: noOfPlayers) { noOfPlayers in

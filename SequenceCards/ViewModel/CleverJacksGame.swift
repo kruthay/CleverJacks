@@ -176,6 +176,8 @@ import SwiftUI
         if let indexTobeRemoved = localParticipant?.data?.cardsOnHand.firstIndex(of: selectingCard) {
             localParticipant?.data?.cardsOnHand.remove(at: indexTobeRemoved)
             if let card = board?.cardStack.popLast() {
+                print("Card \(card)")
+                print("count \(board!.cardStack.count)")
                 localParticipant?.data?.cardsOnHand.append(card)
             }
             else {
@@ -264,11 +266,13 @@ import SwiftUI
     
     
     func refresh() {
+        print("IN REFRESH")
         guard currentMatchID != nil else {
             resetGame()
             return
         }
         Task {
+            print("IN REFRESH TASK ")
             do {
                 
                 let match = try await GKTurnBasedMatch.load(withID: currentMatchID!)
@@ -285,7 +289,7 @@ import SwiftUI
                     }
                 }
                 if let currentCardsCount = board?.cardStack.count, let cardCountInTheDecodedGameData = decode(matchData: match.matchData!)?.board?.cardStack.count {
-                    if currentCardsCount > cardCountInTheDecodedGameData {
+                    if currentCardsCount >= cardCountInTheDecodedGameData {
                         decodeGameData(matchData: match.matchData!)
                     }
                     else {
@@ -300,6 +304,7 @@ import SwiftUI
             catch {
                 print("Error: \(error.localizedDescription).")
             }
+            print("REFRESH TASK DONE")
         }
     }
 
