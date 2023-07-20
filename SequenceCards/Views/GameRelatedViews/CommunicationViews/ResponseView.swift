@@ -34,8 +34,8 @@ struct ResponseView: View {
                         Text(matchMessage)
                     }
                     .onAppear {
-                        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { timer in
-                            withAnimation(.easeInOut(duration: 2)) {
+                        Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { timer in
+                            withAnimation(.easeInOut(duration: 1)) {
                                 game.matchMessage = nil
                             }
                         }
