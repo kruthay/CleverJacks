@@ -23,13 +23,8 @@ struct BoardCardView: View {
                     withAnimation{
                         if game.selectACard(card) != nil {
                             game.inSelectionCard = nil
-                            
-                            Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { timer in
-                                withAnimation(.easeInOut(duration: 5)) {
-                                    if game.auto {
-                                        game.automaticTurn()
-                                    }
-                                }
+                            if game.auto {
+                                game.automaticTurn()
                             }
                         }
                         impactHeavy.impactOccurred()

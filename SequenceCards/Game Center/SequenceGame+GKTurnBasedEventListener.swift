@@ -26,11 +26,9 @@ extension CleverJacksGame : GKTurnBasedEventListener{
         // 2. GameKit passes the turn to the local player.
         // 3. The local player opens an existing or completed match.
         // 4. Another player forfeits the match.
-        print("IN PLAYER")
         switch match.status {
         case .open:
             Task {
-                print("IN Player's TASK")
                 do {
                     // If the match is open, first check whether game play should continue.
                     // Remove participants who quit or otherwise aren't in the match.
@@ -49,8 +47,6 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                     if nextParticipants.count < decode(matchData: match.matchData!)?.board?.numberOfPlayers ?? 0 {
                         // Set the match outcomes for the active participants.
                         
-                        print("Minimum Number Of Players are less than \(minPlayers)")
-                        print("or \(String(describing: decode(matchData: match.matchData!)?.board?.numberOfPlayers))")
                         for participant in nextParticipants {
                             if participant.matchOutcome == .none {
                                 participant.matchOutcome = .won
@@ -66,9 +62,6 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                         // If the local player isn't playing another match or is playing this match,
                         // display and update the game view.
                         // Display the game view for this match.
-                        if currentMatchID == nil {
-                            print("CurrentMatchID is nil")
-                        }
                         playingGame = true
                         if let thisPlayersTurn = match.currentParticipant?.player {
                             self.whichPlayersTurn = thisPlayersTurn
@@ -155,18 +148,7 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                                 let data = Participant.PlayerGameData(cardsOnHand : assignDealtCards, coin: assignCoin, currentMatchID: match.matchID)
                                 localParticipant?.data = data
                             }
-                            if match.currentParticipant?.matchOutcome == .lost {
-                                print("You lose in this.. ")
-                                youLost = true
-                                isGameOver = true
-                                localParticipant?.data?.result = .lost
-                                
-                            }
-                            if match.currentParticipant?.matchOutcome == .won {
-                                youWon = true
-                                isGameOver = true
-                                localParticipant?.data?.result = .won
-                            }
+                            
                             // Encode the data here
                         }
                         currentMatchID = match.matchID
@@ -189,7 +171,6 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                     // Handle the error.
                     print("Error: \(error.localizedDescription).")
                 }
-                print("PLAYER's TASK DONE")
             }
             
         case .ended:
@@ -209,7 +190,6 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                     if youLost {
                         matchMessage = "You Lost"
                     }
-                    print("Playing Game \(playingGame), youWon \(youWon)" )
                     let participants = match.participants.filter {
                         self.localParticipant?.player.displayName != $0.player?.displayName
                     }
@@ -235,9 +215,6 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                     }
                     decodeGameData(matchData: match.matchData!)
                     currentMatchID = match.matchID
-                    
-                    print("Match ended.")
-                    print("Playing Game \(playingGame), youWon \(youWon) " )
                 }
             }
             
