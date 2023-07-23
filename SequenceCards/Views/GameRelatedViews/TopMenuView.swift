@@ -21,15 +21,17 @@ struct TopMenuView: View {
             }
             .hoverEffect(.lift)
             Spacer()
-            Button {
-                game.isLoading = true
-                game.refresh()
-            } label: {
-                Text(Image(systemName: "arrow.clockwise"))
-            }
-            
-            if game.isLoading {
-                ProgressView()
+            if !game.auto {
+                Button {
+                    game.isLoading = true
+                    game.refresh()
+                } label: {
+                    Text(Image(systemName: "arrow.clockwise"))
+                }
+                
+                if game.isLoading  {
+                    ProgressView()
+                }
             }
             Spacer()
             if game.auto == true {

@@ -16,7 +16,7 @@ struct ResponseView: View {
     @State var isItAVStack : Bool
     var body: some View {
         AdaptiveStack(isItAVStack: isItAVStack) {
-            Group {
+            if !game.auto {
                 Spacer()
                 Button("Message") {
                     withAnimation(.easeInOut(duration: 1)) {
@@ -66,6 +66,8 @@ struct ResponseView: View {
                     }
                 }
                 Spacer()
+            }
+            if !game.auto {
                 Button("Remainder") {
                     Task {
                         await game.sendReminder()
@@ -76,6 +78,7 @@ struct ResponseView: View {
                 .disabled((game.myTurn || game.isGameOver))
                 Spacer()
             }
+            
         }
         
         

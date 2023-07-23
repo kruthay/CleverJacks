@@ -208,11 +208,15 @@ import SwiftUI
         }
         if auto == true {
             myTurn = false
-            if localParticipant?.data?.noOfSequences == 2 {
+            if localParticipant?.data?.noOfSequences ?? 0 >= 2 {
                 localParticipant?.data?.result = .won
                 opponent?.data?.result = .lost
                 youWon = true
                 isGameOver = true
+            }
+            if let encoded = encodeGameData()  {
+                print("Encoding")
+                UserDefaults.standard.set(encoded, forKey: "AutoMatch")
             }
             return selectingCard
         }
@@ -276,13 +280,11 @@ import SwiftUI
     
     
     func refresh() {
-        print("IN REFRESH")
         guard currentMatchID != nil else {
             resetGame()
             return
         }
         Task {
-            print("IN REFRESH TASK ")
             do {
                 
                 let match = try await GKTurnBasedMatch.load(withID: currentMatchID!)
@@ -301,6 +303,7 @@ import SwiftUI
                 if let currentCardsCount = board?.cardStack.count, let cardCountInTheDecodedGameData = decode(matchData: match.matchData!)?.board?.cardStack.count {
                     if currentCardsCount >= cardCountInTheDecodedGameData {
                         decodeGameData(matchData: match.matchData!)
+                        myTurn = GKLocalPlayer.local == match.currentParticipant?.player ? true : false
                     }
                     else {
                         print( currentCardsCount, cardCountInTheDecodedGameData)
@@ -533,8 +536,8 @@ import SwiftUI
                 
                 
                 
-                if let requiredNoOfSequences = board?.requiredNoOfSequences {
-                    if localParticipant?.data?.noOfSequences == requiredNoOfSequences {
+                if let requiredNoOfSequences = board?.requiredNoOfSequences, let localPlayerSequences =  localParticipant?.data?.noOfSequences{
+                    if localPlayerSequences >= requiredNoOfSequences {
                         match.currentParticipant?.matchOutcome = .won
                         for participant in nextParticipants {
                             participant.matchOutcome = .lost
@@ -555,7 +558,7 @@ import SwiftUI
                 
                 // Set the match message.
                 
-                match.setLocalizableMessageWithKey( myTurn ? "Your Turn" : "", arguments: nil)
+                match.setLocalizableMessageWithKey( myTurn ? "Next Turn" : "", arguments: nil)
                 
                 // Save any exchanges.
                 saveExchanges(for: match)
@@ -781,6 +784,10 @@ import SwiftUI
                 myTurn = false
                 opponent?.data?.result = .won
                 localParticipant?.data?.result = .lost
+                if let encoded = encodeGameData()  {
+                    print("Encoding")
+                    UserDefaults.standard.set(encoded, forKey: "AutoMatch")
+                }
                 return selectingCard
             }
         }
