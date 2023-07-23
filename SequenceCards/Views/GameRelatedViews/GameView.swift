@@ -30,8 +30,10 @@ struct GameView: View {
                                                 height: max(proxy.size.height/14, proxy.size.width/20)))
                         Spacer()
                         Spacer()
-                        ResponseView(
-                            proxy:proxy, isItAVStack:proxy.size.width > proxy.size.height )
+                        if !game.auto {
+                            ResponseView(
+                                proxy:proxy, isItAVStack:proxy.size.width > proxy.size.height )
+                        }
                         Spacer()
                         Spacer()
                         PlayerCardsView(
