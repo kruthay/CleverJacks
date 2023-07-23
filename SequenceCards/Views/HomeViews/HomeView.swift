@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    @ObservedObject var game = CleverJacksGame()
+    @EnvironmentObject var game : CleverJacksGame
     
     @State var classicView: Bool = true
     @State var noOfPlayers: Int = 2
@@ -20,19 +20,34 @@ struct HomeView: View {
             LogoAndNameView()
             Spacer()
             Spacer()
-            StartButtonView(game: game)
+            StartButtonView()
             Spacer()
             Spacer()
-            Button("Settings") {
-                showSettings.toggle()
+            HStack {
+                Spacer()
+                Button("Auto") {
+                    withAnimation {
+                        game.auto = true
+                        game.startAutoGame()
+                    }
+                }
+                .buttonStyle(ComputerPlayButtonStyle())
+                .hoverEffect(.lift)
+                Spacer()
+                Button("Settings") {
+                    showSettings.toggle()
+                }
+                .buttonStyle(SettingsButtonStyle())
+                .hoverEffect(.lift)
+                Spacer()
             }
-            .buttonStyle(SettingsButtonStyle())
-            .hoverEffect(.lift)
             Spacer()
         }
         .sheet(isPresented: $showSettings ) {
-            SettingsView(game: game)
-                .presentationDetents([.medium])
+            ZStack {
+                SettingsView()
+                    .presentationDetents([.medium])
+            }
             
         }
     }
@@ -41,7 +56,9 @@ struct HomeView: View {
 
 struct HomeViewPreviews: PreviewProvider {
     static var previews: some View {
-        HomeView(game: CleverJacksGame())
+        HomeView()
+            .environmentObject(CleverJacksGame())
+
     }
 }
 
@@ -49,6 +66,14 @@ struct HomeViewPreviews: PreviewProvider {
 struct SettingsButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         Image(systemName: "gear")
+        .foregroundColor(Color.blue)
+    }
+}
+
+
+struct ComputerPlayButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        Image(systemName: "play.laptopcomputer")
         .foregroundColor(Color.blue)
     }
 }

@@ -10,7 +10,7 @@ import SwiftUI
 import GameKit
 
 struct ChatView: View {
-    @ObservedObject var game: CleverJacksGame
+    @EnvironmentObject var game: CleverJacksGame
     @State private var typingMessage: String = ""
     var id = 10
     var body: some View {
@@ -43,6 +43,7 @@ struct ChatView: View {
                             typingMessage = ""
                         }
                     }
+                    .submitLabel(.send)
                     .textFieldStyle(.roundedBorder)
                     .frame(minHeight: 30)
             }
@@ -57,6 +58,7 @@ struct ChatView: View {
 
 struct ChatViewPreviews: PreviewProvider {
     static var previews: some View {
-        ChatView(game: CleverJacksGame())
+        ChatView()
+            .environmentObject(CleverJacksGame())
     }
 }

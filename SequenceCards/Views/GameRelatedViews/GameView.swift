@@ -11,50 +11,45 @@ import AVFoundation
 
 struct GameView: View {
     @Environment(\.scenePhase) var scenePhase
-
-    @ObservedObject var game: CleverJacksGame
+    @EnvironmentObject var game: CleverJacksGame
     @State var justBroughtOn  : Bool = false
     let timer = Timer.publish(every: 20, on: .current, in: .common).autoconnect()
     var body: some View {
         
         ZStack {
             VStack {
-                TopMenuView(game: game)
-        
+                TopMenuView()
                 Divider()
-                PlayerView(game: game)
+                PlayerView()
                 Divider()
                 GeometryReader {
                     proxy in
-                        AdaptiveStack(isItAVStack: proxy.size.width < proxy.size.height) {
-                            Spacer()
-                            BoardView(game: game,
-                                      size : CGSize(width: min(proxy.size.width/12.5,proxy.size.height/14) , height: max(proxy.size.height/14, proxy.size.width/20)))
-                            Spacer()
-                            Spacer()
-                            ResponseView(game:game,
-                                         proxy:proxy, isItAVStack:proxy.size.width > proxy.size.height )
-                            
-                                    
-                            Spacer()
-                            Spacer()
-                                PlayerCardsView(game: game,
-                                                size : CGSize(width: min(proxy.size.width/12.5,proxy.size.height/14) , height: max(proxy.size.height/14, proxy.size.width/20)),
-                                                isItAVStack: proxy.size.width > proxy.size.height )
-                                
-                            Spacer()
-                            
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    AdaptiveStack(isItAVStack: proxy.size.width < proxy.size.height) {
+                        Spacer()
+                        BoardView(size : CGSize(width: min(proxy.size.width/12.5,proxy.size.height/14) ,
+                                                height: max(proxy.size.height/14, proxy.size.width/20)))
+                        Spacer()
+                        Spacer()
+                        ResponseView(
+                            proxy:proxy, isItAVStack:proxy.size.width > proxy.size.height )
+                        Spacer()
+                        Spacer()
+                        PlayerCardsView(
+                            size : CGSize(width: min(proxy.size.width/12.5,proxy.size.height/14) , height: max(proxy.size.height/14, proxy.size.width/20)),
+                            isItAVStack: proxy.size.width > proxy.size.height )
+                        Spacer()
+                        
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
-
-
+            
+            
         }
-
+        
         .confettiCannon(counter: $game.sequencesChanged, num: justBroughtOn ? 0 : 100, repetitions: game.myNoOfSequences, repetitionInterval: 0.7)
         .sheet(isPresented: $game.showMessages) {
-            ChatView(game: game)
+            ChatView()
         }
         .padding()
         .onReceive(timer) { _ in
@@ -75,6 +70,19 @@ struct GameView: View {
         .alert(
             Text("Congrats! You Won"),
             isPresented: $game.youWon ) {
+                Button("Home", role: .destructive) {
+                    withAnimation {
+                        game.resetGame()
+                    }
+                }
+                Button("Cancel", role: .cancel) {
+                    
+                }
+            } message: {  Text("Game Over").fontDesign(.serif) }
+        
+            .alert(
+                Text("Oops! You Lost"),
+                isPresented: $game.youLost ) {
                     Button("Home", role: .destructive) {
                         withAnimation {
                             game.resetGame()
@@ -84,20 +92,7 @@ struct GameView: View {
                         
                     }
                 } message: {  Text("Game Over").fontDesign(.serif) }
-        
-        .alert(isPresented: $game.youLost) {
-            Alert(
-                title: Text("Oops! You Lost"),
-                message: Text("Game Over").fontDesign(.serif),
-                primaryButton: .default(Text("Home")) {
-                    withAnimation {
-                        game.resetGame()
-                    }
-                },
-                secondaryButton: .cancel()
-            )
-        }
-    }
+     }
 }
 
 
@@ -105,8 +100,8 @@ struct GameView: View {
 
 struct GameViewPreviews: PreviewProvider {
     static var previews: some View {
-        GameView(game: CleverJacksGame())
-        GameView(game:CleverJacksGame())
+        GameView()
+            .environmentObject(CleverJacksGame())
     }
 }
 

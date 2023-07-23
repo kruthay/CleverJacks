@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PlayerCardsView: View {
-    @ObservedObject var game: CleverJacksGame
+    @EnvironmentObject var game: CleverJacksGame
     let impactSoft = UIImpactFeedbackGenerator(style: .soft)
     var size: CGSize
     @State var isItAVStack : Bool
@@ -35,6 +35,7 @@ struct PlayerCardsView: View {
 
 struct PlayerCardsPreviews: PreviewProvider {
     static var previews: some View {
-        PlayerCardsView(game: CleverJacksGame(), size: CGSize(width: 30, height: 50), isItAVStack: true)
+        PlayerCardsView( size: CGSize(width: 30, height: 50), isItAVStack: true)
+            .environmentObject(CleverJacksGame())
     }
 }

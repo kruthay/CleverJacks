@@ -11,7 +11,7 @@ import AVFoundation
 struct ResponseView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var showMessages: Bool = false
-    @ObservedObject var game: CleverJacksGame
+    @EnvironmentObject var game: CleverJacksGame
     var proxy : GeometryProxy
     @State var isItAVStack : Bool
     var body: some View {
@@ -87,7 +87,8 @@ struct ResponseView: View {
 struct ResponseViewPreviews: PreviewProvider {
     static var previews: some View {
         GeometryReader { proxy in
-            ResponseView(game: CleverJacksGame(), proxy: proxy, isItAVStack: false)
+            ResponseView(proxy: proxy, isItAVStack: false)
+                .environmentObject(CleverJacksGame())
         }
     }
 }

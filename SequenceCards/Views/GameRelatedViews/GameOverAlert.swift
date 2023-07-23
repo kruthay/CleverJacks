@@ -9,7 +9,7 @@ import SwiftUI
 
 struct GameOverAlert: View {
     @Environment(\.colorScheme) var colorScheme
-    @ObservedObject var game : CleverJacksGame
+    @EnvironmentObject var game : CleverJacksGame
     var size : CGSize
     var body: some View {
         
@@ -51,6 +51,7 @@ struct GameOverAlert: View {
 struct GameOverAlertPreviews: PreviewProvider {
     
     static var previews: some View {
-        GameOverAlert(game : CleverJacksGame(), size : CGSize(width: 2000, height: 100))
+        GameOverAlert(size : CGSize(width: 2000, height: 100))
+            .environmentObject(CleverJacksGame())
     }
 }

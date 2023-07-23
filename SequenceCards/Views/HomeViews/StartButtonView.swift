@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct StartButtonView: View {
-    @ObservedObject var game: CleverJacksGame
+    @EnvironmentObject var game: CleverJacksGame
     
     let impactHeavy = UIImpactFeedbackGenerator(style: .heavy)
     
@@ -37,12 +37,14 @@ struct StartButtonView: View {
         .animation(self.repeatingAnimation, value: game.matchAvailable)
         .hoverEffect(.lift)
         .disabled(!game.matchAvailable)
+        
     }
 }
 
 
 struct StartButtonViewPreviews : PreviewProvider {
     static var previews: some View {
-        StartButtonView(game: CleverJacksGame())
+        StartButtonView()
+            .environmentObject(CleverJacksGame())
     }
 }

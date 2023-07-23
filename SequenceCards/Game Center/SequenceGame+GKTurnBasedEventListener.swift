@@ -37,6 +37,14 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                     let nextParticipants = match.participants.filter {
                         $0.status != .done
                     }
+                    let localPlayer = match.participants.first {
+                        self.localParticipant?.player.displayName == $0.player?.displayName
+                    }
+                    if localPlayer?.matchOutcome == .lost {
+                        youLost = true
+                        isGameOver = true
+                    }
+                    
                     // End the match if active participants drop below the minimum.
                     if nextParticipants.count < decode(matchData: match.matchData!)?.board?.numberOfPlayers ?? 0 {
                         // Set the match outcomes for the active participants.
@@ -115,7 +123,6 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                                 decodeGameData(matchData: match.matchData!)
                             }
                             else {
-                                
                                 print("InPlayer \(currentCardsCount), \(cardCountInTheDecodedGameData)")
                             }
                         }

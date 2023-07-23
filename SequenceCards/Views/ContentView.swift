@@ -13,12 +13,12 @@ struct ContentView: View {
         ZStack {
             if game.playingGame {
                 ZStack {
-                    GameView(game:game)
-                        .transition(.scale)
+                    GameView()
+                        .transition(AnyTransition.opacity.animation(.easeInOut(duration: 3.0)))
                 }
             }
             else {
-                HomeView(game: game)
+                HomeView()
             }
         }
 
@@ -28,7 +28,9 @@ struct ContentView: View {
             }
             
         }
+        .environmentObject(game)
     }
+        
 }
 
 

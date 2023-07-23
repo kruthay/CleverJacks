@@ -18,6 +18,8 @@ struct Card : Identifiable, Equatable, Hashable, CustomStringConvertible, Codabl
     
     var belongsToASequence = false
     
+
+    
     var description: String {
         return ("\(rank?.symbol ?? "No Rank") : \(suit?.symbol ?? "No Suit")")
     }

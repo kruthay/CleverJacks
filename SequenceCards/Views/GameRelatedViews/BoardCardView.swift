@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BoardCardView: View {
     @State private var phase = 0.0
-    @ObservedObject var game: CleverJacksGame
+    @EnvironmentObject var game: CleverJacksGame
     var card: Card
     var size: CGSize
     let impactHeavy = UIImpactFeedbackGenerator(style: .heavy)
@@ -23,6 +23,14 @@ struct BoardCardView: View {
                     withAnimation{
                         if game.selectACard(card) != nil {
                             game.inSelectionCard = nil
+                            
+                            Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { timer in
+                                withAnimation(.easeInOut(duration: 5)) {
+                                    if game.auto {
+                                        game.automaticTurn()
+                                    }
+                                }
+                            }
                         }
                         impactHeavy.impactOccurred()
                     }
@@ -33,6 +41,7 @@ struct BoardCardView: View {
 
 struct BoardCardViewPreviews: PreviewProvider {
     static var previews: some View {
-        BoardCardView(game:CleverJacksGame(), card: Card(rank: .queen, suit: .clubs), size: CGSize(width: 30, height: 50))
+        BoardCardView( card: Card(rank: .queen, suit: .clubs), size: CGSize(width: 30, height: 50))
+            .environmentObject(CleverJacksGame())
     }
 }

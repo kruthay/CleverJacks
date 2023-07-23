@@ -224,6 +224,7 @@
 		87EAF8E12A60C10B00A9E63C /* UtilityViews */ = {
 			isa = PBXGroup;
 			children = (
+				87F40CD42A6344F300AE1D69 /* NotificationCountView.swift */,
 				8784C91E2A625C5600CBC21A /* AdaptiveStack.swift */,
 				87EAF8DD2A60C0CE00A9E63C /* SlimRectangle.swift */,
 				87EAF8D92A60C04100A9E63C /* ConfettiView.swift */,
@@ -243,9 +244,8 @@
 				8784C91C2A625A4B00CBC21A /* TopMenuView.swift */,
 				87D157542A53736F00898EC7 /* BoardCardView.swift */,
 				87D157522A535AB200898EC7 /* PlayerCardsView.swift */,
-				8784C9202A62629200CBC21A /* GameOverAlert.swift */,
 				87D157562A53742500898EC7 /* BoardView.swift */,
-				87F40CD42A6344F300AE1D69 /* NotificationCountView.swift */,
+				8784C9202A62629200CBC21A /* GameOverAlert.swift */,
 				87D1574E2A5359DD00898EC7 /* CardView.swift */,
 				87D1574C2A53599000898EC7 /* CoinView.swift */,
 			);

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PlayerView: View {
-    @ObservedObject var game: CleverJacksGame
+    @EnvironmentObject var game: CleverJacksGame
     var body: some View {
         HStack  {
             Spacer()
@@ -19,7 +19,7 @@ struct PlayerView: View {
                     .clipShape(Circle())
                     .wiggling(toWiggle: game.myTurn)
                 if game.numberOfPlayers == 2 {
-                    Text(game.myName == "" ? "SomeName" : game.myName)
+                    Text(game.myName == "" ? "You" : game.myName)
                         .lineLimit(2)
                         .font(.caption)
                 }
@@ -75,6 +75,7 @@ struct PlayerView: View {
 
 struct PlayerViewPreviews : PreviewProvider {
     static var previews: some View {
-        PlayerView(game: CleverJacksGame())
+        PlayerView()
+            .environmentObject(CleverJacksGame())
     }
 }

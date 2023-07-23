@@ -25,6 +25,7 @@ struct Participant: Identifiable {
     var player: GKPlayer
     var avatar = Image(systemName: "person")
     var data : PlayerGameData?
+    var isABot = false
     struct PlayerGameData : Codable {
         var cardsOnHand : [Card] = []
         let coin : Coin?
@@ -77,8 +78,18 @@ extension CleverJacksGame {
         
         // Saving for persistance purposes, some values are not decoded
         if let opponentPlayerName = opponent?.player.displayName {
-            if let playerGameData = opponent?.data {
+            if opponentPlayerName == "" {
+                if let playerGameData = opponent?.data {
+                    allPlayersData["Computer"] = playerGameData
+                }
+            }
+            else if let playerGameData = opponent?.data {
                 allPlayersData[opponentPlayerName] = playerGameData
+            }
+        }
+        else if opponent?.isABot == true {
+            if let playerGameData = opponent?.data {
+                allPlayersData["Computer"] = playerGameData
             }
         }
         
@@ -129,16 +140,12 @@ extension CleverJacksGame {
     func decodeGameData(matchData: Data) {
         let gameData = try? PropertyListDecoder().decode(GameData.self, from: matchData)
         guard let gameData = gameData else { return }
-        
+        print("Decoding the gameData")
         // Set the match count.
-        
         cardCurrentlyPlayed = gameData.cardCurrentlyPlayed
         // update the current board,
         board = gameData.board
-        
         lastPlayedBy = gameData.lastPlayedBy
-        
-
         //  we don't need items for now.
         if let localPlayerName = localParticipant?.player.displayName {
             
@@ -151,7 +158,17 @@ extension CleverJacksGame {
         
         // Saving for persistance purposes, some values are not decoded
         if let opponentPlayerName = opponent?.player.displayName {
-            if let playerGameData = gameData.allPlayersData[opponentPlayerName] {
+            if opponentPlayerName == "" {
+                if let playerGameData = gameData.allPlayersData["Computer"] {
+                    opponent?.data = playerGameData
+                }
+            }
+            else if let playerGameData = gameData.allPlayersData[opponentPlayerName] {
+                opponent?.data = playerGameData
+            }
+        }
+        else if opponent?.isABot == true {
+            if let playerGameData = gameData.allPlayersData["Computer"] {
                 opponent?.data = playerGameData
             }
         }
