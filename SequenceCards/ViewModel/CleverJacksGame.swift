@@ -822,7 +822,7 @@ import SwiftUI
             board = Board(classicView: true, numberOfPlayers: 2)
             let localCardsOnHand = (board?.dealCards(noOfCardsToDeal: 5))!
             localParticipant?.data = Participant.PlayerGameData(cardsOnHand: localCardsOnHand, coin: .blue, currentMatchID: "AutoMatch")
-            let opponentsCardsOnHand = (board?.dealCards(noOfCardsToDeal: 7))!
+            let opponentsCardsOnHand = (board?.dealCards(noOfCardsToDeal: 8))!
             opponent?.data = Participant.PlayerGameData(cardsOnHand: opponentsCardsOnHand, coin: .green, currentMatchID: "AutoMatch")
             
         }
