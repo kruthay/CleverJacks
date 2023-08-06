@@ -12,21 +12,17 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             if game.playingGame {
-                ZStack {
                     GameView()
-                        .transition(AnyTransition.opacity.animation(.easeInOut(duration: 3.0)))
-                }
             }
             else {
                 HomeView()
+                    
             }
         }
-
         .onAppear {
-            if !game.playingGame {
-                game.authenticatePlayer()
-            }
-            
+                if !game.playingGame {
+                    game.authenticatePlayer()
+                }
         }
         .environmentObject(game)
     }

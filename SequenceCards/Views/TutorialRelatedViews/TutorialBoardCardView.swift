@@ -13,21 +13,35 @@ struct TutorialBoardCardView: View {
     var card: Card
     var size: CGSize
     let impactHeavy = UIImpactFeedbackGenerator(style: .heavy)
+    var repeatingAnimation: Animation {
+        Animation
+            .easeInOut(duration: 2) //.easeIn, .easyOut, .linear, etc...
+            .repeatForever()
+    }
+    
     var body: some View {
-        CardView(card: card, size : size)
-            .opacity ( game.inSelectionCard == nil || game.canChooseThisCard(card) ? 1 : 0.5)
-            .scaleEffect(game.canChooseThisCard(card) ? 1.15 : 1)
-            .wiggling(toWiggle: game.canChooseThisCard(card))
-            .onTapGesture {
-                if game.canChooseThisCard(card) && game.myTurn {
-                    withAnimation{
-                        if game.selectACard(card) != nil {
-                            game.inSelectionCard = nil
+        ZStack {
+            CardView(card: card, size : size)
+                .opacity ( game.inSelectionCard == nil || game.canChooseThisCard(card) ? 1 : 0.2)
+                .scaleEffect(game.canChooseThisCard(card) ? 1.15 : 1)
+                .wiggling(toWiggle: game.canChooseThisCard(card))
+                .onTapGesture {
+                    if game.canChooseThisCard(card) && game.myTurn {
+                        withAnimation{
+                            if game.selectACard(card) != nil {
+                                game.inSelectionCard = nil
+                            }
+                            impactHeavy.impactOccurred()
                         }
-                        impactHeavy.impactOccurred()
                     }
                 }
-            }
+                Image(systemName: "arrow.up")
+                    .fontWeight(.bold)
+                    .offset(y: game.canChooseThisCard(card) ? 50 : 30)
+                    .opacity(game.canChooseThisCard(card) && !game.inSelectionCard!.isItATwoEyedJack ? 1 : 0)
+                    .scaleEffect(game.canChooseThisCard(card) ? 2 : 0.5)
+                    .animation(game.canChooseThisCard(card) ? self.repeatingAnimation : Animation.default , value: game.canChooseThisCard(card))
+        }
     }
 
 }

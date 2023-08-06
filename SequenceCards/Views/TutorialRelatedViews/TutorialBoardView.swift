@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct TutorialBoardView: View {
-    @ObservedObject var game: TutorialCleverJacksGame
-    var size : CGSize
+    @ObservedObject var game: TutorialCleverJacksGame = TutorialCleverJacksGame()
+    var size : CGSize = CGSize(width: 30, height: 50)
     let impactHeavy = UIImpactFeedbackGenerator(style: .heavy)
     var body: some View {
         Grid{
@@ -18,9 +18,7 @@ struct TutorialBoardView: View {
                     ForEach(boardRow) { card in
                         TutorialBoardCardView(game: game, card: card, size: size)
                             .opacity(card.belongsToASequence ? 0.4 : 1)
-                        
                     }
-                    
                 }
             }
         }
@@ -29,6 +27,6 @@ struct TutorialBoardView: View {
 
 struct TutorialBoardViewPreviews: PreviewProvider {
     static var previews: some View {
-        TutorialBoardView(game: TutorialCleverJacksGame(), size: CGSize(width: 30, height: 50))
+        TutorialBoardView()
     }
 }

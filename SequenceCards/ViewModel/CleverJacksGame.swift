@@ -300,18 +300,6 @@ import SwiftUI
                         matchMessage = "Waiting Server Response"
                     }
                 }
-                if let currentCardsCount = board?.cardStack.count, let cardCountInTheDecodedGameData = decode(matchData: match.matchData!)?.board?.cardStack.count {
-                    if currentCardsCount >= cardCountInTheDecodedGameData {
-                        decodeGameData(matchData: match.matchData!)
-                        myTurn = GKLocalPlayer.local == match.currentParticipant?.player ? true : false
-                    }
-                    else {
-                        print( currentCardsCount, cardCountInTheDecodedGameData)
-                    }
-                }
-                else {
-                    print("both are nil")
-                }
                 isLoading = false
             }
             catch {

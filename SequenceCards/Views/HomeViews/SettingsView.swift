@@ -14,41 +14,42 @@ struct SettingsView: View {
     @State private var showingRemoveAlert = false
     let impactHeavy = UIImpactFeedbackGenerator(style: .heavy)
     var body: some View {
-        VStack {
-            Spacer()
-            Text("Options")
-                .font(.title)   
-            Spacer()
-            VStack(alignment:.leading) {
-                Text("Board Style")
-                Picker("Classic Board", selection: $classicView) {
-                    Text("Classic Board").tag(true)
-                    Text("Random Board").tag(false)
+        List {
+            Section {
+                VStack {
+                    Text("Board Style")
+                    Picker("Classic Board", selection: $classicView) {
+                        Text("Classic Board").tag(true)
+                        Text("Random Board").tag(false)
+                    }
+                    .pickerStyle(.segmented)
                 }
-                .pickerStyle(.segmented)
-                
-                Divider()
-                
-                Text("Number of Players")
-                Picker("Number of Players", selection: $game.minPlayers) {
-                    Text("Two").tag(2)
-                    Text("Three").tag(3)
+            } header: {
+                Text("Board Options")
+            }
+            
+            Section {
+                VStack {
+                    Text("Number of Players")
+                    Picker("Players", selection: $game.minPlayers) {
+                        Text("Two").tag(2)
+                        Text("Three").tag(3)
+                    }
+                    .pickerStyle(.segmented)
                 }
-                .pickerStyle(.segmented)
-                
             }
-            .padding()
-            Spacer()
-            Button("Remove All Matches", role: .destructive) {
-                impactHeavy.impactOccurred()
-                showingRemoveAlert = true
-            }
-            .buttonStyle(.bordered)
-            .disabled(!game.matchAvailable)
-            Spacer()
-            Text("45")
+        header: {
+            Text("Game Type")
         }
-        .padding()
+            
+            Section {
+                    Button("Remove All Matches", role: .destructive) {
+                        impactHeavy.impactOccurred()
+                        showingRemoveAlert = true
+                    }
+                    .disabled(!game.matchAvailable)
+            }
+        }
         .onChange(of: classicView){ classicView in
             game.classicView = classicView
         }

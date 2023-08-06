@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		87129E9C2A7EA1B0002EF62D /* MiniBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87129E9B2A7EA1B0002EF62D /* MiniBoard.swift */; };
+		87129E9E2A7EA8CE002EF62D /* MiniBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87129E9D2A7EA8CE002EF62D /* MiniBoardView.swift */; };
+		8738CFD32A6DF3E4005E58AB /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8738CFD22A6DF3E4005E58AB /* ArrowView.swift */; };
+		8738CFD72A6E0592005E58AB /* TutorialArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8738CFD62A6E0592005E58AB /* TutorialArrowView.swift */; };
 		87475E212A646A1900804E18 /* TutorialCleverJacksGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87475E202A646A1900804E18 /* TutorialCleverJacksGame.swift */; };
 		87475E232A647C6600804E18 /* TutorialBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87475E222A647C6600804E18 /* TutorialBoardView.swift */; };
 		87475E252A647CB300804E18 /* TutorialPlayerCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87475E242A647CB300804E18 /* TutorialPlayerCardsView.swift */; };
@@ -18,6 +22,7 @@
 		8784C9212A62629200CBC21A /* GameOverAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8784C9202A62629200CBC21A /* GameOverAlert.swift */; };
 		879EF3F32A5FAB19000D9088 /* ResponseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879EF3F22A5FAB19000D9088 /* ResponseView.swift */; };
 		87A950BD2A5DDCB700D954DD /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A950BC2A5DDCB700D954DD /* HomeView.swift */; };
+		87B19CE52A7B27FA0012C62C /* AllRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B19CE42A7B27FA0012C62C /* AllRules.swift */; };
 		87B6C0132A5E38F9002C7CBA /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B6C0122A5E38F9002C7CBA /* MessageView.swift */; };
 		87B6C0152A5E3922002C7CBA /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B6C0142A5E3922002C7CBA /* ChatView.swift */; };
 		87B6C0172A5E6928002C7CBA /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B6C0162A5E6928002C7CBA /* TutorialView.swift */; };
@@ -47,6 +52,7 @@
 		87D157532A535AB300898EC7 /* PlayerCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D157522A535AB200898EC7 /* PlayerCardsView.swift */; };
 		87D157552A53736F00898EC7 /* BoardCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D157542A53736F00898EC7 /* BoardCardView.swift */; };
 		87D157572A53742500898EC7 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D157562A53742500898EC7 /* BoardView.swift */; };
+		87E062362A6FA61700989DCF /* MeetItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E062352A6FA61700989DCF /* MeetItemsView.swift */; };
 		87EAF8DA2A60C04100A9E63C /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EAF8D92A60C04100A9E63C /* ConfettiView.swift */; };
 		87EAF8DC2A60C0B700A9E63C /* RoundedCross.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EAF8DB2A60C0B700A9E63C /* RoundedCross.swift */; };
 		87EAF8DE2A60C0CE00A9E63C /* SlimRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EAF8DD2A60C0CE00A9E63C /* SlimRectangle.swift */; };
@@ -72,7 +78,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		87129E9B2A7EA1B0002EF62D /* MiniBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniBoard.swift; sourceTree = "<group>"; };
+		87129E9D2A7EA8CE002EF62D /* MiniBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniBoardView.swift; sourceTree = "<group>"; };
 		873634B82A591B0A00D24B64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8738CFD22A6DF3E4005E58AB /* ArrowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowView.swift; sourceTree = "<group>"; };
+		8738CFD62A6E0592005E58AB /* TutorialArrowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialArrowView.swift; sourceTree = "<group>"; };
 		87475E202A646A1900804E18 /* TutorialCleverJacksGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialCleverJacksGame.swift; sourceTree = "<group>"; };
 		87475E222A647C6600804E18 /* TutorialBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialBoardView.swift; sourceTree = "<group>"; };
 		87475E242A647CB300804E18 /* TutorialPlayerCardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPlayerCardsView.swift; sourceTree = "<group>"; };
@@ -84,6 +94,7 @@
 		8784C9202A62629200CBC21A /* GameOverAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverAlert.swift; sourceTree = "<group>"; };
 		879EF3F22A5FAB19000D9088 /* ResponseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseView.swift; sourceTree = "<group>"; };
 		87A950BC2A5DDCB700D954DD /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		87B19CE42A7B27FA0012C62C /* AllRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllRules.swift; sourceTree = "<group>"; };
 		87B6C0122A5E38F9002C7CBA /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		87B6C0142A5E3922002C7CBA /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		87B6C0162A5E6928002C7CBA /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
@@ -117,6 +128,7 @@
 		87D157522A535AB200898EC7 /* PlayerCardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerCardsView.swift; sourceTree = "<group>"; };
 		87D157542A53736F00898EC7 /* BoardCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardCardView.swift; sourceTree = "<group>"; };
 		87D157562A53742500898EC7 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		87E062352A6FA61700989DCF /* MeetItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetItemsView.swift; sourceTree = "<group>"; };
 		87EAF8D92A60C04100A9E63C /* ConfettiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		87EAF8DB2A60C0B700A9E63C /* RoundedCross.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCross.swift; sourceTree = "<group>"; };
 		87EAF8DD2A60C0CE00A9E63C /* SlimRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlimRectangle.swift; sourceTree = "<group>"; };
@@ -227,6 +239,7 @@
 				87F40CD42A6344F300AE1D69 /* NotificationCountView.swift */,
 				8784C91E2A625C5600CBC21A /* AdaptiveStack.swift */,
 				87EAF8DD2A60C0CE00A9E63C /* SlimRectangle.swift */,
+				8738CFD22A6DF3E4005E58AB /* ArrowView.swift */,
 				87EAF8D92A60C04100A9E63C /* ConfettiView.swift */,
 				87EAF8DF2A60C0F300A9E63C /* Triangle.swift */,
 				87EAF8DB2A60C0B700A9E63C /* RoundedCross.swift */,
@@ -255,7 +268,11 @@
 		87EAF8E32A60C18600A9E63C /* TutorialRelatedViews */ = {
 			isa = PBXGroup;
 			children = (
+				87E062352A6FA61700989DCF /* MeetItemsView.swift */,
+				87B19CE42A7B27FA0012C62C /* AllRules.swift */,
+				87129E9D2A7EA8CE002EF62D /* MiniBoardView.swift */,
 				87B6C0162A5E6928002C7CBA /* TutorialView.swift */,
+				8738CFD62A6E0592005E58AB /* TutorialArrowView.swift */,
 				87475E222A647C6600804E18 /* TutorialBoardView.swift */,
 				87475E262A647D1000804E18 /* TutorialBoardCardView.swift */,
 				87475E242A647CB300804E18 /* TutorialPlayerCardsView.swift */,
@@ -294,6 +311,7 @@
 				87D1573B2A53541400898EC7 /* Card.swift */,
 				87D1573D2A53542600898EC7 /* Coin.swift */,
 				87D1573F2A53546500898EC7 /* Board.swift */,
+				87129E9B2A7EA1B0002EF62D /* MiniBoard.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -452,6 +470,7 @@
 				87D1573C2A53541400898EC7 /* Card.swift in Sources */,
 				87D157382A5353E900898EC7 /* Rank.swift in Sources */,
 				87D1573A2A5353F800898EC7 /* Deck.swift in Sources */,
+				8738CFD72A6E0592005E58AB /* TutorialArrowView.swift in Sources */,
 				87D1574F2A5359DD00898EC7 /* CardView.swift in Sources */,
 				87B7A95E2A5B2C9F00DD927B /* SettingsView.swift in Sources */,
 				8784C9212A62629200CBC21A /* GameOverAlert.swift in Sources */,
@@ -459,6 +478,8 @@
 				87D157532A535AB300898EC7 /* PlayerCardsView.swift in Sources */,
 				87D157442A53552300898EC7 /* SequenceGame+GKTurnBasedControllerDelegate.swift in Sources */,
 				87475E232A647C6600804E18 /* TutorialBoardView.swift in Sources */,
+				8738CFD32A6DF3E4005E58AB /* ArrowView.swift in Sources */,
+				87129E9E2A7EA8CE002EF62D /* MiniBoardView.swift in Sources */,
 				87BE05992A5B33C20095FDC9 /* PlayerView.swift in Sources */,
 				87D157422A53548F00898EC7 /* CleverJacksGame.swift in Sources */,
 				87F40CD52A6344F300AE1D69 /* NotificationCountView.swift in Sources */,
@@ -469,6 +490,7 @@
 				87D157462A53555200898EC7 /* SequenceGame+GKTurnBasedEventListener.swift in Sources */,
 				8784C9192A6216FD00CBC21A /* LogoAndNameView.swift in Sources */,
 				87B6C0172A5E6928002C7CBA /* TutorialView.swift in Sources */,
+				87129E9C2A7EA1B0002EF62D /* MiniBoard.swift in Sources */,
 				87D157552A53736F00898EC7 /* BoardCardView.swift in Sources */,
 				87475E212A646A1900804E18 /* TutorialCleverJacksGame.swift in Sources */,
 				87D1574D2A53599000898EC7 /* CoinView.swift in Sources */,
@@ -478,10 +500,12 @@
 				879EF3F32A5FAB19000D9088 /* ResponseView.swift in Sources */,
 				87D157402A53546500898EC7 /* Board.swift in Sources */,
 				87475E252A647CB300804E18 /* TutorialPlayerCardsView.swift in Sources */,
+				87B19CE52A7B27FA0012C62C /* AllRules.swift in Sources */,
 				87475E272A647D1000804E18 /* TutorialBoardCardView.swift in Sources */,
 				87D157572A53742500898EC7 /* BoardView.swift in Sources */,
 				87EAF8DC2A60C0B700A9E63C /* RoundedCross.swift in Sources */,
 				87EAF8DE2A60C0CE00A9E63C /* SlimRectangle.swift in Sources */,
+				87E062362A6FA61700989DCF /* MeetItemsView.swift in Sources */,
 				87D157512A535A9900898EC7 /* WiggleModifier.swift in Sources */,
 				87D1574B2A5356D900898EC7 /* GameView.swift in Sources */,
 				8784C91B2A62177C00CBC21A /* StartButtonView.swift in Sources */,

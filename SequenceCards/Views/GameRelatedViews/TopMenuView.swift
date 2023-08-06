@@ -14,9 +14,14 @@ struct TopMenuView: View {
     
     var body: some View {
         HStack {
-            Button("Back") {
+            Button {
                 withAnimation {
                     game.quitGame()
+                }
+            } label: {
+                HStack {
+                    Image(systemName: "chevron.backward")
+                    Text("Back")
                 }
             }
             .hoverEffect(.lift)

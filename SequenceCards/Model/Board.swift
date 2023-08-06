@@ -14,7 +14,7 @@ struct Board : Codable, CustomStringConvertible {
         return "allCoins: \(allCoins), countOfCardStack : \(cardStack.count)"
     }
     
-    var id = UUID()    
+    var id = UUID()
     var boardCards =  Array(repeating: Array(repeating: Card(), count: 10), count: 10)
     var cardStack : [Card] = []
     var allCoins : [Coin] = Coin.allCases.filter { $0.self != .special}
@@ -28,7 +28,11 @@ struct Board : Codable, CustomStringConvertible {
         
         self.cardStack = decks.map { $0.cards }.reduce([], +).shuffled()
         
-        let firstPersonCards = [Card(rank: .nine, suit: .spades ) , Card(rank: .queen , suit:.hearts) , Card(rank: .six, suit: .diamonds), Card(rank: .three, suit: .clubs) , Card(rank: .five, suit: .hearts)].shuffled()
+        let firstPersonCards = [Card(rank: .nine, suit: .spades ) ,
+                                Card(rank: .queen , suit:.hearts) ,
+                                Card(rank: .six, suit: .diamonds),
+                                Card(rank: .three, suit: .clubs) ,
+                                Card(rank: .five, suit: .hearts)].shuffled()
         for card in firstPersonCards {
             cardStack.removeAll {
                 $0.hasASameFaceAs(card)
@@ -52,7 +56,7 @@ struct Board : Codable, CustomStringConvertible {
         else {
             requiredNoOfSequences = 2
         }
-
+        
         if classicView {
             boardCards = createAClassicBoard()
         }
@@ -101,7 +105,7 @@ struct Board : Codable, CustomStringConvertible {
     }
     
     
-
+    
     
     // Finds the Number of Sequences from the given index
     mutating func getNumberOfSequences( index: (Int, Int)) -> Int{
@@ -111,7 +115,10 @@ struct Board : Codable, CustomStringConvertible {
             print("Empty Card Selected, Index: \(index), card: \(boardCards[index.0][index.1])")
             return 0
         }
-        let coordinatePairsOfFourAxis = [ [(0, -1), (0, +1)], [(-1, 0), (+1, 0)], [(-1, -1), (+1, +1)], [(-1, +1), (+1, -1)] ]
+        let coordinatePairsOfFourAxis = [ [(0, -1), (0, +1)],
+                                          [(-1, 0), (+1, 0)],
+                                          [(-1, -1), (+1, +1)],
+                                          [(-1, +1), (+1, -1)] ]
         var noOfSequences = 0
         
         for axis in coordinatePairsOfFourAxis {
@@ -123,7 +130,7 @@ struct Board : Codable, CustomStringConvertible {
                     noOfSequences  = 2
                     return 2
                 }
-               else if validateGivenSequencedIndices(sequencedIndices) {
+                else if validateGivenSequencedIndices(sequencedIndices) {
                     sequencedIndices = selectImportantIndices(sequencedIndices, from: index)
                     selectSequencedCards(withIndexes: sequencedIndices )
                     noOfSequences += 1
@@ -264,9 +271,13 @@ struct Board : Codable, CustomStringConvertible {
     
     func createAClassicBoard() -> [[Card]] {
         var classicBoard = Array(repeating: Array(repeating: Card(), count: 10), count: 10)
-        classicBoard[0] = [Card(coin: .special)] + getCardsFromRankToRankSequentially(from: .six, to: .ace, of: .diamonds) + [Card(coin: .special)]
+        classicBoard[0] = [Card(coin: .special)] +
+        getCardsFromRankToRankSequentially(from: .six, to: .ace, of: .diamonds) +
+        [Card(coin: .special)]
         classicBoard[1] =
-        [Card(rank: .five, suit: .diamonds), Card(rank: .three, suit: .hearts), Card(rank: .two, suit: .hearts)]
+        [Card(rank: .five, suit: .diamonds),
+         Card(rank: .three, suit: .hearts),
+         Card(rank: .two, suit: .hearts)]
         + getCardsFromRankToRankSequentially(from: .two, to: .seven, of: .spades)
         + [Card(rank: .ace, suit: .clubs)]
         
@@ -281,26 +292,38 @@ struct Board : Codable, CustomStringConvertible {
         
         classicBoard[4] = [Card(rank: .two, suit: .diamonds), Card(rank: .six, suit: .hearts), Card(rank: .ten, suit: .diamonds), Card(rank: .king, suit: .hearts), Card(rank: .three, suit: .hearts), Card(rank: .two, suit: .hearts), Card(rank: .seven, suit: .hearts), Card(rank: .eight, suit: .clubs), Card(rank: .ten, suit: .spades), Card(rank: .ten, suit: .clubs)]
         
-        classicBoard[5] =  [Card(rank: .ace, suit: .spades), Card(rank: .seven, suit: .hearts), Card(rank: .nine, suit: .diamonds), Card(rank: .ace, suit: .hearts)]
+        classicBoard[5] =  [Card(rank: .ace, suit: .spades),
+                            Card(rank: .seven, suit: .hearts),
+                            Card(rank: .nine, suit: .diamonds),
+                            Card(rank: .ace, suit: .hearts)]
         + getCardsFromRankToRankSequentially(from: .four, to: .six, of: .hearts)
-        + [Card(rank: .seven, suit: .clubs), Card(rank: .queen, suit: .spades), Card(rank: .nine, suit: .clubs)]
+        + [Card(rank: .seven, suit: .clubs),
+           Card(rank: .queen, suit: .spades),
+           Card(rank: .nine, suit: .clubs)]
         
         
-        classicBoard[6] =  [Card(rank: .king, suit: .spades), Card(rank: .eight, suit: .hearts), Card(rank: .eight, suit: .diamonds)]
+        classicBoard[6] =  [Card(rank: .king, suit: .spades),
+                            Card(rank: .eight, suit: .hearts),
+                            Card(rank: .eight, suit: .diamonds)]
         + getCardsFromRankToRankSequentially(from: .two, to: .six, of: .clubs)
-        + [Card(rank: .king, suit: .spades), Card(rank: .eight, suit: .clubs)]
+        + [Card(rank: .king, suit: .spades),
+           Card(rank: .eight, suit: .clubs)]
         
         
-        classicBoard[7] =  [Card(rank: .queen, suit: .spades), Card(rank: .nine, suit: .hearts)]
+        classicBoard[7] =  [Card(rank: .queen, suit: .spades),
+                            Card(rank: .nine, suit: .hearts)]
         + getCardsFromRankToRankSequentially(from: .two, to: .seven, of: .diamonds).reversed()
-        + [Card(rank: .ace, suit: .spades), Card(rank: .seven, suit: .clubs)]
+        + [Card(rank: .ace, suit: .spades),
+           Card(rank: .seven, suit: .clubs)]
         
         
         classicBoard[8] =  [Card(rank: .ten, suit: .spades)]
         + getCardsFromRankToRankSequentially(from: .ten, to: .ace, of: .hearts)
         + getCardsFromRankToRankSequentially(from: .two, to: .six, of: .clubs)
         
-        classicBoard[9] = [Card(coin: .special)] + getCardsFromRankToRankSequentially(from: .two, to: .nine, of: .spades).reversed() + [Card(coin: .special)]
+        classicBoard[9] = [Card(coin: .special)] +
+        getCardsFromRankToRankSequentially(from: .two, to: .nine, of: .spades).reversed() +
+        [Card(coin: .special)]
         
         return classicBoard
     }

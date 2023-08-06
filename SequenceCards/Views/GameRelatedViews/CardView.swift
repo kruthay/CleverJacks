@@ -13,7 +13,7 @@ struct CardView: View {
     @Environment(\.colorScheme) var colorScheme
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 4)
+            RoundedRectangle(cornerRadius: size.width/10)
                 .strokeBorder(style: StrokeStyle(lineWidth: size.width/25))
                 .background(colorScheme == .dark ? .black : .white)
                 
