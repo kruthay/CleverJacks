@@ -45,6 +45,9 @@ enum ArrowImages {
     }
 }
 
-#Preview {
-    TutorialArrowView(show: true)
+
+struct TutorialArrowViewPreviews: PreviewProvider {
+    static var previews: some View {
+        TutorialArrowView(show: true)
+    }
 }

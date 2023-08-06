@@ -39,6 +39,8 @@ struct MiniBoardView: View {
     }
 }
 
-#Preview {
-    MiniBoardView()
+struct MiniBoardViewPreviews: PreviewProvider {
+    static var previews: some View {
+        MiniBoardView()
+    }
 }

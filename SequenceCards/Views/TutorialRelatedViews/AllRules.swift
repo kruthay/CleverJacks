@@ -143,6 +143,9 @@ struct AllRules: View {
     }
     
 }
-#Preview {
-    AllRules()
+
+struct AllRulesViewPreviews: PreviewProvider {
+    static var previews: some View {
+        AllRules()
+    }
 }

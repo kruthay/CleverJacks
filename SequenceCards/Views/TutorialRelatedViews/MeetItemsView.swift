@@ -97,6 +97,10 @@ struct MeetItemsView: View {
     }
 }
 
-#Preview {
-    MeetItemsView(game : TutorialCleverJacksGame())
+
+
+struct MeetItemsViewPreviews: PreviewProvider {
+    static var previews: some View {
+        MeetItemsView(game : TutorialCleverJacksGame())
+    }
 }
