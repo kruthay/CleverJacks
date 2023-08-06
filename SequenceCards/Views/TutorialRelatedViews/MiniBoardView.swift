@@ -9,7 +9,6 @@ import SwiftUI
 
 struct MiniBoardView: View {
     @State var board = MiniBoard(direction: .diagonal)
-    @State var allRulesTimer = Timer.publish(every: 1.2, on: .current, in: .common).autoconnect()
     var body: some View {
         HStack{
             Text(board.direction.rawValue)
@@ -23,13 +22,21 @@ struct MiniBoardView: View {
                         }
                     }
                 }
+                
+            }
+            }
+        .onAppear {
+            Task(priority: .low) {
+                await delayAnimation()
             }
         }
-        .onReceive(allRulesTimer) { _ in
-            if board.numberOfAnimations == 3 {
-                allRulesTimer.upstream.connect().cancel()
-            }
-            else if !board.allValuesUpdated {
+
+        }
+    private func delayAnimation() async {
+        // Delay of 7.5 seconds (1 second = 1_000_000_000 nanoseconds)
+        while board.numberOfAnimations != 3 {
+            try? await Task.sleep(nanoseconds: 1_500_000_000)
+            if !board.allValuesUpdated {
                 board.update()
             }
             else {
@@ -37,6 +44,7 @@ struct MiniBoardView: View {
             }
         }
     }
+
 }
 
 struct MiniBoardViewPreviews: PreviewProvider {

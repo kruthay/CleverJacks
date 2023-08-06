@@ -20,6 +20,9 @@
 		8784C91D2A625A4B00CBC21A /* TopMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8784C91C2A625A4B00CBC21A /* TopMenuView.swift */; };
 		8784C91F2A625C5600CBC21A /* AdaptiveStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8784C91E2A625C5600CBC21A /* AdaptiveStack.swift */; };
 		8784C9212A62629200CBC21A /* GameOverAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8784C9202A62629200CBC21A /* GameOverAlert.swift */; };
+		878CF16B2A800C3900A6680C /* CleverJacksUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 878CF16A2A800C3900A6680C /* CleverJacksUITests.swift */; };
+		878CF16D2A800C3900A6680C /* CleverJacksUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 878CF16C2A800C3900A6680C /* CleverJacksUITestsLaunchTests.swift */; };
+		878CF17A2A800C4700A6680C /* CleverJacksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 878CF1792A800C4700A6680C /* CleverJacksTests.swift */; };
 		879EF3F32A5FAB19000D9088 /* ResponseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879EF3F22A5FAB19000D9088 /* ResponseView.swift */; };
 		87A950BD2A5DDCB700D954DD /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A950BC2A5DDCB700D954DD /* HomeView.swift */; };
 		87B19CE52A7B27FA0012C62C /* AllRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B19CE42A7B27FA0012C62C /* AllRules.swift */; };
@@ -31,9 +34,6 @@
 		87D1570E2A5352EA00898EC7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D1570D2A5352EA00898EC7 /* ContentView.swift */; };
 		87D157102A5352EB00898EC7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 87D1570F2A5352EB00898EC7 /* Assets.xcassets */; };
 		87D157132A5352EB00898EC7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 87D157122A5352EB00898EC7 /* Preview Assets.xcassets */; };
-		87D1571D2A5352EB00898EC7 /* SequenceCardsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D1571C2A5352EB00898EC7 /* SequenceCardsTests.swift */; };
-		87D157272A5352EB00898EC7 /* SequenceCardsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D157262A5352EB00898EC7 /* SequenceCardsUITests.swift */; };
-		87D157292A5352EB00898EC7 /* SequenceCardsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D157282A5352EB00898EC7 /* SequenceCardsUITestsLaunchTests.swift */; };
 		87D157362A5353D100898EC7 /* Suit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D157352A5353D100898EC7 /* Suit.swift */; };
 		87D157382A5353E900898EC7 /* Rank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D157372A5353E900898EC7 /* Rank.swift */; };
 		87D1573A2A5353F800898EC7 /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D157392A5353F800898EC7 /* Deck.swift */; };
@@ -41,9 +41,9 @@
 		87D1573E2A53542600898EC7 /* Coin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D1573D2A53542600898EC7 /* Coin.swift */; };
 		87D157402A53546500898EC7 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D1573F2A53546500898EC7 /* Board.swift */; };
 		87D157422A53548F00898EC7 /* CleverJacksGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D157412A53548F00898EC7 /* CleverJacksGame.swift */; };
-		87D157442A53552300898EC7 /* SequenceGame+GKTurnBasedControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D157432A53552300898EC7 /* SequenceGame+GKTurnBasedControllerDelegate.swift */; };
-		87D157462A53555200898EC7 /* SequenceGame+GKTurnBasedEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D157452A53555200898EC7 /* SequenceGame+GKTurnBasedEventListener.swift */; };
-		87D157482A5355A500898EC7 /* SequenceGame+MatchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D157472A5355A500898EC7 /* SequenceGame+MatchData.swift */; };
+		87D157442A53552300898EC7 /* CleverJacksGame+GKTurnBasedControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D157432A53552300898EC7 /* CleverJacksGame+GKTurnBasedControllerDelegate.swift */; };
+		87D157462A53555200898EC7 /* CleverJacksGame+GKTurnBasedEventListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D157452A53555200898EC7 /* CleverJacksGame+GKTurnBasedEventListener.swift */; };
+		87D157482A5355A500898EC7 /* CleverJacksGame+MatchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D157472A5355A500898EC7 /* CleverJacksGame+MatchData.swift */; };
 		87D1574B2A5356D900898EC7 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D1574A2A5356D900898EC7 /* GameView.swift */; };
 		87D1574D2A53599000898EC7 /* CoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D1574C2A53599000898EC7 /* CoinView.swift */; };
 		87D1574F2A5359DD00898EC7 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D1574E2A5359DD00898EC7 /* CardView.swift */; };
@@ -60,19 +60,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		87D157192A5352EB00898EC7 /* PBXContainerItemProxy */ = {
+		878CF16E2A800C3900A6680C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 87D157002A5352EA00898EC7 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 87D157072A5352EA00898EC7;
-			remoteInfo = SequenceCards;
+			remoteInfo = CleverJacks;
 		};
-		87D157232A5352EB00898EC7 /* PBXContainerItemProxy */ = {
+		878CF17B2A800C4700A6680C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 87D157002A5352EA00898EC7 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 87D157072A5352EA00898EC7;
-			remoteInfo = SequenceCards;
+			remoteInfo = CleverJacks;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -91,6 +91,11 @@
 		8784C91C2A625A4B00CBC21A /* TopMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopMenuView.swift; sourceTree = "<group>"; };
 		8784C91E2A625C5600CBC21A /* AdaptiveStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveStack.swift; sourceTree = "<group>"; };
 		8784C9202A62629200CBC21A /* GameOverAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverAlert.swift; sourceTree = "<group>"; };
+		878CF1682A800C3900A6680C /* CleverJacksUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CleverJacksUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		878CF16A2A800C3900A6680C /* CleverJacksUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleverJacksUITests.swift; sourceTree = "<group>"; };
+		878CF16C2A800C3900A6680C /* CleverJacksUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleverJacksUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		878CF1772A800C4700A6680C /* CleverJacksTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CleverJacksTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		878CF1792A800C4700A6680C /* CleverJacksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleverJacksTests.swift; sourceTree = "<group>"; };
 		879EF3F22A5FAB19000D9088 /* ResponseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseView.swift; sourceTree = "<group>"; };
 		87A950BC2A5DDCB700D954DD /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		87B19CE42A7B27FA0012C62C /* AllRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllRules.swift; sourceTree = "<group>"; };
@@ -103,11 +108,6 @@
 		87D1570D2A5352EA00898EC7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		87D1570F2A5352EB00898EC7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		87D157122A5352EB00898EC7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		87D157182A5352EB00898EC7 /* CleverJacksTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CleverJacksTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		87D1571C2A5352EB00898EC7 /* SequenceCardsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceCardsTests.swift; sourceTree = "<group>"; };
-		87D157222A5352EB00898EC7 /* CleverJacksUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CleverJacksUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		87D157262A5352EB00898EC7 /* SequenceCardsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceCardsUITests.swift; sourceTree = "<group>"; };
-		87D157282A5352EB00898EC7 /* SequenceCardsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceCardsUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		87D157352A5353D100898EC7 /* Suit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Suit.swift; sourceTree = "<group>"; };
 		87D157372A5353E900898EC7 /* Rank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rank.swift; sourceTree = "<group>"; };
 		87D157392A5353F800898EC7 /* Deck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
@@ -115,9 +115,9 @@
 		87D1573D2A53542600898EC7 /* Coin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coin.swift; sourceTree = "<group>"; };
 		87D1573F2A53546500898EC7 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		87D157412A53548F00898EC7 /* CleverJacksGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleverJacksGame.swift; sourceTree = "<group>"; };
-		87D157432A53552300898EC7 /* SequenceGame+GKTurnBasedControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SequenceGame+GKTurnBasedControllerDelegate.swift"; sourceTree = "<group>"; };
-		87D157452A53555200898EC7 /* SequenceGame+GKTurnBasedEventListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SequenceGame+GKTurnBasedEventListener.swift"; sourceTree = "<group>"; };
-		87D157472A5355A500898EC7 /* SequenceGame+MatchData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SequenceGame+MatchData.swift"; sourceTree = "<group>"; };
+		87D157432A53552300898EC7 /* CleverJacksGame+GKTurnBasedControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CleverJacksGame+GKTurnBasedControllerDelegate.swift"; sourceTree = "<group>"; };
+		87D157452A53555200898EC7 /* CleverJacksGame+GKTurnBasedEventListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CleverJacksGame+GKTurnBasedEventListener.swift"; sourceTree = "<group>"; };
+		87D157472A5355A500898EC7 /* CleverJacksGame+MatchData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CleverJacksGame+MatchData.swift"; sourceTree = "<group>"; };
 		87D157492A5355F200898EC7 /* SequenceCards.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SequenceCards.entitlements; sourceTree = "<group>"; };
 		87D1574A2A5356D900898EC7 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		87D1574C2A53599000898EC7 /* CoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinView.swift; sourceTree = "<group>"; };
@@ -135,21 +135,21 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		878CF1652A800C3900A6680C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		878CF1742A800C4700A6680C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		87D157052A5352EA00898EC7 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		87D157152A5352EB00898EC7 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		87D1571F2A5352EB00898EC7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -170,12 +170,29 @@
 			path = HomeViews;
 			sourceTree = "<group>";
 		};
+		878CF1692A800C3900A6680C /* CleverJacksUITests */ = {
+			isa = PBXGroup;
+			children = (
+				878CF16A2A800C3900A6680C /* CleverJacksUITests.swift */,
+				878CF16C2A800C3900A6680C /* CleverJacksUITestsLaunchTests.swift */,
+			);
+			path = CleverJacksUITests;
+			sourceTree = "<group>";
+		};
+		878CF1782A800C4700A6680C /* CleverJacksTests */ = {
+			isa = PBXGroup;
+			children = (
+				878CF1792A800C4700A6680C /* CleverJacksTests.swift */,
+			);
+			path = CleverJacksTests;
+			sourceTree = "<group>";
+		};
 		87D156FF2A5352EA00898EC7 = {
 			isa = PBXGroup;
 			children = (
 				87D1570A2A5352EA00898EC7 /* SequenceCards */,
-				87D1571B2A5352EB00898EC7 /* SequenceCardsTests */,
-				87D157252A5352EB00898EC7 /* SequenceCardsUITests */,
+				878CF1692A800C3900A6680C /* CleverJacksUITests */,
+				878CF1782A800C4700A6680C /* CleverJacksTests */,
 				87D157092A5352EA00898EC7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -184,8 +201,8 @@
 			isa = PBXGroup;
 			children = (
 				87D157082A5352EA00898EC7 /* CleverJacks.app */,
-				87D157182A5352EB00898EC7 /* CleverJacksTests.xctest */,
-				87D157222A5352EB00898EC7 /* CleverJacksUITests.xctest */,
+				878CF1682A800C3900A6680C /* CleverJacksUITests.xctest */,
+				878CF1772A800C4700A6680C /* CleverJacksTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -212,23 +229,6 @@
 				87D157122A5352EB00898EC7 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		87D1571B2A5352EB00898EC7 /* SequenceCardsTests */ = {
-			isa = PBXGroup;
-			children = (
-				87D1571C2A5352EB00898EC7 /* SequenceCardsTests.swift */,
-			);
-			path = SequenceCardsTests;
-			sourceTree = "<group>";
-		};
-		87D157252A5352EB00898EC7 /* SequenceCardsUITests */ = {
-			isa = PBXGroup;
-			children = (
-				87D157262A5352EB00898EC7 /* SequenceCardsUITests.swift */,
-				87D157282A5352EB00898EC7 /* SequenceCardsUITestsLaunchTests.swift */,
-			);
-			path = SequenceCardsUITests;
 			sourceTree = "<group>";
 		};
 		87EAF8E12A60C10B00A9E63C /* UtilityViews */ = {
@@ -325,9 +325,9 @@
 		87EAF8E82A60C23F00A9E63C /* Game Center */ = {
 			isa = PBXGroup;
 			children = (
-				87D157432A53552300898EC7 /* SequenceGame+GKTurnBasedControllerDelegate.swift */,
-				87D157452A53555200898EC7 /* SequenceGame+GKTurnBasedEventListener.swift */,
-				87D157472A5355A500898EC7 /* SequenceGame+MatchData.swift */,
+				87D157432A53552300898EC7 /* CleverJacksGame+GKTurnBasedControllerDelegate.swift */,
+				87D157452A53555200898EC7 /* CleverJacksGame+GKTurnBasedEventListener.swift */,
+				87D157472A5355A500898EC7 /* CleverJacksGame+MatchData.swift */,
 			);
 			path = "Game Center";
 			sourceTree = "<group>";
@@ -335,6 +335,42 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		878CF1672A800C3900A6680C /* CleverJacksUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 878CF1702A800C3900A6680C /* Build configuration list for PBXNativeTarget "CleverJacksUITests" */;
+			buildPhases = (
+				878CF1642A800C3900A6680C /* Sources */,
+				878CF1652A800C3900A6680C /* Frameworks */,
+				878CF1662A800C3900A6680C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				878CF16F2A800C3900A6680C /* PBXTargetDependency */,
+			);
+			name = CleverJacksUITests;
+			productName = CleverJacksUITests;
+			productReference = 878CF1682A800C3900A6680C /* CleverJacksUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		878CF1762A800C4700A6680C /* CleverJacksTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 878CF17D2A800C4700A6680C /* Build configuration list for PBXNativeTarget "CleverJacksTests" */;
+			buildPhases = (
+				878CF1732A800C4700A6680C /* Sources */,
+				878CF1742A800C4700A6680C /* Frameworks */,
+				878CF1752A800C4700A6680C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				878CF17C2A800C4700A6680C /* PBXTargetDependency */,
+			);
+			name = CleverJacksTests;
+			productName = CleverJacksTests;
+			productReference = 878CF1772A800C4700A6680C /* CleverJacksTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		87D157072A5352EA00898EC7 /* CleverJacks */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 87D1572C2A5352EB00898EC7 /* Build configuration list for PBXNativeTarget "CleverJacks" */;
@@ -352,42 +388,6 @@
 			productReference = 87D157082A5352EA00898EC7 /* CleverJacks.app */;
 			productType = "com.apple.product-type.application";
 		};
-		87D157172A5352EB00898EC7 /* CleverJacksTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 87D1572F2A5352EB00898EC7 /* Build configuration list for PBXNativeTarget "CleverJacksTests" */;
-			buildPhases = (
-				87D157142A5352EB00898EC7 /* Sources */,
-				87D157152A5352EB00898EC7 /* Frameworks */,
-				87D157162A5352EB00898EC7 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				87D1571A2A5352EB00898EC7 /* PBXTargetDependency */,
-			);
-			name = CleverJacksTests;
-			productName = SequenceCardsTests;
-			productReference = 87D157182A5352EB00898EC7 /* CleverJacksTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		87D157212A5352EB00898EC7 /* CleverJacksUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 87D157322A5352EB00898EC7 /* Build configuration list for PBXNativeTarget "CleverJacksUITests" */;
-			buildPhases = (
-				87D1571E2A5352EB00898EC7 /* Sources */,
-				87D1571F2A5352EB00898EC7 /* Frameworks */,
-				87D157202A5352EB00898EC7 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				87D157242A5352EB00898EC7 /* PBXTargetDependency */,
-			);
-			name = CleverJacksUITests;
-			productName = SequenceCardsUITests;
-			productReference = 87D157222A5352EB00898EC7 /* CleverJacksUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -395,19 +395,19 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1500;
+				LastSwiftUpdateCheck = 1430;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
+					878CF1672A800C3900A6680C = {
+						CreatedOnToolsVersion = 14.3.1;
+						TestTargetID = 87D157072A5352EA00898EC7;
+					};
+					878CF1762A800C4700A6680C = {
+						CreatedOnToolsVersion = 14.3.1;
+						TestTargetID = 87D157072A5352EA00898EC7;
+					};
 					87D157072A5352EA00898EC7 = {
 						CreatedOnToolsVersion = 15.0;
-					};
-					87D157172A5352EB00898EC7 = {
-						CreatedOnToolsVersion = 15.0;
-						TestTargetID = 87D157072A5352EA00898EC7;
-					};
-					87D157212A5352EB00898EC7 = {
-						CreatedOnToolsVersion = 15.0;
-						TestTargetID = 87D157072A5352EA00898EC7;
 					};
 				};
 			};
@@ -425,13 +425,27 @@
 			projectRoot = "";
 			targets = (
 				87D157072A5352EA00898EC7 /* CleverJacks */,
-				87D157172A5352EB00898EC7 /* CleverJacksTests */,
-				87D157212A5352EB00898EC7 /* CleverJacksUITests */,
+				878CF1762A800C4700A6680C /* CleverJacksTests */,
+				878CF1672A800C3900A6680C /* CleverJacksUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		878CF1662A800C3900A6680C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		878CF1752A800C4700A6680C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		87D157062A5352EA00898EC7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -441,23 +455,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		87D157162A5352EB00898EC7 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		87D157202A5352EB00898EC7 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		878CF1642A800C3900A6680C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				878CF16D2A800C3900A6680C /* CleverJacksUITestsLaunchTests.swift in Sources */,
+				878CF16B2A800C3900A6680C /* CleverJacksUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		878CF1732A800C4700A6680C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				878CF17A2A800C4700A6680C /* CleverJacksTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		87D157042A5352EA00898EC7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -471,9 +488,9 @@
 				87D1574F2A5359DD00898EC7 /* CardView.swift in Sources */,
 				87B7A95E2A5B2C9F00DD927B /* SettingsView.swift in Sources */,
 				8784C9212A62629200CBC21A /* GameOverAlert.swift in Sources */,
-				87D157482A5355A500898EC7 /* SequenceGame+MatchData.swift in Sources */,
+				87D157482A5355A500898EC7 /* CleverJacksGame+MatchData.swift in Sources */,
 				87D157532A535AB300898EC7 /* PlayerCardsView.swift in Sources */,
-				87D157442A53552300898EC7 /* SequenceGame+GKTurnBasedControllerDelegate.swift in Sources */,
+				87D157442A53552300898EC7 /* CleverJacksGame+GKTurnBasedControllerDelegate.swift in Sources */,
 				87475E232A647C6600804E18 /* TutorialBoardView.swift in Sources */,
 				8738CFD32A6DF3E4005E58AB /* ArrowView.swift in Sources */,
 				87129E9E2A7EA8CE002EF62D /* MiniBoardView.swift in Sources */,
@@ -484,7 +501,7 @@
 				87B6C0132A5E38F9002C7CBA /* MessageView.swift in Sources */,
 				87EAF8E02A60C0F300A9E63C /* Triangle.swift in Sources */,
 				8784C91D2A625A4B00CBC21A /* TopMenuView.swift in Sources */,
-				87D157462A53555200898EC7 /* SequenceGame+GKTurnBasedEventListener.swift in Sources */,
+				87D157462A53555200898EC7 /* CleverJacksGame+GKTurnBasedEventListener.swift in Sources */,
 				8784C9192A6216FD00CBC21A /* LogoAndNameView.swift in Sources */,
 				87129E9C2A7EA1B0002EF62D /* MiniBoard.swift in Sources */,
 				87D157552A53736F00898EC7 /* BoardCardView.swift in Sources */,
@@ -510,39 +527,116 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		87D157142A5352EB00898EC7 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				87D1571D2A5352EB00898EC7 /* SequenceCardsTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		87D1571E2A5352EB00898EC7 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				87D157272A5352EB00898EC7 /* SequenceCardsUITests.swift in Sources */,
-				87D157292A5352EB00898EC7 /* SequenceCardsUITestsLaunchTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		87D1571A2A5352EB00898EC7 /* PBXTargetDependency */ = {
+		878CF16F2A800C3900A6680C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 87D157072A5352EA00898EC7 /* CleverJacks */;
-			targetProxy = 87D157192A5352EB00898EC7 /* PBXContainerItemProxy */;
+			targetProxy = 878CF16E2A800C3900A6680C /* PBXContainerItemProxy */;
 		};
-		87D157242A5352EB00898EC7 /* PBXTargetDependency */ = {
+		878CF17C2A800C4700A6680C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 87D157072A5352EA00898EC7 /* CleverJacks */;
-			targetProxy = 87D157232A5352EB00898EC7 /* PBXContainerItemProxy */;
+			targetProxy = 878CF17B2A800C4700A6680C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		878CF1712A800C3900A6680C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6Q95QLZS6W;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kruthaydonapati.CleverJacksUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = CleverJacks;
+			};
+			name = Debug;
+		};
+		878CF1722A800C3900A6680C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6Q95QLZS6W;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kruthaydonapati.CleverJacksUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = CleverJacks;
+			};
+			name = Release;
+		};
+		878CF17E2A800C4700A6680C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6Q95QLZS6W;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kruthaydonapati.CleverJacksTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CleverJacks.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CleverJacks";
+			};
+			name = Debug;
+		};
+		878CF17F2A800C4700A6680C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6Q95QLZS6W;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kruthaydonapati.CleverJacksTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CleverJacks.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CleverJacks";
+			};
+			name = Release;
+		};
 		87D1572A2A5352EB00898EC7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -738,85 +832,27 @@
 			};
 			name = Release;
 		};
-		87D157302A5352EB00898EC7 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6Q95QLZS6W;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kruthaydonapati.SequenceCardsTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CleverJacks.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CleverJacks";
-			};
-			name = Debug;
-		};
-		87D157312A5352EB00898EC7 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6Q95QLZS6W;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kruthaydonapati.SequenceCardsTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CleverJacks.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CleverJacks";
-			};
-			name = Release;
-		};
-		87D157332A5352EB00898EC7 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6Q95QLZS6W;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kruthaydonapati.SequenceCardsUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = SequenceCards;
-			};
-			name = Debug;
-		};
-		87D157342A5352EB00898EC7 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6Q95QLZS6W;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kruthaydonapati.SequenceCardsUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = SequenceCards;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		878CF1702A800C3900A6680C /* Build configuration list for PBXNativeTarget "CleverJacksUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				878CF1712A800C3900A6680C /* Debug */,
+				878CF1722A800C3900A6680C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		878CF17D2A800C4700A6680C /* Build configuration list for PBXNativeTarget "CleverJacksTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				878CF17E2A800C4700A6680C /* Debug */,
+				878CF17F2A800C4700A6680C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		87D157032A5352EA00898EC7 /* Build configuration list for PBXProject "CleverJacks" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -831,24 +867,6 @@
 			buildConfigurations = (
 				87D1572D2A5352EB00898EC7 /* Debug */,
 				87D1572E2A5352EB00898EC7 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		87D1572F2A5352EB00898EC7 /* Build configuration list for PBXNativeTarget "CleverJacksTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				87D157302A5352EB00898EC7 /* Debug */,
-				87D157312A5352EB00898EC7 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		87D157322A5352EB00898EC7 /* Build configuration list for PBXNativeTarget "CleverJacksUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				87D157332A5352EB00898EC7 /* Debug */,
-				87D157342A5352EB00898EC7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

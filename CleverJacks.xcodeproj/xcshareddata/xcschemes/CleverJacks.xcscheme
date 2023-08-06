@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1500"
+   LastUpgradeVersion = "1430"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -34,9 +34,9 @@
             parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "87D157172A5352EB00898EC7"
-               BuildableName = "CleverJacksTests.xctest"
-               BlueprintName = "CleverJacksTests"
+               BlueprintIdentifier = "878CF1672A800C3900A6680C"
+               BuildableName = "CleverJacksUITests.xctest"
+               BlueprintName = "CleverJacksUITests"
                ReferencedContainer = "container:CleverJacks.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -45,9 +45,9 @@
             parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "87D157212A5352EB00898EC7"
-               BuildableName = "CleverJacksUITests.xctest"
-               BlueprintName = "CleverJacksUITests"
+               BlueprintIdentifier = "878CF1762A800C4700A6680C"
+               BuildableName = "CleverJacksTests.xctest"
+               BlueprintName = "CleverJacksTests"
                ReferencedContainer = "container:CleverJacks.xcodeproj">
             </BuildableReference>
          </TestableReference>

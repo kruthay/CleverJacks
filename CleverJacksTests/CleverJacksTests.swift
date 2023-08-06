@@ -1,14 +1,13 @@
 //
-//  SequenceCardsTests.swift
-//  SequenceCardsTests
+//  CleverJacksTests.swift
+//  CleverJacksTests
 //
-//  Created by Kruthay Kumar Reddy Donapati on 7/3/23.
+//  Created by Kruthay Kumar Reddy Donapati on 8/6/23.
 //
 
 import XCTest
-@testable import SequenceCards
 
-final class SequenceCardsTests: XCTestCase {
+final class CleverJacksTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -28,7 +27,7 @@ final class SequenceCardsTests: XCTestCase {
 
     func testPerformanceExample() throws {
         // This is an example of a performance test case.
-        self.measure {
+        measure {
             // Put the code you want to measure the time of here.
         }
     }

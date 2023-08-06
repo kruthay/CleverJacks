@@ -1,13 +1,13 @@
 //
-//  SequenceCardsUITests.swift
-//  SequenceCardsUITests
+//  CleverJacksUITests.swift
+//  CleverJacksUITests
 //
-//  Created by Kruthay Kumar Reddy Donapati on 7/3/23.
+//  Created by Kruthay Kumar Reddy Donapati on 8/6/23.
 //
 
 import XCTest
 
-final class SequenceCardsUITests: XCTestCase {
+final class CleverJacksUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

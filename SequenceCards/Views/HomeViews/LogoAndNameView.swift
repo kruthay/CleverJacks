@@ -11,7 +11,7 @@ struct LogoAndNameView: View {
     @Environment(\.colorScheme) var colorScheme
     var body: some View {
         HStack {
-            Image(colorScheme == .dark ? "SequenceLogo Dark" : "SequenceLogo")
+            Image(colorScheme == .dark ? "CleverJacksDark" : "CleverJacksLogo")
                 .resizable()
                 .frame(width: 80, height: 80)
             Text("Clever Jacks")

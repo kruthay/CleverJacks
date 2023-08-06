@@ -1,13 +1,13 @@
 //
-//  SequenceCardsUITestsLaunchTests.swift
-//  SequenceCardsUITests
+//  CleverJacksUITestsLaunchTests.swift
+//  CleverJacksUITests
 //
-//  Created by Kruthay Kumar Reddy Donapati on 7/3/23.
+//  Created by Kruthay Kumar Reddy Donapati on 8/6/23.
 //
 
 import XCTest
 
-final class SequenceCardsUITestsLaunchTests: XCTestCase {
+final class CleverJacksUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

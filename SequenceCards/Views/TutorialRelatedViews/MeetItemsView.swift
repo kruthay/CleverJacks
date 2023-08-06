@@ -10,7 +10,6 @@ import SwiftUI
 struct MeetItemsView: View {
     @ObservedObject var game : TutorialCleverJacksGame
     @State var showItems : Int = 0
-    let meetItemsTimer = Timer.publish(every: 1.5, on: .current, in: .common).autoconnect()
     
     var repeatingAnimation: Animation {
         Animation
@@ -88,20 +87,22 @@ struct MeetItemsView: View {
                 .onAppear() {
                     game.tutorial = true
                     game.startTutorialGame()
-                }
-                .onReceive(meetItemsTimer) {  timerValue in
-                    if showItems >= 3 {
-                        meetItemsTimer.upstream.connect().cancel()
-                    }
-                    else {
-                        withAnimation(.spring()) {
-                            showItems += 1
-                        }
+                    Task {
+                       await delayAnimation()
                     }
                 }
             }
         }
         
+    }
+    private func delayAnimation() async {
+        // Delay of 7.5 seconds (1 second = 1_000_000_000 nanoseconds)
+        while showItems <= 3 {
+            try? await Task.sleep(nanoseconds: 1_500_000_000)
+            withAnimation(.easeInOut(duration: 1.5)) {
+                showItems += 1
+            }
+        }
     }
 }
 
