@@ -25,7 +25,6 @@
 		87B19CE52A7B27FA0012C62C /* AllRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B19CE42A7B27FA0012C62C /* AllRules.swift */; };
 		87B6C0132A5E38F9002C7CBA /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B6C0122A5E38F9002C7CBA /* MessageView.swift */; };
 		87B6C0152A5E3922002C7CBA /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B6C0142A5E3922002C7CBA /* ChatView.swift */; };
-		87B6C0172A5E6928002C7CBA /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B6C0162A5E6928002C7CBA /* TutorialView.swift */; };
 		87B7A95E2A5B2C9F00DD927B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B7A95D2A5B2C9F00DD927B /* SettingsView.swift */; };
 		87BE05992A5B33C20095FDC9 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BE05982A5B33C20095FDC9 /* PlayerView.swift */; };
 		87D1570C2A5352EA00898EC7 /* SequenceCardsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D1570B2A5352EA00898EC7 /* SequenceCardsApp.swift */; };
@@ -97,7 +96,6 @@
 		87B19CE42A7B27FA0012C62C /* AllRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllRules.swift; sourceTree = "<group>"; };
 		87B6C0122A5E38F9002C7CBA /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		87B6C0142A5E3922002C7CBA /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
-		87B6C0162A5E6928002C7CBA /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
 		87B7A95D2A5B2C9F00DD927B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		87BE05982A5B33C20095FDC9 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		87D157082A5352EA00898EC7 /* CleverJacks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleverJacks.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -271,7 +269,6 @@
 				87E062352A6FA61700989DCF /* MeetItemsView.swift */,
 				87B19CE42A7B27FA0012C62C /* AllRules.swift */,
 				87129E9D2A7EA8CE002EF62D /* MiniBoardView.swift */,
-				87B6C0162A5E6928002C7CBA /* TutorialView.swift */,
 				8738CFD62A6E0592005E58AB /* TutorialArrowView.swift */,
 				87475E222A647C6600804E18 /* TutorialBoardView.swift */,
 				87475E262A647D1000804E18 /* TutorialBoardCardView.swift */,
@@ -489,7 +486,6 @@
 				8784C91D2A625A4B00CBC21A /* TopMenuView.swift in Sources */,
 				87D157462A53555200898EC7 /* SequenceGame+GKTurnBasedEventListener.swift in Sources */,
 				8784C9192A6216FD00CBC21A /* LogoAndNameView.swift in Sources */,
-				87B6C0172A5E6928002C7CBA /* TutorialView.swift in Sources */,
 				87129E9C2A7EA1B0002EF62D /* MiniBoard.swift in Sources */,
 				87D157552A53736F00898EC7 /* BoardCardView.swift in Sources */,
 				87475E212A646A1900804E18 /* TutorialCleverJacksGame.swift in Sources */,

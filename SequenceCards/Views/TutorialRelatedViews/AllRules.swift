@@ -74,7 +74,7 @@ struct AllRules: View {
             } header: {
                 Text("What is a Sequence")
             } footer: {
-                Text("Two sequences can have a maximum of one common card")
+                Text("Two sequences cannot have more than one common card")
             }
             
             
@@ -133,8 +133,6 @@ struct AllRules: View {
                 }
             } header: {
                 Text("Corner Cards")
-            } footer: {
-                Text("Swipe right for a animations on choosing coins")
             }
         }
         

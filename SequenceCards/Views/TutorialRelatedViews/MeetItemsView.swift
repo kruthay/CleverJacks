@@ -27,8 +27,12 @@ struct MeetItemsView: View {
                     
                     if showItems >= 2 {
                         VStack {
-                            Text("The Board")
-                                .font(.title3)
+                            
+                            if showItems < 3 {
+                                Text("The Board")
+                                    .font(.title3)
+                                    .transition(.asymmetric(insertion: AnyTransition.opacity.combined(with: .scale), removal: .scale))
+                            }
                             
                             TutorialBoardView(game: game, size : CGSize(width: min(proxy.size.width/12.5,proxy.size.height/14) ,
                                                                         height: max(proxy.size.height/14, proxy.size.width/20)))
@@ -39,9 +43,10 @@ struct MeetItemsView: View {
                     
                     Spacer()
                     
-                    if showItems >= 0 {
+                    if showItems >= 0 && showItems < 3 {
                         HStack {
                             Spacer()
+                            
                             Text("Coins")
                                 .font(.title3)
                             CoinView(coin: .blue)
@@ -57,8 +62,11 @@ struct MeetItemsView: View {
                     
                     if showItems >= 1 {
                         HStack {
-                            Text("Cards")
-                                .font(.title3)
+                            if showItems < 3 {
+                                Text("Cards")
+                                    .font(.title3)
+                                    .transition(.asymmetric(insertion: AnyTransition.opacity.combined(with: .scale), removal: .scale))
+                            }
                             
                             TutorialPlayerCardsView(game: game)
                                 .onAppear {
@@ -66,10 +74,10 @@ struct MeetItemsView: View {
                                 }
                             Image(systemName: "arrow.left")
                                 .fontWeight(.bold)
-                                .opacity(game.tutorial && game.inSelectionCard == nil && showItems > 6 ? 0.4 : 0)
-                                .scaleEffect(game.tutorial && game.inSelectionCard == nil ? 1.8 : 1)
-                                .offset(x: game.tutorial && game.inSelectionCard == nil  ? 10 : 40)
-                                .animation(self.repeatingAnimation, value: game.tutorial && game.inSelectionCard == nil )
+                                .opacity(game.tutorial && showItems >= 3 ? 0.4 : 0)
+                                .scaleEffect(game.tutorial && showItems >= 3 ? 1.8 : 1)
+                                .offset(x: game.tutorial  && showItems >= 3  ? 10 : 40)
+                                .animation(self.repeatingAnimation, value: game.tutorial && game.inSelectionCard == nil && showItems >= 3 )
                             
                         }
                         .transition(.asymmetric(insertion: AnyTransition.opacity.combined(with: .scale), removal: .scale))
