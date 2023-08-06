@@ -37,10 +37,14 @@ enum ArrowImages {
     
     var image : Image {
         switch(self) {
-        case .up : Image(systemName: "arrow.up")
-        case .down : Image(systemName: "arrow.down")
-        case .left : Image(systemName: "arrow.left")
-        case .right : Image(systemName: "arrow.right")
+        case .up :
+            return Image(systemName: "arrow.up")
+        case .down :
+            return Image(systemName: "arrow.down")
+        case .left :
+            return Image(systemName: "arrow.left")
+        case .right :
+            return Image(systemName: "arrow.right")
         }
     }
 }

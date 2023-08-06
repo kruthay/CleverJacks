@@ -94,7 +94,7 @@ struct MeetItemsView: View {
                         meetItemsTimer.upstream.connect().cancel()
                     }
                     else {
-                        withAnimation(.spring(duration: 1.5)) {
+                        withAnimation(.spring()) {
                             showItems += 1
                         }
                     }

@@ -19,14 +19,16 @@ struct HomeView: View {
     @State var showArrow = false
     var body: some View {
         NavigationStack {
-            Spacer()
-            LogoAndNameView()
-            Spacer()
-            Spacer()
-            StartButtonView()
-            Spacer()
-            Spacer()
-            Spacer()
+            Group {
+                Spacer()
+                LogoAndNameView()
+                Spacer()
+                Spacer()
+                StartButtonView()
+                Spacer()
+                Spacer()
+                Spacer()
+            }
             HStack {
                 Spacer()
                 Button("Auto") {
