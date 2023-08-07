@@ -13,7 +13,7 @@ struct GameView: View {
     @Environment(\.scenePhase) var scenePhase
     @EnvironmentObject var game: CleverJacksGame
     @State var justBroughtOn  : Bool = false
-    let timer = Timer.publish(every: 20, tolerance: 0.5, on: .current, in: .common).autoconnect()
+    let timer = Timer.publish(every: 12, tolerance: 0.5, on: .current, in: .common).autoconnect()
     var body: some View {
         
         ZStack {
@@ -55,7 +55,13 @@ struct GameView: View {
         .onReceive(timer) { _ in
             game.isLoading = true
             justBroughtOn = false
-            game.refresh()
+            
+            if game.refreshedTime > 1 {
+                game.resetGame()
+            }
+            else {
+                game.refresh()
+            }
         }
         .onChange(of: scenePhase) { newPhase in
             if newPhase == .active {

@@ -62,6 +62,8 @@ struct HomeView: View {
                 Spacer()
                 Spacer()
                 Text("How to Play?")
+                    .fontWeight(.light)
+                    .fontDesign(.monospaced)
                     .opacity(showArrow ? 0.8: 0)
                     .animation(self.repeatingAnimation, value: showArrow)
                 Spacer()
@@ -71,15 +73,17 @@ struct HomeView: View {
         }
         .navigationTitle("Home")
         .onAppear {
-            let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
-            if launchedBefore  {
-                showArrow = false
-            } else {
-                showArrow.toggle()
-                UserDefaults.standard.set(true, forKey: "launchedBefore")
+            Task {
+                await delayAnimation()
             }
         }
         
+    }
+    private func delayAnimation() async {
+        // Delay of 7.5 seconds (1 second = 1_000_000_000 nanoseconds)
+        
+        try? await Task.sleep(nanoseconds: 1_500_000_000)
+        showArrow.toggle()
     }
 }
 

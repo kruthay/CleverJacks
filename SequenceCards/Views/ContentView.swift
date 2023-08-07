@@ -15,8 +15,7 @@ struct ContentView: View {
                     GameView()
             }
             else {
-                HomeView()
-                    
+                HomeView()    
             }
         }
         .onAppear {

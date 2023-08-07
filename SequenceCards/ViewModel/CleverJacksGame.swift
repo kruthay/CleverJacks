@@ -54,7 +54,9 @@ import SwiftUI
     @Published var classicView: Bool = true
     
     @Published var cardCurrentlyPlayed : Card? = nil
-    
+    @Published var cardRecentlyChanged : Card? = nil
+    @Published var refreshedTime = 0
+    var playerTaskIsRunning = 0
     var numberOfPlayers : Int {
         board?.numberOfPlayers ?? minPlayers
     }
@@ -123,44 +125,16 @@ import SwiftUI
         opponent2?.data?.coin ?? .red
     }
     
-    var myTurns : Int {
-        localParticipant?.data?.turns ?? 0
-    }
-    
-    var opponentTurns : Int {
-        opponent?.data?.turns ?? 0
-    }
-    
-    var opponent2Turns : Int {
-        opponent2?.data?.turns ?? 0
-    }
-    
-    
-    
-    
+
     /// The root view controller of the window.
     var rootViewController: UIViewController? {
         let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
         return windowScene?.windows.first?.rootViewController
     }
     
-    func isCardSelectable(_ card: Card) -> Bool {
-        if card.belongsToASequence {
-            return false
-        }
-        else if card.coin == .special {
-            return false
-        }
-        return  true
-    }
     
     
     func selectACard(_ card: Card) -> Card? {
-        if !isCardSelectable(card) {
-            matchMessage = "Invalid Card"
-            return nil
-            // throws an error saying card is already a part of sequence can't change it
-        }
         guard let selectingCard = inSelectionCard, let index = board?.boardCards.indicesOf(x: card), let cardsOnHand = localParticipant?.data?.cardsOnHand  else {
             matchMessage = "Try Again"
             return nil
@@ -172,40 +146,42 @@ import SwiftUI
             return nil
         }
         
-        if let indexTobeRemoved = localParticipant?.data?.cardsOnHand.firstIndex(of: selectingCard) {
-            localParticipant?.data?.cardsOnHand.remove(at: indexTobeRemoved)
-            if let card = board?.cardStack.popLast() {
-                print("Card \(card)")
-                print("count \(board!.cardStack.count)")
-                localParticipant?.data?.cardsOnHand.append(card)
-            }
-            else {
-                print("Something is Wrong")
-                matchMessage = "Match Tied"
-                return nil
-            }
-        }
-        else {
-            matchMessage = "Try Again"
-            return nil
-        }
+
         
         if card.coin == nil {
             board?.boardCards[index.0][index.1].coin = localParticipant?.data?.coin
         }
         
-        else if card.coin == opponent?.data?.coin || card.coin == opponent2?.data?.coin && card.coin != .special {
+        else if ( card.coin == opponent?.data?.coin || card.coin == opponent2?.data?.coin ) && card.coin != .special {
             board?.boardCards[index.0][index.1].coin = nil
         }
         else {
             return nil
         }
         
-        cardCurrentlyPlayed = selectingCard
+        cardRecentlyChanged = board?.boardCards[index.0][index.1]
+        
+        if let indexTobeRemoved = cardsOnHand.firstIndex(of: selectingCard) {
+            localParticipant?.data?.cardsOnHand.remove(at: indexTobeRemoved)
+            cardCurrentlyPlayed = selectingCard
+            if let card = board?.cardStack.popLast() {
+                localParticipant?.data?.cardsOnHand.append(card)
+            }
+        }
+        else {
+            matchMessage = "Match Tied"
+            // Send this information
+            return nil
+        }
+        
+
+        
         if let numberOfSequences = board?.getNumberOfSequences(index: index) {
             localParticipant?.data?.noOfSequences +=  numberOfSequences
             sequencesChanged += numberOfSequences
         }
+        
+        
         if auto == true {
             myTurn = false
             if localParticipant?.data?.noOfSequences ?? 0 >= 2 {
@@ -233,7 +209,7 @@ import SwiftUI
         guard let selectingCard = inSelectionCard else {
             return false
         }
-        if card.belongsToASequence {
+        if card.belongsToASequence && card.coin == .special {
             return false
         }
         
@@ -280,13 +256,13 @@ import SwiftUI
     
     
     func refresh() {
+
         guard currentMatchID != nil else {
             resetGame()
             return
         }
         Task {
             do {
-                
                 let match = try await GKTurnBasedMatch.load(withID: currentMatchID!)
                 if let index =  match.participants.firstIndex(where: {$0.status != .active && $0.status != .done}) {
                     matchMessage = "Waiting for all players "
@@ -307,12 +283,15 @@ import SwiftUI
             }
             print("REFRESH TASK DONE")
         }
+        refreshedTime += 1
     }
     
     
     /// Resets the game interface to the content view.
     func resetGame() {
         // Reset the game data.
+        playerTaskIsRunning = 0
+        refreshedTime = 0
         auto = false
         playingGame = false
         youWon = false
@@ -501,15 +480,9 @@ import SwiftUI
             } else {
                 // Otherwise, take the turn and pass to the next participants.
                 
-                // Update the game data.
-                localParticipant?.data?.turns += 1
-                
-                // Can't use here because the cards has to be selected for you to take turn and turn can be taken only after selection
-                // Can't put it in selection, have to put it before selection.
-                
-                // *** UPDATE THE BOARD ****
                 // Create the game data to store in Game Center.
                 let gameData = (encodeGameData() ?? match.matchData)!
+                
                 var nextParticipants : [GKTurnBasedParticipant] = []
                 
                 // Remove the current participant from the matech participants.
@@ -523,7 +496,7 @@ import SwiftUI
                 }
                 
                 
-                
+                // For Testing
                 if let requiredNoOfSequences = board?.requiredNoOfSequences, let localPlayerSequences =  localParticipant?.data?.noOfSequences{
                     if localPlayerSequences >= requiredNoOfSequences {
                         match.currentParticipant?.matchOutcome = .won
@@ -533,7 +506,7 @@ import SwiftUI
                         try await match.endMatchInTurn(withMatch: gameData)
                         youWon = true
                         isGameOver = true
-                        
+                        return
                     }
                 }
                 if board?.cardStack.count == 0 && !isGameOver {
@@ -684,7 +657,7 @@ import SwiftUI
             
             // Send the exchange request with the message.
             try await match.sendExchange(to: participants, data: data,
-                                         localizableMessageKey: "This is my text message.",
+                                         localizableMessageKey: "\(myName) sent a message.",
                                          arguments: [], timeout: GKTurnTimeoutDefault)
         } catch {
             print("Error: \(error.localizedDescription).")
@@ -719,11 +692,6 @@ import SwiftUI
     
     
     func selectACardByOpponent(_ card: Card, selectingCard : Card?) -> Card? {
-        if !isCardSelectable(card) {
-            matchMessage = "Invalid Card"
-            return nil
-            // throws an error saying card is already a part of sequence can't change it
-        }
         guard let selectingCard, let index = board?.boardCards.indicesOf(x: card), let opponentsCards = opponent?.data?.cardsOnHand  else {
             matchMessage = "Try Again"
             return nil

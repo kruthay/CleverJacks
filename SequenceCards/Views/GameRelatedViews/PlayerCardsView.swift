@@ -22,12 +22,16 @@ struct PlayerCardsView: View {
                             if game.myTurn {
                                 withAnimation {
                                     game.inSelectionCard = game.inSelectionCard != card ? card : nil
-                                    
                                 }
                                 impactSoft.impactOccurred()
                             }
                         }
                     
+                }
+            }
+            .onAppear {
+                if game.myCards.isEmpty {
+                    game.resetGame()
                 }
             }
         }

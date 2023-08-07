@@ -30,8 +30,7 @@ struct Participant: Identifiable {
         var cardsOnHand : [Card] = []
         let coin : Coin?
         var noOfSequences = 0
-        var turns = 0
-        let currentMatchID : String 
+        let currentMatchID : String
         var result : Result = .noResult
         
     }
@@ -48,6 +47,7 @@ enum Result : Codable {
 struct GameData: Codable, CustomStringConvertible {
     var board: Board?
     var cardCurrentlyPlayed : Card?
+    var cardRecentlyChanged : Card?
     var allPlayersData : [String: Participant.PlayerGameData]
     var lastPlayedBy: String
     var description: String {
@@ -105,7 +105,7 @@ extension CleverJacksGame {
         }
         
         
-        let gameData = GameData(board: board , cardCurrentlyPlayed: cardCurrentlyPlayed, allPlayersData: allPlayersData, lastPlayedBy: lastPlayedBy)
+        let gameData = GameData(board: board , cardCurrentlyPlayed: cardCurrentlyPlayed, cardRecentlyChanged: cardRecentlyChanged, allPlayersData: allPlayersData, lastPlayedBy: lastPlayedBy)
         
         return encode(gameData: gameData)
     }
@@ -138,50 +138,72 @@ extension CleverJacksGame {
     ///
     /// - Parameter matchData: A data representation of the game data.
     func decodeGameData(matchData: Data) {
-        let gameData = try? PropertyListDecoder().decode(GameData.self, from: matchData)
-        guard let gameData = gameData else { return }
-        print("Decoding the gameData")
-        // Set the match count.
-        cardCurrentlyPlayed = gameData.cardCurrentlyPlayed
-        // update the current board,
-        board = gameData.board
-        lastPlayedBy = gameData.lastPlayedBy
-        //  we don't need items for now.
-        if let localPlayerName = localParticipant?.player.displayName {
-            
-            if let playerGameData = gameData.allPlayersData[localPlayerName] {
-                localParticipant?.data = playerGameData
-            }
+        
+        if matchData.isEmpty {
+            return
         }
         
-        // Add the opponent's items.
-        
-        // Saving for persistance purposes, some values are not decoded
-        if let opponentPlayerName = opponent?.player.displayName {
-            if opponentPlayerName == "" {
+        do {
+            let gameData = try PropertyListDecoder().decode(GameData.self, from: matchData)
+            
+            // Update Response Cards
+            cardCurrentlyPlayed = gameData.cardCurrentlyPlayed
+            cardRecentlyChanged = gameData.cardRecentlyChanged
+                        
+            if let cardRecentlyChanged,
+                let index = gameData.board?.boardCards.indicesOf(x: cardRecentlyChanged),
+                let cardStack = gameData.board?.cardStack,
+               let aboutToBeSequence = gameData.board?.aboutToBeSequence {
+                board?.aboutToBeSequence = aboutToBeSequence
+                board?.cardStack = cardStack
+                board?.boardCards[index.0][index.1] = cardRecentlyChanged
+            }
+
+            
+            board = gameData.board
+            lastPlayedBy = gameData.lastPlayedBy
+            //  we don't need items for now.
+            
+            
+            
+            if let localPlayerName = localParticipant?.player.displayName {
+                
+                if let playerGameData = gameData.allPlayersData[localPlayerName] {
+                    localParticipant?.data = playerGameData
+                }
+            }
+            
+            
+            // Saving for persistance purposes, some values are not decoded
+            if let opponentPlayerName = opponent?.player.displayName {
+                if opponentPlayerName == "" {
+                    if let playerGameData = gameData.allPlayersData["Computer"] {
+                        opponent?.data = playerGameData
+                    }
+                }
+                else if let playerGameData = gameData.allPlayersData[opponentPlayerName] {
+                    opponent?.data = playerGameData
+                }
+            }
+            else if opponent?.isABot == true {
                 if let playerGameData = gameData.allPlayersData["Computer"] {
                     opponent?.data = playerGameData
                 }
             }
-            else if let playerGameData = gameData.allPlayersData[opponentPlayerName] {
-                opponent?.data = playerGameData
+            if let opponent2PlayerName = opponent2?.player.displayName {
+                if let playerGameData = gameData.allPlayersData[opponent2PlayerName] {
+                    opponent2?.data = playerGameData
+                }
             }
-        }
-        else if opponent?.isABot == true {
-            if let playerGameData = gameData.allPlayersData["Computer"] {
-                opponent?.data = playerGameData
-            }
-        }
-        
-        if let opponent2PlayerName = opponent2?.player.displayName {
             
-            if let playerGameData = gameData.allPlayersData[opponent2PlayerName] {
-                opponent2?.data = playerGameData
-            }
+            
+            // Set the opponent's items.
+            
+            
+        } catch {
+            matchMessage = "Incompatible App Versions, Reset the Game "
+            print("Issues")
+            return
         }
-        
-        
-        // Set the opponent's items.
-
     }
 }

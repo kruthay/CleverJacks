@@ -44,12 +44,22 @@ struct ResponseView: View {
                 }
             }
             
-            // Send text messages as exchange items.
             Group {
                 Spacer()
                 if let card = game.cardCurrentlyPlayed {
-                    CardView(card: card, size:CGSize(width: proxy.size.width/16, height: proxy.size.height/20) )
-                        .opacity(game.inSelectionCard != nil ? 1 : 0.6)
+                    HStack {
+                        if card.isItAOneEyedJack || card.isItATwoEyedJack {
+                            if let recentCard = game.cardRecentlyChanged {
+                                CardView(card: recentCard, size:CGSize(width: proxy.size.width/16, height: proxy.size.height/20) )
+                                    .opacity(game.inSelectionCard != nil ? 1 : 0.6)
+                                    .transition(.asymmetric(insertion: AnyTransition.opacity.combined(with: .scale), removal: .scale))
+                                
+                            }
+                        }
+                        CardView(card: card, size:CGSize(width: proxy.size.width/16, height: proxy.size.height/20) )
+                            .opacity(game.inSelectionCard != nil ? 1 : 0.6)
+                            .transition(.asymmetric(insertion: AnyTransition.opacity.combined(with: .scale), removal: .scale))
+                    }
                 }
                 else {
                     CardView(card: Card(coin:.special), size:CGSize(width: proxy.size.width/16, height: proxy.size.height/20))

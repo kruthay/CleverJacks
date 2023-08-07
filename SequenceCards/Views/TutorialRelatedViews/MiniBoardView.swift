@@ -30,7 +30,10 @@ struct MiniBoardView: View {
                 await delayAnimation()
             }
         }
-
+        .onDisappear {
+            board.reset()
+            board.numberOfAnimations = 0
+        }
         }
     private func delayAnimation() async {
         // Delay of 7.5 seconds (1 second = 1_000_000_000 nanoseconds)
