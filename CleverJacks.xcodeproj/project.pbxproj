@@ -32,6 +32,7 @@
 		87BD15162A81443900905584 /* ScreenshotTestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BD15152A81443900905584 /* ScreenshotTestsLaunchTests.swift */; };
 		87BD151D2A8145AE00905584 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BD151C2A8145AE00905584 /* SnapshotHelper.swift */; };
 		87BE05992A5B33C20095FDC9 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BE05982A5B33C20095FDC9 /* PlayerView.swift */; };
+		87C535992A828C9700BFF90B /* ListAllGamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C535982A828C9700BFF90B /* ListAllGamesView.swift */; };
 		87D1570C2A5352EA00898EC7 /* SequenceCardsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D1570B2A5352EA00898EC7 /* SequenceCardsApp.swift */; };
 		87D1570E2A5352EA00898EC7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D1570D2A5352EA00898EC7 /* ContentView.swift */; };
 		87D157102A5352EB00898EC7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 87D1570F2A5352EB00898EC7 /* Assets.xcassets */; };
@@ -115,6 +116,7 @@
 		87BD15152A81443900905584 /* ScreenshotTestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotTestsLaunchTests.swift; sourceTree = "<group>"; };
 		87BD151C2A8145AE00905584 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		87BE05982A5B33C20095FDC9 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		87C535982A828C9700BFF90B /* ListAllGamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListAllGamesView.swift; sourceTree = "<group>"; };
 		87D157082A5352EA00898EC7 /* CleverJacks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleverJacks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		87D1570B2A5352EA00898EC7 /* SequenceCardsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceCardsApp.swift; sourceTree = "<group>"; };
 		87D1570D2A5352EA00898EC7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 				87EAF8E52A60C1F500A9E63C /* CommunicationViews */,
 				87D1574A2A5356D900898EC7 /* GameView.swift */,
 				87BE05982A5B33C20095FDC9 /* PlayerView.swift */,
+				87C535982A828C9700BFF90B /* ListAllGamesView.swift */,
 				8784C91C2A625A4B00CBC21A /* TopMenuView.swift */,
 				87D157542A53736F00898EC7 /* BoardCardView.swift */,
 				87D157522A535AB200898EC7 /* PlayerCardsView.swift */,
@@ -568,6 +571,7 @@
 				87F40CD52A6344F300AE1D69 /* NotificationCountView.swift in Sources */,
 				87D157362A5353D100898EC7 /* Suit.swift in Sources */,
 				87B6C0132A5E38F9002C7CBA /* MessageView.swift in Sources */,
+				87C535992A828C9700BFF90B /* ListAllGamesView.swift in Sources */,
 				87EAF8E02A60C0F300A9E63C /* Triangle.swift in Sources */,
 				8784C91D2A625A4B00CBC21A /* TopMenuView.swift in Sources */,
 				87D157462A53555200898EC7 /* CleverJacksGame+GKTurnBasedEventListener.swift in Sources */,

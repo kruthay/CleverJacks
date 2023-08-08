@@ -21,13 +21,13 @@ struct GameView: View {
                 TopMenuView()
                 Divider()
                 PlayerView()
-                Divider()
                 GeometryReader {
                     proxy in
+                    Divider()
                     AdaptiveStack(isItAVStack: proxy.size.width < proxy.size.height) {
                         Spacer()
-                        BoardView(size : CGSize(width: min(proxy.size.width/12.5,proxy.size.height/14) ,
-                                                height: max(proxy.size.height/14, proxy.size.width/20)))
+                        BoardView(size : CGSize(width: min(proxy.size.width/12.5,proxy.size.height/14.5) ,
+                                                height: max(proxy.size.height/14.5, proxy.size.width/20)))
                         Spacer()
                         Spacer()
                             ResponseView(
@@ -38,13 +38,11 @@ struct GameView: View {
                             size : CGSize(width: min(proxy.size.width/12.5,proxy.size.height/14) , height: max(proxy.size.height/14, proxy.size.width/20)),
                             isItAVStack: proxy.size.width > proxy.size.height )
                         Spacer()
-                        
+                        Text("")
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
-            
-            
         }
         
         .confettiCannon(counter: $game.sequencesChanged, num: justBroughtOn ? 0 : 100, repetitions: game.myNoOfSequences, repetitionInterval: 0.7)

@@ -65,6 +65,9 @@ import SwiftUI
         board?.boardCards ?? Board(classicView: true, numberOfPlayers: 2).boardCards
     }
     
+    @Published var allOpenMatches : [GKTurnBasedMatch] = []
+    var allCompletedMatches : [GKTurnBasedMatch] = []
+    
     /// The local player's name.
     var myName: String {
         GKLocalPlayer.local.displayName
@@ -272,8 +275,25 @@ import SwiftUI
                     if let whichPlayersTurn = match.currentParticipant?.player {
                         self.whichPlayersTurn = whichPlayersTurn
                     }
-                    if whichPlayersTurn == localParticipant?.player  {
-                        matchMessage = "Waiting Server Response"
+                    if whichPlayersTurn == localParticipant?.player {
+                        if matchMessage == "Waiting Server Response" {
+                            if playerTaskIsRunning == 0 {
+                                playerTaskIsRunning += 1
+                                decodeGameData(matchData: match.matchData!)
+                                myTurn = true
+                                matchMessage = "Refreshed"
+                            }
+                            matchMessage = "Click again to Force Refresh "
+                            if myTurn == false {
+                                resetGame()
+                            }
+                        }
+                        else {
+                            matchMessage = "Waiting Server Response"
+                        }
+                    }
+                    else {
+                        decodeGameData(matchData: match.matchData!)
                     }
                 }
                 isLoading = false
@@ -537,6 +557,24 @@ import SwiftUI
             print("Is there an error after winning.")
             resetGame()
         }
+    }
+    
+    
+    func getTheListOfAllAvailableOpenMatches() async  {
+        allOpenMatches = []
+        print("Getting")
+        if localParticipant == nil {
+            return
+        }
+        guard let existingMatches = try? await GKTurnBasedMatch.loadMatches() else {
+            print("Couldn't")
+            allOpenMatches = []
+            return 
+        }
+        print("Got")
+        
+        allOpenMatches = existingMatches.filter { $0.status == .open }
+        print("Got \(allOpenMatches)")
     }
     
     /// Quits the game by forfeiting the match.

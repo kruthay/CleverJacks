@@ -18,10 +18,10 @@ struct MeetItemsView: View {
     }
     
     var body: some View {
-        
-        NavigationStack {
-            GeometryReader {
-                proxy in
+        GeometryReader {
+            proxy in
+        VStack {
+
                 AdaptiveStack(isItAVStack:  proxy.size.width < proxy.size.height) {
                     
                     if showItems >= 2 {
@@ -33,16 +33,18 @@ struct MeetItemsView: View {
                                     .transition(.asymmetric(insertion: AnyTransition.opacity.combined(with: .scale), removal: .scale))
                             }
                             
-                            TutorialBoardView(game: game, size : CGSize(width: min(proxy.size.width/12.5,proxy.size.height/14) ,
-                                                                        height: max(proxy.size.height/14, proxy.size.width/20)))
+                            TutorialBoardView(game: game, size : CGSize(width: min(proxy.size.width/13,proxy.size.height/15) ,
+                                                                        height: max(proxy.size.height/15, proxy.size.width/21)))
+                            .padding()
                             
                         }
                         .transition(.asymmetric(insertion: AnyTransition.opacity.combined(with: .scale), removal: .scale))
                     }
                     
+
                     Spacer()
-                    
                     if showItems >= 0 && showItems < 3 {
+                        
                         HStack {
                             Spacer()
                             
@@ -56,7 +58,6 @@ struct MeetItemsView: View {
                         }
                         .transition(.asymmetric(insertion: AnyTransition.opacity.combined(with: .scale), removal: .scale))
                     }
-                    
                     Spacer()
                     
                     if showItems >= 1 {

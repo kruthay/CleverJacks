@@ -16,8 +16,9 @@ struct ResponseView: View {
     @State var isItAVStack : Bool
     var body: some View {
         AdaptiveStack(isItAVStack: isItAVStack) {
+            Spacer()
             if !game.auto {
-                Spacer()
+                
                 Button("Message") {
                     withAnimation(.easeInOut(duration: 1)) {
                         game.showMessages = true
@@ -32,6 +33,8 @@ struct ResponseView: View {
                 if let matchMessage = game.matchMessage {
                     HStack {
                         Text(matchMessage)
+                            .font(.system(size: 15))
+                            .minimumScaleFactor(0.001)
                     }
                     .onAppear {
                         Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { timer in
@@ -86,8 +89,9 @@ struct ResponseView: View {
                 }
                 .buttonStyle(RemainderButtonStyle())
                 .disabled((game.myTurn || game.isGameOver))
-                Spacer()
+                
             }
+            Spacer()
             
         }
         
