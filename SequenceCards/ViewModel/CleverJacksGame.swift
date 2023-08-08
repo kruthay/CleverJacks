@@ -283,7 +283,11 @@ import SwiftUI
                                 myTurn = true
                                 matchMessage = "Refreshed"
                             }
-                            matchMessage = "Click again to Force Refresh "
+                            else {
+                                matchMessage = "Click again to Force Refresh"
+                            }
+                        }
+                        else if matchMessage == "Click again to Force Refresh" {
                             if myTurn == false {
                                 resetGame()
                             }
