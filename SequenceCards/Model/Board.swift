@@ -96,10 +96,10 @@ struct Board : Codable, CustomStringConvertible {
         return dealtCards
     }
     
-    mutating func uniqueCoin() -> Coin {
+    mutating func uniqueCoin() -> Coin? {
         if allCoins.count == 0 {
             print("SomeOne Accessed Count of Coins When 0")
-            return .special
+            return nil
         }
         return allCoins.removeFirst()
     }

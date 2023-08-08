@@ -31,14 +31,13 @@ struct MiniBoardView: View {
             }
         }
         .onDisappear {
-            board.reset()
             board.numberOfAnimations = 0
         }
         }
     private func delayAnimation() async {
         // Delay of 7.5 seconds (1 second = 1_000_000_000 nanoseconds)
         while board.numberOfAnimations != 3 {
-            try? await Task.sleep(nanoseconds: 1_500_000_000)
+            try? await Task.sleep(nanoseconds: 750_000_000)
             if !board.allValuesUpdated {
                 board.update()
             }

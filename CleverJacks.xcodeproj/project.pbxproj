@@ -28,6 +28,9 @@
 		87B6C0132A5E38F9002C7CBA /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B6C0122A5E38F9002C7CBA /* MessageView.swift */; };
 		87B6C0152A5E3922002C7CBA /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B6C0142A5E3922002C7CBA /* ChatView.swift */; };
 		87B7A95E2A5B2C9F00DD927B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B7A95D2A5B2C9F00DD927B /* SettingsView.swift */; };
+		87BD15142A81443900905584 /* ScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BD15132A81443900905584 /* ScreenshotTests.swift */; };
+		87BD15162A81443900905584 /* ScreenshotTestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BD15152A81443900905584 /* ScreenshotTestsLaunchTests.swift */; };
+		87BD151D2A8145AE00905584 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BD151C2A8145AE00905584 /* SnapshotHelper.swift */; };
 		87BE05992A5B33C20095FDC9 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BE05982A5B33C20095FDC9 /* PlayerView.swift */; };
 		87D1570C2A5352EA00898EC7 /* SequenceCardsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D1570B2A5352EA00898EC7 /* SequenceCardsApp.swift */; };
 		87D1570E2A5352EA00898EC7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D1570D2A5352EA00898EC7 /* ContentView.swift */; };
@@ -73,6 +76,13 @@
 			remoteGlobalIDString = 87D157072A5352EA00898EC7;
 			remoteInfo = CleverJacks;
 		};
+		87BD15172A81443900905584 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 87D157002A5352EA00898EC7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 87D157072A5352EA00898EC7;
+			remoteInfo = CleverJacks;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -100,6 +110,10 @@
 		87B6C0122A5E38F9002C7CBA /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		87B6C0142A5E3922002C7CBA /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		87B7A95D2A5B2C9F00DD927B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		87BD15112A81443900905584 /* ScreenshotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScreenshotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		87BD15132A81443900905584 /* ScreenshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotTests.swift; sourceTree = "<group>"; };
+		87BD15152A81443900905584 /* ScreenshotTestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotTestsLaunchTests.swift; sourceTree = "<group>"; };
+		87BD151C2A8145AE00905584 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		87BE05982A5B33C20095FDC9 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		87D157082A5352EA00898EC7 /* CleverJacks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleverJacks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		87D1570B2A5352EA00898EC7 /* SequenceCardsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceCardsApp.swift; sourceTree = "<group>"; };
@@ -147,6 +161,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		87BD150E2A81443900905584 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		87D157052A5352EA00898EC7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -185,12 +206,23 @@
 			path = CleverJacksTests;
 			sourceTree = "<group>";
 		};
+		87BD15122A81443900905584 /* ScreenshotTests */ = {
+			isa = PBXGroup;
+			children = (
+				87BD151C2A8145AE00905584 /* SnapshotHelper.swift */,
+				87BD15132A81443900905584 /* ScreenshotTests.swift */,
+				87BD15152A81443900905584 /* ScreenshotTestsLaunchTests.swift */,
+			);
+			path = ScreenshotTests;
+			sourceTree = "<group>";
+		};
 		87D156FF2A5352EA00898EC7 = {
 			isa = PBXGroup;
 			children = (
 				87D1570A2A5352EA00898EC7 /* SequenceCards */,
 				878CF1692A800C3900A6680C /* CleverJacksUITests */,
 				878CF1782A800C4700A6680C /* CleverJacksTests */,
+				87BD15122A81443900905584 /* ScreenshotTests */,
 				87D157092A5352EA00898EC7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -201,6 +233,7 @@
 				87D157082A5352EA00898EC7 /* CleverJacks.app */,
 				878CF1682A800C3900A6680C /* CleverJacksUITests.xctest */,
 				878CF1772A800C4700A6680C /* CleverJacksTests.xctest */,
+				87BD15112A81443900905584 /* ScreenshotTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -368,6 +401,24 @@
 			productReference = 878CF1772A800C4700A6680C /* CleverJacksTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		87BD15102A81443900905584 /* ScreenshotTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 87BD151B2A81443900905584 /* Build configuration list for PBXNativeTarget "ScreenshotTests" */;
+			buildPhases = (
+				87BD150D2A81443900905584 /* Sources */,
+				87BD150E2A81443900905584 /* Frameworks */,
+				87BD150F2A81443900905584 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				87BD15182A81443900905584 /* PBXTargetDependency */,
+			);
+			name = ScreenshotTests;
+			productName = ScreenshotTests;
+			productReference = 87BD15112A81443900905584 /* ScreenshotTests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		87D157072A5352EA00898EC7 /* CleverJacks */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 87D1572C2A5352EB00898EC7 /* Build configuration list for PBXNativeTarget "CleverJacks" */;
@@ -403,6 +454,10 @@
 						CreatedOnToolsVersion = 14.3.1;
 						TestTargetID = 87D157072A5352EA00898EC7;
 					};
+					87BD15102A81443900905584 = {
+						CreatedOnToolsVersion = 14.3.1;
+						TestTargetID = 87D157072A5352EA00898EC7;
+					};
 					87D157072A5352EA00898EC7 = {
 						CreatedOnToolsVersion = 15.0;
 					};
@@ -424,6 +479,7 @@
 				87D157072A5352EA00898EC7 /* CleverJacks */,
 				878CF1762A800C4700A6680C /* CleverJacksTests */,
 				878CF1672A800C3900A6680C /* CleverJacksUITests */,
+				87BD15102A81443900905584 /* ScreenshotTests */,
 			);
 		};
 /* End PBXProject section */
@@ -437,6 +493,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		878CF1752A800C4700A6680C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		87BD150F2A81443900905584 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -469,6 +532,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				878CF17A2A800C4700A6680C /* CleverJacksTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		87BD150D2A81443900905584 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				87BD15162A81443900905584 /* ScreenshotTestsLaunchTests.swift in Sources */,
+				87BD15142A81443900905584 /* ScreenshotTests.swift in Sources */,
+				87BD151D2A8145AE00905584 /* SnapshotHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -535,6 +608,11 @@
 			isa = PBXTargetDependency;
 			target = 87D157072A5352EA00898EC7 /* CleverJacks */;
 			targetProxy = 878CF17B2A800C4700A6680C /* PBXContainerItemProxy */;
+		};
+		87BD15182A81443900905584 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 87D157072A5352EA00898EC7 /* CleverJacks */;
+			targetProxy = 87BD15172A81443900905584 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -630,6 +708,44 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CleverJacks.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CleverJacks";
+			};
+			name = Release;
+		};
+		87BD15192A81443900905584 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6Q95QLZS6W;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kruthaydonapati.ScreenshotTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = CleverJacks;
+			};
+			name = Debug;
+		};
+		87BD151A2A81443900905584 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6Q95QLZS6W;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kruthaydonapati.ScreenshotTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = CleverJacks;
 			};
 			name = Release;
 		};
@@ -845,6 +961,15 @@
 			buildConfigurations = (
 				878CF17E2A800C4700A6680C /* Debug */,
 				878CF17F2A800C4700A6680C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		87BD151B2A81443900905584 /* Build configuration list for PBXNativeTarget "ScreenshotTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				87BD15192A81443900905584 /* Debug */,
+				87BD151A2A81443900905584 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -30,6 +30,9 @@ extension CleverJacksGame : GKTurnBasedEventListener{
         switch match.status {
         case .open:
             Task {
+                if playerTaskIsRunning == 1 {
+                    return
+                }
                 playerTaskIsRunning += 1
                 refreshedTime = 0
 
@@ -93,12 +96,20 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                                             let image = try await player.loadPhoto(for: GKPlayer.PhotoSize.small)
                                             opponent = Participant(player: player,
                                                                    avatar: Image(uiImage: image))
+                                            if let data = gameData.allPlayersData[player.gamePlayerID] {
+                                                print(data)
+                                                opponent?.data = data
+                                            }
                                             
                                         }
                                         else if opponent2 == nil && gameData.board?.numberOfPlayers ?? 0 > 2 && opponent?.player != player {
                                             let image = try await player.loadPhoto(for: GKPlayer.PhotoSize.small)
                                             opponent2 =  Participant(player: player,
                                                                      avatar: Image(uiImage: image))
+                                            if let data = gameData.allPlayersData[player.gamePlayerID] {
+                                                print(data)
+                                                opponent2?.data = data
+                                            }
                                         }
                                     }
                                 }
@@ -111,8 +122,7 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                         // Restore the current game data from the match object.
                         // oppoents are created before this step so that decoded information is added to their profile.
                         if let currentCardsCount = board?.cardStack.count, let cardCountInTheDecodedGameData = decode(matchData: match.matchData!)?.board?.cardStack.count {
-                            print("Player Task Runs :", playerTaskIsRunning)
-                            if currentCardsCount >= cardCountInTheDecodedGameData && playerTaskIsRunning == 1 {
+                            if currentCardsCount >= cardCountInTheDecodedGameData {
                                 decodeGameData(matchData: match.matchData!)
                             }
                             else {
@@ -121,11 +131,18 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                         }
                         // When Local Player is invited.
                         if match.currentParticipant?.player == localParticipant?.player {
+                            if let gameData = decode(matchData: match.matchData!), let localPlayer = localParticipant?.player {
+                                if let data = gameData.allPlayersData[localPlayer.gamePlayerID] {
+                                    localParticipant?.data = data
+                                }
+                            }
                             if localParticipant?.data == nil {
-                                
                                 var assignCoin : Coin?
                                 var assignDealtCards : [Card] = []
                                 if let coin =  board?.uniqueCoin()  {
+                                    if coin == .red {
+                                        print("Yeah went wrong \(String(describing: decode(matchData: match.matchData!)))")
+                                    }
                                     assignCoin = coin
                                 }
                                 else {

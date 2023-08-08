@@ -68,23 +68,23 @@ extension CleverJacksGame {
         var allPlayersData = [String: Participant.PlayerGameData]()
         // Add the local player's items.
         var lastPlayedBy = ""
-        if let localPlayerName = localParticipant?.player.displayName {
+        if let localPlayerId = localParticipant?.player.displayName {
             if let playerGameData = localParticipant?.data {
-                allPlayersData[localPlayerName] = playerGameData
+                allPlayersData[localPlayerId] = playerGameData
             }
         }
         
         // Add the opponent's items.
         
         // Saving for persistance purposes, some values are not decoded
-        if let opponentPlayerName = opponent?.player.displayName {
-            if opponentPlayerName == "" {
+        if let opponentPlayerId = opponent?.player.displayName {
+            if opponentPlayerId == "" {
                 if let playerGameData = opponent?.data {
                     allPlayersData["Computer"] = playerGameData
                 }
             }
             else if let playerGameData = opponent?.data {
-                allPlayersData[opponentPlayerName] = playerGameData
+                allPlayersData[opponentPlayerId] = playerGameData
             }
         }
         else if opponent?.isABot == true {
@@ -93,10 +93,10 @@ extension CleverJacksGame {
             }
         }
         
-        if let opponent2PlayerName = opponent2?.player.displayName {
+        if let opponent2PlayerId = opponent2?.player.displayName {
             
             if let playerGameData = opponent2?.data {
-                allPlayersData[opponent2PlayerName] = playerGameData
+                allPlayersData[opponent2PlayerId] = playerGameData
             }
         }
         
@@ -166,22 +166,22 @@ extension CleverJacksGame {
             
             
             
-            if let localPlayerName = localParticipant?.player.displayName {
+            if let localPlayerId = localParticipant?.player.displayName {
                 
-                if let playerGameData = gameData.allPlayersData[localPlayerName] {
+                if let playerGameData = gameData.allPlayersData[localPlayerId] {
                     localParticipant?.data = playerGameData
                 }
             }
             
             
             // Saving for persistance purposes, some values are not decoded
-            if let opponentPlayerName = opponent?.player.displayName {
-                if opponentPlayerName == "" {
+            if let opponentPlayerId = opponent?.player.displayName {
+                if opponentPlayerId == "" {
                     if let playerGameData = gameData.allPlayersData["Computer"] {
                         opponent?.data = playerGameData
                     }
                 }
-                else if let playerGameData = gameData.allPlayersData[opponentPlayerName] {
+                else if let playerGameData = gameData.allPlayersData[opponentPlayerId] {
                     opponent?.data = playerGameData
                 }
             }
@@ -190,8 +190,8 @@ extension CleverJacksGame {
                     opponent?.data = playerGameData
                 }
             }
-            if let opponent2PlayerName = opponent2?.player.displayName {
-                if let playerGameData = gameData.allPlayersData[opponent2PlayerName] {
+            if let opponent2PlayerID = opponent2?.player.displayName {
+                if let playerGameData = gameData.allPlayersData[opponent2PlayerID] {
                     opponent2?.data = playerGameData
                 }
             }

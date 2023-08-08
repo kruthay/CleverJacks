@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>CleverJacksScreenShotTests.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>SequenceCards.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
@@ -17,6 +22,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>87BD15102A81443900905584</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>87D157072A5352EA00898EC7</key>
 		<dict>
 			<key>primary</key>

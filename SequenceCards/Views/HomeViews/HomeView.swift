@@ -82,7 +82,7 @@ struct HomeView: View {
     private func delayAnimation() async {
         // Delay of 7.5 seconds (1 second = 1_000_000_000 nanoseconds)
         
-        try? await Task.sleep(nanoseconds: 1_500_000_000)
+        try? await Task.sleep(nanoseconds: 2_500_000_000)
         showArrow.toggle()
     }
 }
