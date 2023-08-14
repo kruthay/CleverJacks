@@ -172,6 +172,12 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                         // Display the match message.
                         matchMessage = match.message
                         
+                        if let count = board?.cardsWithCoinsCount() {
+                            if count == 0 {
+                                matchMessage = "Play your turn to get started"
+                            }
+                        }
+                        
 
                         if GKLocalPlayer.local == match.currentParticipant?.player {
                             if GKLocalPlayer.local.displayName == lastPlayedBy {

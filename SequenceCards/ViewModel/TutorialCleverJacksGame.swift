@@ -68,7 +68,7 @@ class TutorialCleverJacksGame: NSObject, ObservableObject {
         localParticipant = TutorialParticipant(displayName: "You", avatar: Image(systemName: "person.circle"))
         
         var localPlayerData = TutorialParticipant.PlayerGameData()
-        localPlayerData.cardsOnHand = [Card(rank: .nine, suit: .spades ) , Card(rank: .queen , suit:.hearts) , Card(rank: .six, suit: .diamonds), Card(rank: .three, suit: .clubs) , Card(rank: .five, suit: .hearts)].shuffled()
+        localPlayerData.cardsOnHand = [Card(rank: .nine, suit: .spades ) , Card(rank: .queen , suit:.hearts) , Card(rank: .six, suit: .diamonds), Card(rank: .three, suit: .clubs) , Card(rank: .five, suit: .hearts), Card(rank:.jack, suit: .clubs)].shuffled()
         
         localPlayerData.coin = .blue
         localPlayerData.noOfSequences = 0

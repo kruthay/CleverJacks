@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MeetItemsView: View {
     @ObservedObject var game : TutorialCleverJacksGame
-    @State var showItems : Int = 0
+    @State var showItems : Int = -1
     
     var repeatingAnimation: Animation {
         Animation
@@ -24,10 +24,10 @@ struct MeetItemsView: View {
 
                 AdaptiveStack(isItAVStack:  proxy.size.width < proxy.size.height) {
                     
-                    if showItems >= 2 {
+                    if showItems >= 3 {
                         VStack {
                             
-                            if showItems < 3 {
+                            if showItems < 4 {
                                 Text("The Board")
                                     .font(.title3)
                                     .transition(.asymmetric(insertion: AnyTransition.opacity.combined(with: .scale), removal: .scale))
@@ -41,9 +41,21 @@ struct MeetItemsView: View {
                         .transition(.asymmetric(insertion: AnyTransition.opacity.combined(with: .scale), removal: .scale))
                     }
                     
+                    Spacer()
+                    
+                    if showItems <= 0 {
+                        HStack {
+                            Spacer()
+                            LogoAndNameView()
+                                .scaleEffect(1.2)
+                            Spacer()
+                        }
+                            .transition(.asymmetric(insertion: AnyTransition.opacity.combined(with: .scale), removal: .scale))
+                    }
+                    
 
                     Spacer()
-                    if showItems >= 0 && showItems < 3 {
+                    if showItems >= 1 && showItems < 4 {
                         
                         HStack {
                             Spacer()
@@ -60,9 +72,9 @@ struct MeetItemsView: View {
                     }
                     Spacer()
                     
-                    if showItems >= 1 {
+                    if showItems >= 2 {
                         HStack {
-                            if showItems < 3 {
+                            if showItems < 4 {
                                 Text("Cards")
                                     .font(.title3)
                                     .transition(.asymmetric(insertion: AnyTransition.opacity.combined(with: .scale), removal: .scale))
@@ -98,9 +110,9 @@ struct MeetItemsView: View {
     }
     private func delayAnimation() async {
         // Delay of 7.5 seconds (1 second = 1_000_000_000 nanoseconds)
-        while showItems <= 3 {
-            try? await Task.sleep(nanoseconds: 1_500_000_000)
-            withAnimation(.easeInOut(duration: 1.5)) {
+        while showItems <= 4 {
+            try? await Task.sleep(nanoseconds: 1_000_000_000)
+            withAnimation(.easeInOut(duration: 1)) {
                 showItems += 1
             }
         }

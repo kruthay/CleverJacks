@@ -386,6 +386,7 @@ import SwiftUI
         
         resetGame()
         board = Board(classicView: classicView, numberOfPlayers: minPlayers)
+        
         // Create a match request.
         // add all the necessary functions somewhere here
         let request = GKMatchRequest()
@@ -394,6 +395,7 @@ import SwiftUI
         
         /// MAJOR CHECK UP CHANGED MINPLAYERS
         if playersToInvite != nil {
+
             request.recipients = playersToInvite
         }
         

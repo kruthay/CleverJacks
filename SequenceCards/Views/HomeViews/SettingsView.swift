@@ -50,14 +50,14 @@ struct SettingsView: View {
                     .disabled(!game.matchAvailable)
             }
             
-            Section {
-                Button("View List") {
-                    Task {
-                     await   game.getTheListOfAllAvailableOpenMatches()
-                    }
-                }
-                ListAllGamesView()
-            }
+//            Section {
+//                Button("View List") {
+//                    Task {
+//                     await   game.getTheListOfAllAvailableOpenMatches()
+//                    }
+//                }
+//                ListAllGamesView()
+//            }
         }
         .onChange(of: classicView){ classicView in
             game.classicView = classicView

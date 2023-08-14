@@ -75,7 +75,7 @@ struct Board : Codable, CustomStringConvertible {
     }
     
     func cardsWithCoinsCount() -> Int {
-        return boardCards.joined().filter { $0.coin != nil }.count
+        return boardCards.joined().filter { $0.coin != nil && $0.coin != .special }.count
     }
     
     func numberOfSelectableCardsLeftInTheBoard(_ card: Card) -> Int {
