@@ -17,7 +17,7 @@ struct MiniBoardView: View {
                 ForEach(board.miniBoardCards, id: \.self){ board in
                     GridRow {
                         ForEach(board) { card in
-                            CardView(card: card, size : CGSize(width: 20, height: 30))
+                            CardView(card: card, size :  45)
                             .opacity(card.belongsToASequence ? 0.4 : 1)
                         }
                     }

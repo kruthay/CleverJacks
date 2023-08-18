@@ -9,113 +9,76 @@ import SwiftUI
 
 struct CardView: View {
     var card: Card
-    let size: CGSize
+    let size: CGFloat
     @Environment(\.colorScheme) var colorScheme
-//    @State private var flipped: Bool = false
+    //    @State private var flipped: Bool = false
     var body: some View {
+        
         ZStack {
-            RoundedRectangle(cornerRadius: size.width/10)
-                .strokeBorder(style: StrokeStyle(lineWidth: size.width/25))
-                .background(colorScheme == .dark ? .black : .white)
-//            if !flipped {
-                if let rank = card.rank, let suit = card.suit {
-                    VStack{
-                        HStack {
-                            Text(String(rank.symbol)).fontWeight(.heavy)
-                                .font(.system(size:size.height/3.5))
-                            Spacer()
-                        }
+            VStack{
+                HStack {
+                    if let rank = card.rank {
+                        Text(String(rank.symbol)).fontWeight(.heavy)
                         
-                        if let faceImage = rank.faceImage {
-                            if card.isItATwoEyedJack {
-                                HStack {
-                                    faceImage
-                                        .font(.system(size:size.height/5.5))
-                                    faceImage
-                                        .font(.system(size:size.height/5.5))
-                                }
-                            }
-                            else {
-                                faceImage
-                                    .font(.system(size:size.height/5.5))
-                            }
-                        }
-                        else {
-                            Spacer()
-                        }
+                            .font(.system(size: size / 4))
+                            .minimumScaleFactor(0.1)
+                    }
+                    Spacer()
+                }
+                
+                
+                if let rank = card.rank, let faceImage = rank.faceImage {
+                    
+                    if card.isItATwoEyedJack {
                         HStack {
-                            Spacer()
-                            Text(suit.symbol)
-                                .font(.system(size:size.height/3.5))
+                            faceImage
+                            
+                                .font(.system(size:size / 6))
+                            
+                            faceImage
+                            
+                                .font(.system(size:size / 6))
                         }
                     }
-                   
-                        
+                    else {
+                        faceImage
+                            .font(.system(size:size / 6))
+                    }
+                      
                 }
-                CoinView(coin: card.coin ?? .special, width: size.height/3.5)
-                    .opacity( card.coin != nil ? 1 : 0 )
-                    
+                Spacer()
                 
-//            }
-//            else {
-//                if let rank = card.rank, let suit = card.suit {
-//                    VStack{
-//                        HStack {
-//                            Text(String(rank.symbol)).fontWeight(.heavy)
-//                                .font(.system(size:size.height/3.5))
-//                            Spacer()
-//                        }
-//
-//                        if let faceImage = rank.faceImage {
-//                            if card.isItATwoEyedJack {
-//                                HStack {
-//                                    faceImage
-//                                        .font(.system(size:size.height/5.5))
-//                                    faceImage
-//                                        .font(.system(size:size.height/5.5))
-//                                }
-//                            }
-//                            else {
-//                                faceImage
-//                                    .font(.system(size:size.height/5.5))
-//                            }
-//                        }
-//                        else {
-//                            Spacer()
-//                        }
-//                        HStack {
-//                            Spacer()
-//                            Text(suit.symbol)
-//                                .font(.system(size:size.height/3.5))
-//                        }
-//                    }
-//                    CoinView(coin: card.coin ?? .special, width: size.height/3.5)
-//                        .opacity( card.coin != nil ? 1 : 0 )
-//
-//                }
-//            }
-            
+                
+                HStack {
+                    Spacer()
+                    if  let suit = card.suit {
+                        Text(suit.symbol)
+                        
+                            .font(.system(size: size / 4))
+                            .minimumScaleFactor(0.1)
+                    }
+                }
+                
+            }
+            if let coin = card.coin {
+                CoinView(coin: coin, width: size / 4)
+                    .transition(.asymmetric(insertion: AnyTransition.opacity.combined(with: .scale), removal: .scale))
+            }
             
         }
-        
-        .aspectRatio(0.65, contentMode: .fit)
-        .frame(width: size.width, height: size.height, alignment: .center)
-//        .rotation3DEffect(
-//            flipped ? Angle(degrees: 180) : .zero,
-//            axis: (x: 0.0, y: 1.0, z: 0.0)
-//        )
-//        .animation(.easeInOut(duration: 1.5), value: flipped)
-//        .onChange(of: card.coin ) { _ in
-//                 flipped.toggle()
-//            print("Card Changed? \(card)")
-//        }        
+        .background(colorScheme == .dark ? .black : .white)
+        .frame(width: size * 0.6, height: size)
+        .overlay(RoundedRectangle(cornerRadius: size/20)
+            .stroke(lineWidth: size/30))
     }
 }
 
 
 struct CardViewPreviews: PreviewProvider {
     static var previews: some View {
-        CardView(card: Card(coin: .special), size:CGSize(width: 300, height: 500))
+       
+            CardView(card: Card(rank: .ten, suit: .clubs), size:60)
+        
     }
 }
 

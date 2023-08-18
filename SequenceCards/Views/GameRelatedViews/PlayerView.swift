@@ -9,8 +9,9 @@ import SwiftUI
 
 struct PlayerView: View {
     @EnvironmentObject var game: CleverJacksGame
+    var isItAVStack : Bool = true
     var body: some View {
-        HStack  {
+        AdaptiveStack(isItAVStack: !isItAVStack)  {
             Spacer()
             HStack {
                 game.myAvatar
@@ -18,7 +19,7 @@ struct PlayerView: View {
                     .frame(width: 20.0, height: 20)
                     .clipShape(Circle())
                     .wiggling(toWiggle: game.myTurn)
-                if game.numberOfPlayers == 2 {
+                if game.numberOfPlayers == 2 && isItAVStack {
                     Text(game.myName == "" ? "You" : game.myName)
                         .lineLimit(2)
                         .font(.caption)
@@ -37,8 +38,8 @@ struct PlayerView: View {
                     .resizable()
                     .frame(width: 20, height: 20)
                     .clipShape(Circle())
-                    .wiggling(toWiggle: game.whichPlayersTurn == game.opponent?.player )
-                if game.numberOfPlayers == 2 {
+                    .wiggling(toWiggle: game.whichPlayersTurn == game.opponent?.player || (game.auto && !game.myTurn) )
+                if game.numberOfPlayers == 2  && isItAVStack {
                     Text(game.opponentName)
                         .lineLimit(2)
                         .font(.caption)

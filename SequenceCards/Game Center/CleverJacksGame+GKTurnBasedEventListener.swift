@@ -121,9 +121,11 @@ extension CleverJacksGame : GKTurnBasedEventListener{
                         
                         // Restore the current game data from the match object.
                         // oppoents are created before this step so that decoded information is added to their profile.
-                        if let currentCardsCount = board?.cardStack.count, let cardCountInTheDecodedGameData = decode(matchData: match.matchData!)?.board?.cardStack.count {
+                        if let currentCardsCount = board?.cardStack.count, let gameData = decode(matchData: match.matchData!),  let cardCountInTheDecodedGameData = gameData.board?.cardStack.count {
                             if currentCardsCount >= cardCountInTheDecodedGameData {
+                               
                                 decodeGameData(matchData: match.matchData!)
+                                
                             }
                             else {
                                 print("InPlayer \(currentCardsCount), \(cardCountInTheDecodedGameData)")

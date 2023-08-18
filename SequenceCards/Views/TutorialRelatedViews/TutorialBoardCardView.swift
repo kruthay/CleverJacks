@@ -11,7 +11,7 @@ struct TutorialBoardCardView: View {
     @State private var phase = 0.0
     @ObservedObject var game: TutorialCleverJacksGame
     var card: Card
-    var size: CGSize
+    var size: CGFloat
     let impactHeavy = UIImpactFeedbackGenerator(style: .heavy)
     var repeatingAnimation: Animation {
         Animation
@@ -48,6 +48,6 @@ struct TutorialBoardCardView: View {
 
 struct TutorialBoardCardViewPreviews: PreviewProvider {
     static var previews: some View {
-        TutorialBoardCardView(game:TutorialCleverJacksGame(), card: Card(rank: .queen, suit: .clubs), size: CGSize(width: 30, height: 50))
+        TutorialBoardCardView(game:TutorialCleverJacksGame(), card: Card(rank: .queen, suit: .clubs), size: 60)
     }
 }

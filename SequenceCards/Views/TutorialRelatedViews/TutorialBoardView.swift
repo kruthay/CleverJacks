@@ -9,10 +9,10 @@ import SwiftUI
 
 struct TutorialBoardView: View {
     @ObservedObject var game: TutorialCleverJacksGame = TutorialCleverJacksGame()
-    var size : CGSize = CGSize(width: 30, height: 50)
+    var size : CGFloat = 50
     let impactHeavy = UIImpactFeedbackGenerator(style: .heavy)
     var body: some View {
-        Grid{
+        Grid(horizontalSpacing: size/4, verticalSpacing: size/4){
             ForEach(game.boardCards, id: \.self){ boardRow in
                 GridRow {
                     ForEach(boardRow) { card in

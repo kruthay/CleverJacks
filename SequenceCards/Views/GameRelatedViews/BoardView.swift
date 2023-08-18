@@ -9,10 +9,10 @@ import SwiftUI
 
 struct BoardView: View {
     @EnvironmentObject var game: CleverJacksGame
-    var size : CGSize
+    var size : CGFloat
     let impactHeavy = UIImpactFeedbackGenerator(style: .heavy)
     var body: some View {
-        Grid{
+        Grid(horizontalSpacing: size/4, verticalSpacing: size/4){
             ForEach(game.boardCards, id: \.self){ boardRow in
                 GridRow {
                     ForEach(boardRow) { card in
@@ -31,7 +31,7 @@ struct BoardView: View {
 
 struct BoardViewPreviews: PreviewProvider {
     static var previews: some View {
-        BoardView( size: CGSize(width: 30, height: 50))
+        BoardView( size: 25)
             .environmentObject(CleverJacksGame())
     }
 }

@@ -24,6 +24,7 @@
 		878CF17A2A800C4700A6680C /* CleverJacksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 878CF1792A800C4700A6680C /* CleverJacksTests.swift */; };
 		879EF3F32A5FAB19000D9088 /* ResponseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879EF3F22A5FAB19000D9088 /* ResponseView.swift */; };
 		87A950BD2A5DDCB700D954DD /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A950BC2A5DDCB700D954DD /* HomeView.swift */; };
+		87B04F012A8B21EB00608BC8 /* ScrollOnOverFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B04F002A8B21EB00608BC8 /* ScrollOnOverFlow.swift */; };
 		87B19CE52A7B27FA0012C62C /* AllRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B19CE42A7B27FA0012C62C /* AllRules.swift */; };
 		87B6C0132A5E38F9002C7CBA /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B6C0122A5E38F9002C7CBA /* MessageView.swift */; };
 		87B6C0152A5E3922002C7CBA /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B6C0142A5E3922002C7CBA /* ChatView.swift */; };
@@ -107,6 +108,7 @@
 		878CF1792A800C4700A6680C /* CleverJacksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleverJacksTests.swift; sourceTree = "<group>"; };
 		879EF3F22A5FAB19000D9088 /* ResponseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseView.swift; sourceTree = "<group>"; };
 		87A950BC2A5DDCB700D954DD /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		87B04F002A8B21EB00608BC8 /* ScrollOnOverFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollOnOverFlow.swift; sourceTree = "<group>"; };
 		87B19CE42A7B27FA0012C62C /* AllRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllRules.swift; sourceTree = "<group>"; };
 		87B6C0122A5E38F9002C7CBA /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		87B6C0142A5E3922002C7CBA /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
@@ -273,6 +275,7 @@
 				87EAF8D92A60C04100A9E63C /* ConfettiView.swift */,
 				87EAF8DF2A60C0F300A9E63C /* Triangle.swift */,
 				87EAF8DB2A60C0B700A9E63C /* RoundedCross.swift */,
+				87B04F002A8B21EB00608BC8 /* ScrollOnOverFlow.swift */,
 				87D157502A535A9900898EC7 /* WiggleModifier.swift */,
 			);
 			path = UtilityViews;
@@ -569,6 +572,7 @@
 				87BE05992A5B33C20095FDC9 /* PlayerView.swift in Sources */,
 				87D157422A53548F00898EC7 /* CleverJacksGame.swift in Sources */,
 				87F40CD52A6344F300AE1D69 /* NotificationCountView.swift in Sources */,
+				87B04F012A8B21EB00608BC8 /* ScrollOnOverFlow.swift in Sources */,
 				87D157362A5353D100898EC7 /* Suit.swift in Sources */,
 				87B6C0132A5E38F9002C7CBA /* MessageView.swift in Sources */,
 				87C535992A828C9700BFF90B /* ListAllGamesView.swift in Sources */,
@@ -672,13 +676,13 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.01;
 				DEVELOPMENT_TEAM = 6Q95QLZS6W;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.01;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kruthaydonapati.CleverJacksTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -696,13 +700,13 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.01;
 				DEVELOPMENT_TEAM = 6Q95QLZS6W;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.01;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kruthaydonapati.CleverJacksTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -897,7 +901,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.01;
+				MARKETING_VERSION = 1.02;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kruthaydonapati.SequenceCards;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -935,7 +939,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.01;
+				MARKETING_VERSION = 1.02;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kruthaydonapati.SequenceCards;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

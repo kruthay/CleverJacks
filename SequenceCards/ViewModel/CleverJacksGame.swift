@@ -46,15 +46,15 @@ import SwiftUI
     @Published var unViewedMessages : [Message] = []
     @Published var showMessages: Bool = false
     @Published var matchMessage: String? = nil
-    var showDiscard : Bool {
-        checkToDiscardtheCard(inSelectionCard)
-    }
+    @Published var showDiscard : Bool = false
     
     @Published var board : Board? = nil
     @Published var classicView: Bool = true
     
     @Published var cardCurrentlyPlayed : Card? = nil
     @Published var cardRecentlyChanged : Card? = nil
+    
+    
     @Published var refreshedTime = 0
     var playerTaskIsRunning = 0
     var numberOfPlayers : Int {
@@ -227,16 +227,20 @@ import SwiftUI
     
     func checkToDiscardtheCard(_ card: Card?) -> Bool {
         guard let discardableCard = card else {
+            showDiscard = false
             return false
         }
         if discardableCard.isItATwoEyedJack || discardableCard.isItAOneEyedJack {
+            showDiscard = false
             return false
         }
         if let numberOfCardsLeft = board?.numberOfSelectableCardsLeftInTheBoard(discardableCard) {
             if numberOfCardsLeft == 0 {
+                showDiscard = true
                 return true
             }
         }
+        showDiscard = false
         return false
     }
     
@@ -332,6 +336,7 @@ import SwiftUI
         sequencesChanged = 0
         lastPlayedBy = ""
         whichPlayersTurn = nil
+        
     }
     
     /// Authenticates the local player and registers for turn-based events.
@@ -736,12 +741,14 @@ import SwiftUI
     
     
     func selectACardByOpponent(_ card: Card, selectingCard : Card?) -> Card? {
+        print("Selecting Card \(String(describing: selectingCard))")
         guard let selectingCard, let index = board?.boardCards.indicesOf(x: card), let opponentsCards = opponent?.data?.cardsOnHand  else {
             matchMessage = "Try Again"
             return nil
             // throws an alert saying select a card
         }
-        
+
+
         
         if let indexTobeRemoved = opponent?.data?.cardsOnHand.firstIndex(of: selectingCard) {
             opponent?.data?.cardsOnHand.remove(at: indexTobeRemoved)
@@ -762,10 +769,10 @@ import SwiftUI
         }
         
         if card.coin == nil {
-            board?.boardCards[index.0][index.1].coin = opponent?.data?.coin
+            board?.boardCards[index.0][index.1].coin = .green
         }
         
-        else if ( card.coin == localParticipant?.data?.coin || card.coin == opponent2?.data?.coin ) && card.coin != .special {
+        else if  card.coin == localParticipant?.data?.coin && card.coin != .special  {
             board?.boardCards[index.0][index.1].coin = nil
         }
         else {
@@ -773,8 +780,10 @@ import SwiftUI
             
             return nil
         }
-        
+
+
         cardCurrentlyPlayed = selectingCard
+        cardRecentlyChanged = board?.boardCards[index.0][index.1]
         if let numberOfSequences = board?.getNumberOfSequences(index: index) {
             opponent?.data?.noOfSequences +=  numberOfSequences
             sequencesChanged += numberOfSequences
@@ -797,6 +806,7 @@ import SwiftUI
             print("Encoding")
             UserDefaults.standard.set(encoded, forKey: "AutoMatch")
         }
+        print(selectingCard)
         
         return selectingCard
     }
@@ -810,16 +820,21 @@ import SwiftUI
         
         if let data = UserDefaults.standard.data(forKey: "AutoMatch") {
             decodeGameData(matchData: data)
-            if opponent?.data?.result == .won || opponent?.data?.result == .lost {
+            if let opponentData = opponent?.data {
+                if opponentData.result == .won || opponentData.result == .lost {
+                    newMatch = true
+                }
+            }
+            else {
                 newMatch = true
             }
-            print(opponent?.data ?? "OpponentData is nil")
         }
         else {
             newMatch = true
         }
         if newMatch {
             board = Board(classicView: true, numberOfPlayers: 2)
+            inSelectionCard = nil
             let localCardsOnHand = (board?.dealCards(noOfCardsToDeal: 5))!
             localParticipant?.data = Participant.PlayerGameData(cardsOnHand: localCardsOnHand, coin: .blue, currentMatchID: "AutoMatch")
             let opponentsCardsOnHand = (board?.dealCards(noOfCardsToDeal: 8))!
@@ -828,59 +843,94 @@ import SwiftUI
         }
         myTurn = true
     }
+     func delayAutomaticTurn() async {
+        // Delay of 7.5 seconds (1 second = 1_000_000_000 nanoseconds)
+        
+        try? await Task.sleep(nanoseconds: 1_500_000_000)
+        
+    }
     
     func automaticTurn() {
         // Check 5 cards on all sides and if the card is available then put it there
-        guard let opponentCards = opponent?.data?.cardsOnHand, let currentBoardCards = board?.boardCards else { return }
-        print(opponentCards)
-        var maxScore = 0
-        var maxScoreBoardCard = Card()
-        var selectingCard : Card?
-        for cardOnHand in opponentCards {
-            if cardOnHand.isItATwoEyedJack {
-                if let indexes = board?.aboutToBeSequence[.green] {
-                    if indexes.count == 2 {
+        Task {
+            guard let opponentCards = opponent?.data?.cardsOnHand, let currentBoardCards = board?.boardCards else { return }
+            print(opponentCards)
+            print("To Add \( String(describing: board?.indicesToAdd))")
+            if let index = board?.indicesToAdd.first {
+                print(currentBoardCards[index[0]][index[1]])
+            }
+            print("To Remove \(String(describing: board?.indicesToRemove))")
+            if let index = board?.indicesToRemove.first {
+                print(currentBoardCards[index[0]][index[1]])
+            }
+            var maxScore = 0
+            var maxScoreBoardCard = Card()
+            var selectingCard : Card?
+            for cardOnHand in opponentCards {
+                if cardOnHand.isItATwoEyedJack {
+                    if let indexes = board?.indicesToAdd.first(where: {
+                        currentBoardCards[$0[0]][$0[1]].coin == nil && !opponentCards.contains(currentBoardCards[$0[0]][$0[1]]) && board?.getScoreForTheGivenIndexAndCoin(index: ($0[0],$0[1]), coin: .green) == 4
+                    }) {
                         selectingCard = cardOnHand
+                        withAnimation {
+                            inSelectionCard = selectingCard
+                        }
+                        await delayAutomaticTurn()
                         let boardCard = currentBoardCards[indexes[0]][indexes[1]]
-                        if boardCard.coin == nil && selectACardByOpponent(boardCard, selectingCard : selectingCard) != nil {
-                            selectingCard = nil; myTurn = true
+                        if selectACardByOpponent(boardCard, selectingCard : selectingCard) != nil {
+                            withAnimation {
+                                inSelectionCard = nil
+                            }
+                            myTurn = true
                             return
                         }
                         else { print("Two Eye") }
+                        
                     }
                 }
-            }
-            if cardOnHand.isItAOneEyedJack {
-                if let indexes = board?.aboutToBeSequence[Coin.blue] {
-                    if indexes.count == 2 {
+                if cardOnHand.isItAOneEyedJack {
+                    if let indexes = board?.indicesToRemove.first(where: {
+                        currentBoardCards[$0[0]][$0[1]].coin == .blue && !currentBoardCards[$0[0]][$0[1]].belongsToASequence
+                    }) {
                         selectingCard = cardOnHand
+                        withAnimation {
+                            inSelectionCard = selectingCard
+                        }
+                        await delayAutomaticTurn()
                         let boardCard = currentBoardCards[indexes[0]][indexes[1]]
                         if !boardCard.belongsToASequence  && selectACardByOpponent(boardCard, selectingCard : selectingCard) != nil {
-                            selectingCard = nil; myTurn = true
+                            withAnimation {
+                                inSelectionCard = nil
+                            }
+                            myTurn = true
                             return
                         }
                         else { print("One Eye") }
                     }
                 }
-            }
-            else {
-                for boardCard in currentBoardCards.joined().filter({ cardOnHand.hasASameFaceAs($0) && $0.coin == .none }) {
-                    if let boardCardIndex = currentBoardCards.indicesOf(x: boardCard), let score = board?.getScoreForTheGivenIndexAndCoin(index: boardCardIndex, coin: .green) {
-                        if score > maxScore {
-                            maxScore = score; maxScoreBoardCard = boardCard ; selectingCard = cardOnHand
+                else {
+                    for boardCard in currentBoardCards.joined().filter({ cardOnHand.hasASameFaceAs($0) && $0.coin == .none }) {
+                        if let boardCardIndex = currentBoardCards.indicesOf(x: boardCard), let score = board?.getScoreForTheGivenIndexAndCoin(index: boardCardIndex, coin: .green) {
+                            if score > maxScore {
+                                maxScore = score; maxScoreBoardCard = boardCard ; selectingCard = cardOnHand
+                            }
                         }
                     }
                 }
             }
+            print("Before eye \(maxScoreBoardCard) \(String(describing: selectingCard)) \(opponentCards) \(String(describing: opponent?.data?.cardsOnHand))")
+            withAnimation {
+                inSelectionCard = selectingCard
+            }
+            await delayAutomaticTurn()
+            if selectACardByOpponent(maxScoreBoardCard, selectingCard: selectingCard ) != nil {
+                withAnimation {
+                    inSelectionCard = nil
+                }
+                myTurn = true
+                return
+            } else { print("No eye \(maxScoreBoardCard) \(String(describing: selectingCard)) \(opponentCards)") }
         }
-        print("Before eye \(maxScoreBoardCard) \(String(describing: selectingCard)) \(opponentCards) \(String(describing: opponent?.data?.cardsOnHand))")
-        
-        if selectACardByOpponent(maxScoreBoardCard, selectingCard: selectingCard ) != nil {
-            selectingCard = nil
-            myTurn = true
-            return
-        } else { print("No eye \(maxScoreBoardCard) \(String(describing: selectingCard)) \(opponentCards)") }
-        
     }
 }
 

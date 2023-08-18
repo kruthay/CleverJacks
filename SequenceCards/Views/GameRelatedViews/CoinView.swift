@@ -10,7 +10,7 @@ import SwiftUI
 struct CoinView: View {
     @Environment(\.colorScheme) var colorScheme
     var coin : Coin = .special
-    var width : CGFloat = 25
+    var width : CGFloat
     var body: some View {
             Circle()
                 .strokeBorder(colorScheme == .dark ? Color.white : Color.black, lineWidth: width/5)

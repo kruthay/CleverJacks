@@ -10,7 +10,7 @@ import SwiftUI
 struct TutorialPlayerCardsView: View {
     @ObservedObject var game: TutorialCleverJacksGame = TutorialCleverJacksGame()
     let impactSoft = UIImpactFeedbackGenerator(style: .soft)
-    var size: CGSize = CGSize(width: 30, height: 50)
+    var size: CGFloat = 30
     var tutorialCards = [Card(rank: .ace, suit: .clubs),
                          Card(rank : .jack, suit: .diamonds),
                          Card(rank: .ten, suit: .hearts),

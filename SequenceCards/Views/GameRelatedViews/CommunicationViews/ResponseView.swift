@@ -12,89 +12,93 @@ struct ResponseView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var showMessages: Bool = false
     @EnvironmentObject var game: CleverJacksGame
-    var proxy : GeometryProxy
+    var size : CGFloat
     @State var isItAVStack : Bool
     var body: some View {
-        AdaptiveStack(isItAVStack: isItAVStack) {
-            Spacer()
-            if !game.auto {
-                
-                Button("Message") {
-                    withAnimation(.easeInOut(duration: 1)) {
-                        game.showMessages = true
-                    }
-                }
-                .buttonStyle(MessageButtonStyle(count: game.unViewedMessages.count))
-                .onTapGesture {
-                    presentationMode.wrappedValue.dismiss()
-                }
-                .disabled(game.isGameOver)
+        ZStack {
+            AdaptiveStack(isItAVStack: isItAVStack) {
                 Spacer()
-                if let matchMessage = game.matchMessage {
-                    HStack {
-                        Text(matchMessage)
-                            .font(.system(size: 15))
-                            .minimumScaleFactor(0.001)
-                    }
-                    .onAppear {
-                        Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { timer in
-                            withAnimation(.easeInOut(duration: 1)) {
-                                game.matchMessage = nil
-                            }
+                if !game.auto {
+                    
+                    Button("Message") {
+                        withAnimation(.easeInOut(duration: 1)) {
+                            game.showMessages = true
                         }
-                        AudioServicesPlaySystemSound(1106)
                     }
-                }
-            }
-            
-            Group {
-                Spacer()
-                if let card = game.cardCurrentlyPlayed {
-                    HStack {
-                        if card.isItAOneEyedJack || card.isItATwoEyedJack {
-                            if let recentCard = game.cardRecentlyChanged {
-                                CardView(card: recentCard, size:CGSize(width: proxy.size.width/16, height: proxy.size.height/20) )
-                                    .opacity(game.inSelectionCard != nil ? 1 : 0.6)
-                                    .transition(.asymmetric(insertion: AnyTransition.opacity.combined(with: .scale), removal: .scale))
-                                
-                            }
+                    .buttonStyle(MessageButtonStyle(count: game.unViewedMessages.count))
+                    .onTapGesture {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                    .disabled(game.isGameOver)
+                    Spacer()
+                    if let matchMessage = game.matchMessage {
+                        HStack {
+                            Text(matchMessage)
+                                .font(.system(size: 15))
+                                .minimumScaleFactor(0.001)
                         }
-                        CardView(card: card, size:CGSize(width: proxy.size.width/16, height: proxy.size.height/20) )
-                            .opacity(game.inSelectionCard != nil ? 1 : 0.6)
-                            .transition(.asymmetric(insertion: AnyTransition.opacity.combined(with: .scale), removal: .scale))
+                        .onAppear {
+                            Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { timer in
+                                withAnimation(.easeInOut(duration: 1)) {
+                                    game.matchMessage = nil
+                                }
+                            }
+
+                        }
                     }
                 }
                 else {
-                    CardView(card: Card(coin:.special), size:CGSize(width: proxy.size.width/16, height: proxy.size.height/20))
-                        .opacity(game.inSelectionCard != nil ? 1 : 0.6)
+                    Spacer()
                 }
-                // Send a reminder to take their turn.
-                Spacer()
-            }
-            Group {
                 
-                if game.showDiscard {
-                    Button("Discard The Card") {
-                        game.discardTheCard()
+                Group {
+                    Spacer()
+                    if let card = game.cardCurrentlyPlayed {
+                        HStack {
+                            if card.isItAOneEyedJack || card.isItATwoEyedJack {
+                                if let recentCard = game.cardRecentlyChanged {
+                                    CardView(card: recentCard, size:size)
+                                        .opacity(game.inSelectionCard != nil ? 1 : 0.6)
+                                        .transition(.asymmetric(insertion: AnyTransition.opacity.combined(with: .scale), removal: .scale))
+                                    
+                                }
+                            }
+                            CardView(card: card, size:size)
+                                .opacity(game.inSelectionCard != nil ? 1 : 0.6)
+                                .transition(.asymmetric(insertion: AnyTransition.opacity.combined(with: .scale), removal: .scale))
+                        }
                     }
+                    else {
+                        CardView(card: Card(coin:.special), size:size)
+                            .opacity(game.inSelectionCard != nil ? 1 : 0.6)
+                    }
+                    // Send a reminder to take their turn.
+                    Spacer()
+                }
+                Group {
+                    if game.showDiscard {
+                        Button("Discard The Card") {
+                            game.showDiscard = false
+                            game.discardTheCard()
+                        }
+                    }
+                    Spacer()
+                }
+                if !game.auto {
+                    Button("Remainder") {
+                        Task {
+                            await game.sendReminder()
+                        }
+                        AudioServicesPlaySystemSound(1105)
+                    }
+                    .buttonStyle(RemainderButtonStyle())
+                    .disabled((game.myTurn || game.isGameOver))
+                    
                 }
                 Spacer()
-            }
-            if !game.auto {
-                Button("Remainder") {
-                    Task {
-                        await game.sendReminder()
-                    }
-                    AudioServicesPlaySystemSound(1105)
-                }
-                .buttonStyle(RemainderButtonStyle())
-                .disabled((game.myTurn || game.isGameOver))
                 
             }
-            Spacer()
-            
         }
-        
         
     }
 }
@@ -104,7 +108,7 @@ struct ResponseView: View {
 struct ResponseViewPreviews: PreviewProvider {
     static var previews: some View {
         GeometryReader { proxy in
-            ResponseView(proxy: proxy, isItAVStack: false)
+            ResponseView(size: 30, isItAVStack: false)
                 .environmentObject(CleverJacksGame())
         }
     }

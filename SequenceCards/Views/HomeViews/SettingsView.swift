@@ -14,51 +14,57 @@ struct SettingsView: View {
     @State private var showingRemoveAlert = false
     let impactHeavy = UIImpactFeedbackGenerator(style: .heavy)
     var body: some View {
-        List {
-            Section {
-                VStack {
-                    Text("Board Style")
-                    Picker("Classic Board", selection: $classicView) {
-                        Text("Classic Board").tag(true)
-                        Text("Random Board").tag(false)
+        VStack {
+            List {
+                Section {
+                    VStack {
+                        Text("Board Style")
+                        Picker("Classic Board", selection: $classicView) {
+                            Text("Classic Board").tag(true)
+                            Text("Random Board").tag(false)
+                        }
+                        .pickerStyle(.segmented)
                     }
-                    .pickerStyle(.segmented)
+                } header: {
+                    Text("Board Options")
                 }
-            } header: {
-                Text("Board Options")
-            }
-            
-            Section {
-                VStack {
-                    Text("Number of Players")
-                    Picker("Players", selection: $game.minPlayers) {
-                        Text("Two").tag(2)
-                        Text("Three").tag(3)
+                
+                Section {
+                    VStack {
+                        Text("Number of Players")
+                        Picker("Players", selection: $game.minPlayers) {
+                            Text("Two").tag(2)
+                            Text("Three").tag(3)
+                        }
+                        .pickerStyle(.segmented)
                     }
-                    .pickerStyle(.segmented)
                 }
+            header: {
+                Text("Game Type")
             }
-        header: {
-            Text("Game Type")
-        }
-            
-            Section {
+                
+                Section {
                     Button("Remove All Matches", role: .destructive) {
                         impactHeavy.impactOccurred()
                         showingRemoveAlert = true
                     }
                     .disabled(!game.matchAvailable)
+                }
+                
+                
+                //            Section {
+                //                Button("View List") {
+                //                    Task {
+                //                     await   game.getTheListOfAllAvailableOpenMatches()
+                //                    }
+                //                }
+                //                ListAllGamesView()
+                //            }
             }
             
-//            Section {
-//                Button("View List") {
-//                    Task {
-//                     await   game.getTheListOfAllAvailableOpenMatches()
-//                    }
-//                }
-//                ListAllGamesView()
-//            }
+            Text("1.01")
         }
+
         .onChange(of: classicView){ classicView in
             game.classicView = classicView
         }

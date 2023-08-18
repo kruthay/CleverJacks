@@ -20,7 +20,8 @@ struct Board : Codable, CustomStringConvertible {
     var allCoins : [Coin] = Coin.allCases.filter { $0.self != .special}
     let numberOfPlayers: Int
     let requiredNoOfSequences: Int
-    var aboutToBeSequence: [Coin : [Int]] = [:]
+    var indicesToRemove : [[Int]] = []
+    var indicesToAdd : [[Int]] = []
     
     init(tutorial: Bool = true ) {
         self.numberOfPlayers = 2
@@ -38,8 +39,6 @@ struct Board : Codable, CustomStringConvertible {
                 $0.hasASameFaceAs(card)
             }
         }
-        
-        
         
         self.requiredNoOfSequences = 2
         self.boardCards = createAClassicBoard()
@@ -137,9 +136,12 @@ struct Board : Codable, CustomStringConvertible {
                     // throw an alert
                 }
             }
-            else if sequencedIndices.count == 4 && noOfSequences == 0 && coin == .blue{
-                aboutToBeSequence[coin] = [sequencedIndices.randomElement()!.0, sequencedIndices.randomElement()!.1]
-                print(aboutToBeSequence)
+            else if sequencedIndices.count == 4 && noOfSequences == 0 && coin == .blue {
+                if let randomCardIndex = sequencedIndices.first(where: {
+                    !indicesToRemove.contains([$0.0, $0.1])
+                }) {
+                    indicesToRemove.append([randomCardIndex.0, randomCardIndex.1])
+                }
             }
         }
         return noOfSequences
@@ -234,7 +236,7 @@ struct Board : Codable, CustomStringConvertible {
         
         func getScoresOfSameCoinsOnOneSideOfAxis(from index: (Int, Int), axisCoordinates coordinates: (Int, Int), coin: Coin ) -> Int {
             var score : Int = 0
-            for i in 1..<5 {
+            for i in 1..<6 {
                 let x = index.0 + i * coordinates.0
                 let y = index.1 + i * coordinates.1
                 if isIndexValid(x: x, y: y) {
@@ -243,10 +245,19 @@ struct Board : Codable, CustomStringConvertible {
                     } else if boardCards[x][y].coin == .none {
                         score += 0
                         if score >= 3 {
-                            aboutToBeSequence[Coin.green] = [x, y]
+                            if !indicesToAdd.contains([x, y]) {
+                                indicesToAdd.append([x,y])
+                            }
                         }
                     }
-                    else { break }
+                    else {
+                        if score >= 3 {
+                            if !indicesToRemove.contains([x, y]) {
+                                indicesToRemove.append([x,y])
+                            }
+                        }
+                        break
+                    }
                 } else { break }
             }
             return score

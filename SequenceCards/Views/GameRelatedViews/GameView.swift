@@ -16,34 +16,42 @@ struct GameView: View {
     let timer = Timer.publish(every: 12, tolerance: 0.5, on: .current, in: .common).autoconnect()
     var body: some View {
         
-        ZStack {
+
+        GeometryReader {
+            proxy in
             VStack {
                 TopMenuView()
                 Divider()
-                PlayerView()
-                GeometryReader {
-                    proxy in
+                AdaptiveStack(isItAVStack: proxy.size.width < proxy.size.height) {
+                    
+                    PlayerView(isItAVStack: proxy.size.width < proxy.size.height)
                     Divider()
-                    AdaptiveStack(isItAVStack: proxy.size.width < proxy.size.height) {
+                    Spacer()
+                    BoardView(size : proxy.size.width < proxy.size.height ?
+                              ( proxy.size.width <= proxy.size.height*0.3 ? proxy.size.width/8 : proxy.size.height/16.5 )
+                              : proxy.size.height/12.5)
+                    Group {
                         Spacer()
-                        BoardView(size : CGSize(width: min(proxy.size.width/12.5,proxy.size.height/14.5) ,
-                                                height: max(proxy.size.height/14.5, proxy.size.width/20)))
                         Spacer()
-                        Spacer()
-                            ResponseView(
-                                proxy:proxy, isItAVStack:proxy.size.width > proxy.size.height )
+                        ResponseView(
+                            size : proxy.size.width < proxy.size.height ?
+                            ( proxy.size.width <= proxy.size.height*0.3 ? proxy.size.width/11 : proxy.size.height/20 )
+                            : proxy.size.height/15,
+                            isItAVStack:proxy.size.width > proxy.size.height )
                         Spacer()
                         Spacer()
                         PlayerCardsView(
-                            size : CGSize(width: min(proxy.size.width/12.5,proxy.size.height/14) , height: max(proxy.size.height/14, proxy.size.width/20)),
+                            size : proxy.size.width < proxy.size.height ? ( proxy.size.width <= proxy.size.height*0.3 ? proxy.size.width/8 : proxy.size.height/16.5 )
+                            : proxy.size.height/12,
                             isItAVStack: proxy.size.width > proxy.size.height )
                         Spacer()
                         Text("")
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
+
         
         .confettiCannon(counter: $game.sequencesChanged, num: justBroughtOn ? 0 : 100, repetitions: game.myNoOfSequences, repetitionInterval: 0.7)
         .sheet(isPresented: $game.showMessages) {
@@ -51,14 +59,19 @@ struct GameView: View {
         }
         .padding()
         .onReceive(timer) { _ in
-            game.isLoading = true
-            justBroughtOn = false
-            
-            if game.refreshedTime > 1 {
-                game.resetGame()
+            if game.auto {
+                timer.upstream.connect().cancel()
             }
             else {
-                game.refresh()
+                game.isLoading = true
+                justBroughtOn = false
+                
+                if game.refreshedTime > 1 {
+                    game.resetGame()
+                }
+                else {
+                    game.refresh()
+                }
             }
         }
         .onChange(of: scenePhase) { newPhase in

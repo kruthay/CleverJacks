@@ -18,24 +18,22 @@ struct MeetItemsView: View {
     }
     
     var body: some View {
-        GeometryReader {
-            proxy in
         VStack {
-
+            GeometryReader {
+                proxy in
                 AdaptiveStack(isItAVStack:  proxy.size.width < proxy.size.height) {
                     
                     if showItems >= 3 {
                         VStack {
-                            
+
                             if showItems < 4 {
                                 Text("The Board")
                                     .font(.title3)
                                     .transition(.asymmetric(insertion: AnyTransition.opacity.combined(with: .scale), removal: .scale))
                             }
                             
-                            TutorialBoardView(game: game, size : CGSize(width: min(proxy.size.width/13,proxy.size.height/15) ,
-                                                                        height: max(proxy.size.height/15, proxy.size.width/21)))
-                            .padding()
+                            TutorialBoardView(game: game, size : proxy.size.width < proxy.size.height ? proxy.size.height/16.5 : proxy.size.height/12.5)
+                                .padding()
                             
                         }
                         .transition(.asymmetric(insertion: AnyTransition.opacity.combined(with: .scale), removal: .scale))
@@ -50,10 +48,10 @@ struct MeetItemsView: View {
                                 .scaleEffect(1.2)
                             Spacer()
                         }
-                            .transition(.asymmetric(insertion: AnyTransition.opacity.combined(with: .scale), removal: .scale))
+                        .transition(.asymmetric(insertion: AnyTransition.opacity.combined(with: .scale), removal: .scale))
                     }
                     
-
+                    
                     Spacer()
                     if showItems >= 1 && showItems < 4 {
                         
@@ -62,9 +60,9 @@ struct MeetItemsView: View {
                             
                             Text("Coins")
                                 .font(.title3)
-                            CoinView(coin: .blue)
-                            CoinView(coin: .red)
-                            CoinView(coin: .green)
+                            CoinView(coin: .blue, width : 20)
+                            CoinView(coin: .red, width : 20)
+                            CoinView(coin: .green, width : 20)
                             Spacer()
                             
                         }
@@ -80,7 +78,7 @@ struct MeetItemsView: View {
                                     .transition(.asymmetric(insertion: AnyTransition.opacity.combined(with: .scale), removal: .scale))
                             }
                             
-                            TutorialPlayerCardsView(game: game)
+                            TutorialPlayerCardsView(game: game,size: proxy.size.height/17 )
                                 .onAppear {
                                     game.myTurn = true
                                 }
@@ -88,7 +86,6 @@ struct MeetItemsView: View {
                                 .fontWeight(.bold)
                                 .opacity(game.tutorial && showItems >= 3 ? 0.4 : 0)
                                 .scaleEffect(game.tutorial && showItems >= 3 ? 1.8 : 1)
-                                .offset(x: game.tutorial  && showItems >= 3  ? 10 : 40)
                                 .animation(self.repeatingAnimation, value: game.tutorial && game.inSelectionCard == nil && showItems >= 3 )
                             
                         }
@@ -97,11 +94,12 @@ struct MeetItemsView: View {
                     Spacer()
                     
                 }
+                .position(.init(x: proxy.size.width/2, y: proxy.size.height/2))
                 .onAppear() {
                     game.tutorial = true
                     game.startTutorialGame()
                     Task {
-                       await delayAnimation()
+                        await delayAnimation()
                     }
                 }
             }

@@ -29,13 +29,13 @@ struct AllRules: View {
                     Text("Your Coin")
                         .foregroundStyle(.blue)
                     Spacer()
-                    CoinView(coin:.blue)
+                    CoinView(coin:.blue, width: 20)
                 }
                 HStack {
                     Text("Your Cards")
                         .foregroundStyle(.red)
                     Spacer()
-                    TutorialPlayerCardsView(size : CGSize(width: 20, height: 30))
+                    TutorialPlayerCardsView(size : 40)
                 }
                 NavigationLink( "Sample Play", destination: MeetItemsView(game: game))
             }
@@ -95,8 +95,8 @@ struct AllRules: View {
                         }
                         Spacer()
                         HStack {
-                            CardView(card: Card(rank: .jack, suit: .clubs ), size : CGSize(width: 45, height: 75))
-                            CardView(card: Card(rank: .jack, suit: .diamonds ), size : CGSize(width: 45, height: 75))
+                            CardView(card: Card(rank: .jack, suit: .clubs ), size : 80)
+                            CardView(card: Card(rank: .jack, suit: .diamonds ), size :  80)
                         }
                     }
                     
@@ -112,8 +112,8 @@ struct AllRules: View {
                         }
                         Spacer()
                         HStack {
-                            CardView(card: Card(rank: .jack, suit: .hearts ), size : CGSize(width: 45, height: 75))
-                            CardView(card: Card(rank: .jack, suit: .spades ), size : CGSize(width: 45, height: 75))
+                            CardView(card: Card(rank: .jack, suit: .hearts ), size : 80)
+                            CardView(card: Card(rank: .jack, suit: .spades ), size : 80)
                         }
                     }
                     
@@ -129,7 +129,7 @@ struct AllRules: View {
                 HStack{
                     Text("Can be used for your sequence ")
                     Spacer()
-                    CardView(card: Card(coin:.special), size : CGSize(width: 45, height: 75))
+                    CardView(card: Card(coin:.special), size : 45)
                 }
             } header: {
                 Text("Corner Cards")

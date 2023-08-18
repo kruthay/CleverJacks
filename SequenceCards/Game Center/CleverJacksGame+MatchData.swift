@@ -145,16 +145,19 @@ extension CleverJacksGame {
         
         do {
             let gameData = try PropertyListDecoder().decode(GameData.self, from: matchData)
-            
+            AudioServicesPlaySystemSound(1106)
             // Update Response Cards
+            
             cardCurrentlyPlayed = gameData.cardCurrentlyPlayed
             cardRecentlyChanged = gameData.cardRecentlyChanged
                         
             if let cardRecentlyChanged,
                 let index = gameData.board?.boardCards.indicesOf(x: cardRecentlyChanged),
                 let cardStack = gameData.board?.cardStack,
-               let aboutToBeSequence = gameData.board?.aboutToBeSequence {
-                board?.aboutToBeSequence = aboutToBeSequence
+               let indicesToAdd = gameData.board?.indicesToAdd,
+               let indicesToRemove = gameData.board?.indicesToRemove{
+                board?.indicesToAdd = indicesToAdd
+                board?.indicesToRemove = indicesToRemove
                 board?.cardStack = cardStack
                 board?.boardCards[index.0][index.1] = cardRecentlyChanged
             }
@@ -162,7 +165,7 @@ extension CleverJacksGame {
             
             board = gameData.board
             lastPlayedBy = gameData.lastPlayedBy
-            //  we don't need items for now.
+            
             
             
             
